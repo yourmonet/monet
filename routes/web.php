@@ -1,0 +1,76 @@
+<?php
+
+use App\Http\Controllers\Auth\AnggotaAuthController;
+use App\Http\Controllers\Auth\BendaharaAuthController;
+use App\Http\Controllers\Auth\PengurusAuthController;
+use Illuminate\Support\Facades\Route;
+
+// ─────────────────────────────────────────────────────────
+// Landing Page
+// ─────────────────────────────────────────────────────────
+Route::get('/', function () {
+    return view('welcome');
+});
+
+// ─────────────────────────────────────────────────────────
+// ANGGOTA — prefix: /user
+// ─────────────────────────────────────────────────────────
+Route::prefix('user')->name('user.')->group(function () {
+
+    // Public: login & register
+    Route::get('login',    [AnggotaAuthController::class, 'showLogin'])->name('login');
+    Route::post('login',   [AnggotaAuthController::class, 'login']);
+    Route::get('register', [AnggotaAuthController::class, 'showRegister'])->name('register');
+    Route::post('register',[AnggotaAuthController::class, 'register']);
+
+    // Protected: dashboard & logout (hanya untuk role anggota)
+    Route::middleware(['role:anggota'])->group(function () {
+        Route::get('dashboard', [AnggotaAuthController::class, 'dashboard'])->name('dashboard');
+        Route::post('logout',   [AnggotaAuthController::class, 'logout'])->name('logout');
+    });
+});
+
+// ─────────────────────────────────────────────────────────
+// PENGURUS — prefix: /pengurus
+// ─────────────────────────────────────────────────────────
+Route::prefix('pengurus')->name('pengurus.')->group(function () {
+
+    // Public: login & register
+    Route::get('login',    [PengurusAuthController::class, 'showLogin'])->name('login');
+    Route::post('login',   [PengurusAuthController::class, 'login']);
+    Route::get('register', [PengurusAuthController::class, 'showRegister'])->name('register');
+    Route::post('register',[PengurusAuthController::class, 'register']);
+
+    // Protected: dashboard & logout (hanya untuk role pengurus)
+    Route::middleware(['role:pengurus'])->group(function () {
+        Route::get('dashboard', [PengurusAuthController::class, 'dashboard'])->name('dashboard');
+        Route::post('logout',   [PengurusAuthController::class, 'logout'])->name('logout');
+    });
+});
+
+// ─────────────────────────────────────────────────────────
+// BENDAHARA — prefix: /bendahara
+// ─────────────────────────────────────────────────────────
+Route::prefix('bendahara')->name('bendahara.')->group(function () {
+
+    // Public: login & register
+    Route::get('login',    [BendaharaAuthController::class, 'showLogin'])->name('login');
+    Route::post('login',   [BendaharaAuthController::class, 'login']);
+    Route::get('register', [BendaharaAuthController::class, 'showRegister'])->name('register');
+    Route::post('register',[BendaharaAuthController::class, 'register']);
+
+    // Protected: dashboard & logout (hanya untuk role bendahara)
+    Route::middleware(['role:bendahara'])->group(function () {
+        Route::get('dashboard', [BendaharaAuthController::class, 'dashboard'])->name('dashboard');
+        Route::post('logout',   [BendaharaAuthController::class, 'logout'])->name('logout');
+    });
+});
+
+// ─────────────────────────────────────────────────────────
+// Redirect /login default ke pilihan role
+// ─────────────────────────────────────────────────────────
+Route::get('/login', function () {
+    return redirect('/user/login');
+})->name('login');
+
+require __DIR__.'/auth.php';
