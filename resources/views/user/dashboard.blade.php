@@ -63,7 +63,7 @@
 
     <nav class="flex flex-col gap-1 flex-1">
         <a class="flex items-center gap-3 px-4 py-3 bg-white text-blue-700 rounded-lg scale-95 transition-all font-headline font-medium text-sm" href="#">
-            <span class="material-symbols-outlined">dashboard</span> Ikhtisar
+            <span class="material-symbols-outlined">dashboard</span> Dashboard
         </a>
     </nav>
 
@@ -84,7 +84,7 @@
 
     <header class="flex justify-between items-end mb-10">
         <div>
-            <h1 class="text-4xl font-headline font-extrabold tracking-tight text-on-surface">Ikhtisar Anggota</h1>
+            <h1 class="text-4xl font-headline font-extrabold tracking-tight text-on-surface">Dashboard Anggota</h1>
             <p class="text-on-surface-variant font-body mt-1">Selamat datang kembali, <span class="font-semibold text-primary">{{ Auth::user()->name }}</span> 👋</p>
         </div>
     </header>
