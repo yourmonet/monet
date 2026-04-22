@@ -115,6 +115,20 @@
             </div>
 
             <div>
+                <label for="sumber" class="block text-sm font-bold text-on-surface mb-2">Sumber</label>
+                <select name="sumber" id="sumber" required
+                    class="w-full rounded-xl border border-outline-variant/50 bg-surface focus:ring-2 focus:ring-primary focus:border-primary px-4 py-3 text-sm transition-colors outline-none">
+                    <option value="" disabled selected>Pilih Sumber Pengeluaran</option>
+                    <option value="Manual" {{ old('sumber') == 'Manual' ? 'selected' : '' }}>Manual</option>
+                    <option value="Midtrans" {{ old('sumber') == 'Midtrans' ? 'selected' : '' }}>Midtrans</option>
+                    <option value="Lainnya" {{ old('sumber') == 'Lainnya' ? 'selected' : '' }}>Lainnya</option>
+                </select>
+                @error('sumber')
+                    <p class="text-error text-xs mt-1 font-semibold">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <div>
                 <label for="nominal" class="block text-sm font-bold text-on-surface mb-2">Nominal (Rp)</label>
                 <input type="number" name="nominal" id="nominal" value="{{ old('nominal') }}" required min="1" placeholder="Contoh: 50000"
                     class="w-full rounded-xl border border-outline-variant/50 bg-surface focus:ring-2 focus:ring-primary focus:border-primary px-4 py-3 text-sm transition-colors outline-none">

@@ -106,6 +106,7 @@
                     <tr class="bg-surface-container-low text-on-surface-variant font-headline text-sm uppercase tracking-wider border-b border-outline-variant/30">
                         <th class="px-6 py-4 font-bold">Tanggal</th>
                         <th class="px-6 py-4 font-bold">Keterangan</th>
+                        <th class="px-6 py-4 font-bold">Sumber</th>
                         <th class="px-6 py-4 font-bold text-right">Nominal</th>
                     </tr>
                 </thead>
@@ -114,13 +115,18 @@
                         <tr class="hover:bg-surface-container-lowest/50 transition-colors">
                             <td class="px-6 py-4 text-sm font-medium">{{ \Carbon\Carbon::parse($kk->tanggal)->translatedFormat('d F Y') }}</td>
                             <td class="px-6 py-4 text-sm">{{ $kk->keterangan }}</td>
+                            <td class="px-6 py-4 text-sm capitalize">
+                                <span class="px-3 py-1 bg-secondary-container text-on-secondary-container rounded-full text-xs font-bold">
+                                    {{ $kk->sumber }}
+                                </span>
+                            </td>
                             <td class="px-6 py-4 text-sm font-bold text-right text-red-600">
                                 Rp {{ number_format($kk->nominal, 0, ',', '.') }}
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="3" class="px-6 py-8 text-center text-on-surface-variant text-sm">Belum ada data kas keluar.</td>
+                            <td colspan="4" class="px-6 py-8 text-center text-on-surface-variant text-sm">Belum ada data kas keluar.</td>
                         </tr>
                     @endforelse
                 </tbody>

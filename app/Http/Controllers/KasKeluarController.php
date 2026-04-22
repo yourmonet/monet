@@ -23,12 +23,14 @@ class KasKeluarController extends Controller
         $request->validate([
             'tanggal' => 'required|date',
             'keterangan' => 'required|string|max:255',
+            'sumber' => 'required|string',
             'nominal' => 'required|numeric|min:1',
         ]);
 
         KasKeluar::create([
             'tanggal' => $request->tanggal,
             'keterangan' => $request->keterangan,
+            'sumber' => $request->sumber,
             'nominal' => $request->nominal,
         ]);
 
