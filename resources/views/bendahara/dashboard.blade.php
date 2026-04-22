@@ -66,6 +66,9 @@
         <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container hover:text-on-surface rounded-lg transition-all font-headline font-medium text-sm" href="{{ route('bendahara.kas-masuk.index') }}">
             <span class="material-symbols-outlined">account_balance_wallet</span> Kas Masuk
         </a>
+        <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container hover:text-on-surface rounded-lg transition-all font-headline font-medium text-sm" href="{{ route('bendahara.kas-keluar.index') }}">
+            <span class="material-symbols-outlined">payments</span> Kas Keluar
+        </a>
     </nav>
 
     <div class="mt-auto flex flex-col gap-1 border-t border-outline-variant/10 pt-4">

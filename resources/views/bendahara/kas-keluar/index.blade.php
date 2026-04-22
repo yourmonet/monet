@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Tambah Kas Masuk - MONET</title>
+<title>Kas Keluar - MONET</title>
 <link rel="icon" type="image/png" href="https://cdn-1.yourmonet.web.id/images/monet.png">
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
@@ -61,10 +61,10 @@
         <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container hover:text-on-surface rounded-lg transition-all font-headline font-medium text-sm" href="{{ route('bendahara.dashboard') }}">
             <span class="material-symbols-outlined">dashboard</span> Dashboard
         </a>
-        <a class="flex items-center gap-3 px-4 py-3 bg-white text-blue-700 rounded-lg scale-95 transition-all font-headline font-medium text-sm shadow-sm" href="{{ route('bendahara.kas-masuk.index') }}">
+        <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container hover:text-on-surface rounded-lg transition-all font-headline font-medium text-sm" href="{{ route('bendahara.kas-masuk.index') }}">
             <span class="material-symbols-outlined">account_balance_wallet</span> Kas Masuk
         </a>
-        <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container hover:text-on-surface rounded-lg transition-all font-headline font-medium text-sm" href="{{ route('bendahara.kas-keluar.index') }}">
+        <a class="flex items-center gap-3 px-4 py-3 bg-white text-blue-700 rounded-lg scale-95 transition-all font-headline font-medium text-sm shadow-sm" href="{{ route('bendahara.kas-keluar.index') }}">
             <span class="material-symbols-outlined">payments</span> Kas Keluar
         </a>
     </nav>
@@ -83,53 +83,55 @@
 <main class="ml-64 pt-20 p-8 min-h-screen">
     <header class="flex justify-between items-end mb-10">
         <div>
-            <h1 class="text-4xl font-headline font-extrabold tracking-tight text-on-surface">Tambah Kas Masuk</h1>
-            <p class="text-on-surface-variant font-body mt-1">Masukkan data penerimaan kas baru.</p>
+            <h1 class="text-4xl font-headline font-extrabold tracking-tight text-on-surface">Data Kas Keluar</h1>
+            <p class="text-on-surface-variant font-body mt-1">Kelola data pengeluaran keuangan organisasi.</p>
         </div>
-        <a href="{{ route('bendahara.kas-masuk.index') }}" class="flex items-center gap-2 px-5 py-3 bg-surface-container-high text-on-surface rounded-xl font-bold text-sm hover:bg-surface-container-highest transition-all">
-            <span class="material-symbols-outlined text-xl">arrow_back</span>
-            Kembali
+        <a href="{{ route('bendahara.kas-keluar.create') }}" class="flex items-center gap-2 px-5 py-3 bg-primary text-white rounded-xl font-bold text-sm hover:bg-primary/90 transition-all shadow-md">
+            <span class="material-symbols-outlined text-xl">add</span>
+            Tambah Kas Keluar
         </a>
     </header>
 
-    <div class="bg-white rounded-2xl shadow-sm border border-outline-variant/20 p-8 max-w-2xl">
-        <form action="{{ route('bendahara.kas-masuk.store') }}" method="POST" class="flex flex-col gap-6">
-            @csrf
-            
-            <div>
-                <label for="tanggal" class="block text-sm font-bold text-on-surface mb-2">Tanggal</label>
-                <input type="date" name="tanggal" id="tanggal" value="{{ old('tanggal', date('Y-m-d')) }}" required
-                    class="w-full rounded-xl border border-outline-variant/50 bg-surface focus:ring-2 focus:ring-primary focus:border-primary px-4 py-3 text-sm transition-colors outline-none">
-                @error('tanggal')
-                    <p class="text-error text-xs mt-1 font-semibold">{{ $message }}</p>
-                @enderror
-            </div>
-
-            <div>
-                <label for="keterangan" class="block text-sm font-bold text-on-surface mb-2">Keterangan</label>
-                <input type="text" name="keterangan" id="keterangan" value="{{ old('keterangan') }}" required placeholder="Contoh: Iuran anggota bulan Januari"
-                    class="w-full rounded-xl border border-outline-variant/50 bg-surface focus:ring-2 focus:ring-primary focus:border-primary px-4 py-3 text-sm transition-colors outline-none">
-                @error('keterangan')
-                    <p class="text-error text-xs mt-1 font-semibold">{{ $message }}</p>
-                @enderror
-            </div>
-
-            <div>
-                <label for="jumlah" class="block text-sm font-bold text-on-surface mb-2">Jumlah (Rp)</label>
-                <input type="number" name="jumlah" id="jumlah" value="{{ old('jumlah') }}" required min="1" placeholder="Contoh: 50000"
-                    class="w-full rounded-xl border border-outline-variant/50 bg-surface focus:ring-2 focus:ring-primary focus:border-primary px-4 py-3 text-sm transition-colors outline-none">
-                @error('jumlah')
-                    <p class="text-error text-xs mt-1 font-semibold">{{ $message }}</p>
-                @enderror
-            </div>
-
-            <div class="pt-4 border-t border-outline-variant/20 flex justify-end">
-                <button type="submit" class="flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-xl font-bold text-sm hover:bg-primary/90 shadow-md shadow-primary/20 transition-all">
-                    <span class="material-symbols-outlined text-xl">save</span>
-                    Simpan Data
-                </button>
-            </div>
-        </form>
+    @if (session('success'))
+        <div class="mb-6 p-4 bg-green-100 rounded-xl border border-green-200 flex items-center gap-2">
+            <span class="material-symbols-outlined text-green-700">check_circle</span>
+            <p class="text-green-800 text-sm font-semibold">{{ session('success') }}</p>
+        </div>
+    @endif
+    
+    <div class="bg-white rounded-2xl shadow-sm border border-outline-variant/20 overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-surface-container-low text-on-surface-variant font-headline text-sm uppercase tracking-wider border-b border-outline-variant/30">
+                        <th class="px-6 py-4 font-bold">Tanggal</th>
+                        <th class="px-6 py-4 font-bold">Keterangan</th>
+                        <th class="px-6 py-4 font-bold">Sumber</th>
+                        <th class="px-6 py-4 font-bold text-right">Nominal</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-outline-variant/20">
+                    @forelse($kasKeluar as $kk)
+                        <tr class="hover:bg-surface-container-lowest/50 transition-colors">
+                            <td class="px-6 py-4 text-sm font-medium">{{ \Carbon\Carbon::parse($kk->tanggal)->translatedFormat('d F Y') }}</td>
+                            <td class="px-6 py-4 text-sm">{{ $kk->keterangan }}</td>
+                            <td class="px-6 py-4 text-sm capitalize">
+                                <span class="px-3 py-1 bg-secondary-container text-on-secondary-container rounded-full text-xs font-bold">
+                                    {{ $kk->sumber }}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 text-sm font-bold text-right text-red-600">
+                                Rp {{ number_format($kk->nominal, 0, ',', '.') }}
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="4" class="px-6 py-8 text-center text-on-surface-variant text-sm">Belum ada data kas keluar.</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
     </div>
 </main>
 

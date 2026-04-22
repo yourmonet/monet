@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Tambah Kas Masuk - MONET</title>
+<title>Tambah Kas Keluar - MONET</title>
 <link rel="icon" type="image/png" href="https://cdn-1.yourmonet.web.id/images/monet.png">
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
@@ -61,10 +61,10 @@
         <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container hover:text-on-surface rounded-lg transition-all font-headline font-medium text-sm" href="{{ route('bendahara.dashboard') }}">
             <span class="material-symbols-outlined">dashboard</span> Dashboard
         </a>
-        <a class="flex items-center gap-3 px-4 py-3 bg-white text-blue-700 rounded-lg scale-95 transition-all font-headline font-medium text-sm shadow-sm" href="{{ route('bendahara.kas-masuk.index') }}">
+        <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container hover:text-on-surface rounded-lg transition-all font-headline font-medium text-sm" href="{{ route('bendahara.kas-masuk.index') }}">
             <span class="material-symbols-outlined">account_balance_wallet</span> Kas Masuk
         </a>
-        <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container hover:text-on-surface rounded-lg transition-all font-headline font-medium text-sm" href="{{ route('bendahara.kas-keluar.index') }}">
+        <a class="flex items-center gap-3 px-4 py-3 bg-white text-blue-700 rounded-lg scale-95 transition-all font-headline font-medium text-sm shadow-sm" href="{{ route('bendahara.kas-keluar.index') }}">
             <span class="material-symbols-outlined">payments</span> Kas Keluar
         </a>
     </nav>
@@ -83,17 +83,17 @@
 <main class="ml-64 pt-20 p-8 min-h-screen">
     <header class="flex justify-between items-end mb-10">
         <div>
-            <h1 class="text-4xl font-headline font-extrabold tracking-tight text-on-surface">Tambah Kas Masuk</h1>
-            <p class="text-on-surface-variant font-body mt-1">Masukkan data penerimaan kas baru.</p>
+            <h1 class="text-4xl font-headline font-extrabold tracking-tight text-on-surface">Tambah Kas Keluar</h1>
+            <p class="text-on-surface-variant font-body mt-1">Masukkan data pengeluaran kas baru.</p>
         </div>
-        <a href="{{ route('bendahara.kas-masuk.index') }}" class="flex items-center gap-2 px-5 py-3 bg-surface-container-high text-on-surface rounded-xl font-bold text-sm hover:bg-surface-container-highest transition-all">
+        <a href="{{ route('bendahara.kas-keluar.index') }}" class="flex items-center gap-2 px-5 py-3 bg-surface-container-high text-on-surface rounded-xl font-bold text-sm hover:bg-surface-container-highest transition-all">
             <span class="material-symbols-outlined text-xl">arrow_back</span>
             Kembali
         </a>
     </header>
 
     <div class="bg-white rounded-2xl shadow-sm border border-outline-variant/20 p-8 max-w-2xl">
-        <form action="{{ route('bendahara.kas-masuk.store') }}" method="POST" class="flex flex-col gap-6">
+        <form action="{{ route('bendahara.kas-keluar.store') }}" method="POST" class="flex flex-col gap-6">
             @csrf
             
             <div>
@@ -107,7 +107,7 @@
 
             <div>
                 <label for="keterangan" class="block text-sm font-bold text-on-surface mb-2">Keterangan</label>
-                <input type="text" name="keterangan" id="keterangan" value="{{ old('keterangan') }}" required placeholder="Contoh: Iuran anggota bulan Januari"
+                <input type="text" name="keterangan" id="keterangan" value="{{ old('keterangan') }}" required placeholder="Contoh: Pembelian alat kebersihan"
                     class="w-full rounded-xl border border-outline-variant/50 bg-surface focus:ring-2 focus:ring-primary focus:border-primary px-4 py-3 text-sm transition-colors outline-none">
                 @error('keterangan')
                     <p class="text-error text-xs mt-1 font-semibold">{{ $message }}</p>
@@ -115,10 +115,24 @@
             </div>
 
             <div>
-                <label for="jumlah" class="block text-sm font-bold text-on-surface mb-2">Jumlah (Rp)</label>
-                <input type="number" name="jumlah" id="jumlah" value="{{ old('jumlah') }}" required min="1" placeholder="Contoh: 50000"
+                <label for="sumber" class="block text-sm font-bold text-on-surface mb-2">Sumber</label>
+                <select name="sumber" id="sumber" required
                     class="w-full rounded-xl border border-outline-variant/50 bg-surface focus:ring-2 focus:ring-primary focus:border-primary px-4 py-3 text-sm transition-colors outline-none">
-                @error('jumlah')
+                    <option value="" disabled selected>Pilih Sumber Pengeluaran</option>
+                    <option value="Manual" {{ old('sumber') == 'Manual' ? 'selected' : '' }}>Manual</option>
+                    <option value="Midtrans" {{ old('sumber') == 'Midtrans' ? 'selected' : '' }}>Midtrans</option>
+                    <option value="Lainnya" {{ old('sumber') == 'Lainnya' ? 'selected' : '' }}>Lainnya</option>
+                </select>
+                @error('sumber')
+                    <p class="text-error text-xs mt-1 font-semibold">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <div>
+                <label for="nominal" class="block text-sm font-bold text-on-surface mb-2">Nominal (Rp)</label>
+                <input type="number" name="nominal" id="nominal" value="{{ old('nominal') }}" required min="1" placeholder="Contoh: 50000"
+                    class="w-full rounded-xl border border-outline-variant/50 bg-surface focus:ring-2 focus:ring-primary focus:border-primary px-4 py-3 text-sm transition-colors outline-none">
+                @error('nominal')
                     <p class="text-error text-xs mt-1 font-semibold">{{ $message }}</p>
                 @enderror
             </div>

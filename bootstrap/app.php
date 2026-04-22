@@ -16,6 +16,7 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
         $middleware->validateCsrfTokens(except: [
             '/midtrans/callback',
+            '/midtrans/callback-keluar',
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
