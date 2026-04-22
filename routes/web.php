@@ -75,8 +75,13 @@ Route::prefix('bendahara')->name('bendahara.')->group(function () {
 });
 
 // ─────────────────────────────────────────────────────────
-// Redirect /login default ke pilihan role
+// PROFIL — prefix: /profil
 // ─────────────────────────────────────────────────────────
+Route::middleware('auth')->group(function () {
+    Route::get('/profil', [\App\Http\Controllers\ProfilController::class, 'edit'])->name('profil.edit');
+    Route::put('/profil/update', [\App\Http\Controllers\ProfilController::class, 'update'])->name('profil.update');
+});
+
 Route::get('/login', function () {
     return redirect('/user/login');
 })->name('login');
