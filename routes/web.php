@@ -3,6 +3,8 @@
 use App\Http\Controllers\Auth\AnggotaAuthController;
 use App\Http\Controllers\Auth\BendaharaAuthController;
 use App\Http\Controllers\Auth\PengurusAuthController;
+use App\Http\Controllers\KasMasukController;
+use App\Http\Controllers\MidtransCallbackController;
 use Illuminate\Support\Facades\Route;
 
 // ─────────────────────────────────────────────────────────
@@ -11,6 +13,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+// Callback Midtrans (Sebaiknya pastikan route ini dikecualikan dari CSRF token)
+Route::post('/midtrans/callback', [MidtransCallbackController::class, 'handleCallback'])->name('midtrans.callback');
 
 // ─────────────────────────────────────────────────────────
 // ANGGOTA — prefix: /user
@@ -63,6 +68,7 @@ Route::prefix('bendahara')->name('bendahara.')->group(function () {
     Route::middleware(['role:bendahara'])->group(function () {
         Route::get('dashboard', [BendaharaAuthController::class, 'dashboard'])->name('dashboard');
         Route::post('logout',   [BendaharaAuthController::class, 'logout'])->name('logout');
+        Route::resource('kas-masuk', KasMasukController::class)->except(['show', 'edit', 'update', 'destroy']);
     });
 });
 

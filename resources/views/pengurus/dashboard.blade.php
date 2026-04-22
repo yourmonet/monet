@@ -61,7 +61,7 @@
 
     <nav class="flex flex-col gap-1 flex-1">
         <a class="flex items-center gap-3 px-4 py-3 bg-white text-blue-700 rounded-lg scale-95 transition-all font-headline font-medium text-sm" href="#">
-            <span class="material-symbols-outlined">dashboard</span> Ikhtisar
+            <span class="material-symbols-outlined">dashboard</span> Dashboard
         </a>
     </nav>
 
