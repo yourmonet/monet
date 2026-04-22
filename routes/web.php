@@ -3,6 +3,12 @@
 use App\Http\Controllers\Auth\AnggotaAuthController;
 use App\Http\Controllers\Auth\BendaharaAuthController;
 use App\Http\Controllers\Auth\PengurusAuthController;
+<<<<<<< Updated upstream
+=======
+use App\Http\Controllers\KasMasukController;
+use App\Http\Controllers\KasKeluarController;
+use App\Http\Controllers\MidtransCallbackController;
+>>>>>>> Stashed changes
 use Illuminate\Support\Facades\Route;
 
 // ─────────────────────────────────────────────────────────
@@ -12,6 +18,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+<<<<<<< Updated upstream
+=======
+// Callback Midtrans (Sebaiknya pastikan route ini dikecualikan dari CSRF token)
+Route::post('/midtrans/callback', [MidtransCallbackController::class, 'handleCallback'])->name('midtrans.callback');
+Route::post('/midtrans/callback-keluar', [MidtransCallbackController::class, 'handleCallbackKeluar'])->name('midtrans.callback-keluar');
+
+>>>>>>> Stashed changes
 // ─────────────────────────────────────────────────────────
 // ANGGOTA — prefix: /user
 // ─────────────────────────────────────────────────────────
@@ -63,6 +76,11 @@ Route::prefix('bendahara')->name('bendahara.')->group(function () {
     Route::middleware(['role:bendahara'])->group(function () {
         Route::get('dashboard', [BendaharaAuthController::class, 'dashboard'])->name('dashboard');
         Route::post('logout',   [BendaharaAuthController::class, 'logout'])->name('logout');
+<<<<<<< Updated upstream
+=======
+        Route::resource('kas-masuk', KasMasukController::class)->except(['show', 'edit', 'update', 'destroy']);
+        Route::resource('kas-keluar', KasKeluarController::class)->only(['index', 'create', 'store']);
+>>>>>>> Stashed changes
     });
 });
 

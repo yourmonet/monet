@@ -63,6 +63,9 @@
         <a class="flex items-center gap-3 px-4 py-3 bg-white text-blue-700 rounded-lg scale-95 transition-all font-headline font-medium text-sm" href="#">
             <span class="material-symbols-outlined">dashboard</span> Ikhtisar
         </a>
+        <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container hover:text-on-surface rounded-lg transition-all font-headline font-medium text-sm" href="{{ route('bendahara.kas-keluar.index') }}">
+            <span class="material-symbols-outlined">payments</span> Kas Keluar
+        </a>
     </nav>
 
     <div class="mt-auto flex flex-col gap-1 border-t border-outline-variant/10 pt-4">
