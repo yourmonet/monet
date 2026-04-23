@@ -88,10 +88,7 @@
                     <span class="material-symbols-outlined text-white">account_balance_wallet</span>
                 </div>
             </div>
-            <div class="mt-4 flex items-center gap-2 text-sm text-on-primary/90 relative z-10 bg-white/10 inline-flex px-3 py-1.5 rounded-xl backdrop-blur-md border border-white/10">
-                <span class="material-symbols-outlined text-sm">trending_up</span>
-                <span class="font-medium">+12% dari bulan lalu</span>
-            </div>
+
         </div>
 
         {{-- Kas Masuk Card --}}
@@ -105,10 +102,7 @@
                     <span class="material-symbols-outlined">south_west</span>
                 </div>
             </div>
-            <div class="mt-4 flex items-center gap-2 text-sm text-primary font-medium bg-primary-container/20 inline-flex px-3 py-1.5 rounded-xl">
-                <span class="material-symbols-outlined text-sm">arrow_upward</span>
-                <span>Lebih tinggi dari rata-rata</span>
-            </div>
+
         </div>
 
         {{-- Kas Keluar Card --}}
@@ -122,10 +116,7 @@
                     <span class="material-symbols-outlined">north_east</span>
                 </div>
             </div>
-            <div class="mt-4 flex items-center gap-2 text-sm text-error font-medium bg-error-container/40 inline-flex px-3 py-1.5 rounded-xl">
-                <span class="material-symbols-outlined text-sm">warning</span>
-                <span>Mendekati batas anggaran</span>
-            </div>
+
         </div>
     </div>
 
