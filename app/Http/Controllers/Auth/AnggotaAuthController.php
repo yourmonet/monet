@@ -83,7 +83,36 @@ class AnggotaAuthController extends Controller
 
     public function dashboard(): View
     {
-        return view('user.dashboard');
+        $currentMonth = \Carbon\Carbon::now()->month;
+        $currentYear = \Carbon\Carbon::now()->year;
+
+        $pemasukanBulanIni = \App\Models\KasMasuk::whereMonth('tanggal', $currentMonth)
+            ->whereYear('tanggal', $currentYear)
+            ->sum('jumlah');
+
+        $pengeluaranBulanIni = \App\Models\KasKeluar::whereMonth('tanggal', $currentMonth)
+            ->whereYear('tanggal', $currentYear)
+            ->sum('nominal');
+
+        $totalPemasukan = \App\Models\KasMasuk::sum('jumlah');
+        $totalPengeluaran = \App\Models\KasKeluar::sum('nominal');
+        $totalSaldo = $totalPemasukan - $totalPengeluaran;
+
+        $kasMasuk = \App\Models\KasMasuk::latest('tanggal')->take(5)->get()->map(function ($item) {
+            $item->type = 'masuk';
+            $item->nominal_transaksi = $item->jumlah;
+            return $item;
+        });
+
+        $kasKeluar = \App\Models\KasKeluar::latest('tanggal')->take(5)->get()->map(function ($item) {
+            $item->type = 'keluar';
+            $item->nominal_transaksi = $item->nominal;
+            return $item;
+        });
+
+        $transaksiTerbaru = $kasMasuk->concat($kasKeluar)->sortByDesc('tanggal')->take(5);
+
+        return view('user.dashboard', compact('pemasukanBulanIni', 'pengeluaranBulanIni', 'totalSaldo', 'transaksiTerbaru'));
     }
 
     // ─────────────────── LOGOUT ───────────────────
