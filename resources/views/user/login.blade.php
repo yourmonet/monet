@@ -128,6 +128,16 @@
                     </div>
                 </div>
 
+                {{-- Remember Me --}}
+                <div class="flex items-center gap-3">
+                    <div class="flex items-center justify-center">
+                        <input id="remember" type="checkbox" name="remember" class="w-5 h-5 rounded border-outline text-primary bg-surface-container-low focus:ring-primary focus:ring-offset-0 focus:ring-2 cursor-pointer transition-all hover:border-primary">
+                    </div>
+                    <label for="remember" class="text-sm font-medium text-on-surface-variant cursor-pointer select-none">
+                        Ingat saya
+                    </label>
+                </div>
+
                 {{-- Submit --}}
                 <button id="btn-login-anggota"
                     class="w-full py-4 px-6 bg-gradient-to-r from-primary to-primary-container text-on-primary font-headline font-bold rounded-xl shadow-lg shadow-primary/20 hover:shadow-primary/40 active:scale-[0.98] transition-all flex items-center justify-center gap-2"
