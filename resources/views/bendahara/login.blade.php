@@ -113,8 +113,11 @@
                         <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-outline group-focus-within:text-primary transition-colors">
                             <span class="material-symbols-outlined text-[20px]">lock</span>
                         </div>
-                        <input class="w-full pl-11 pr-4 py-3.5 bg-surface-container-low rounded-xl border border-transparent focus:border-primary focus:ring-4 focus:ring-primary-fixed/30 outline-none transition-all text-on-surface placeholder:text-outline font-medium text-sm"
+                        <input class="w-full pl-11 pr-11 py-3.5 bg-surface-container-low rounded-xl border border-transparent focus:border-primary focus:ring-4 focus:ring-primary-fixed/30 outline-none transition-all text-on-surface placeholder:text-outline font-medium text-sm"
                             id="password" name="password" placeholder="••••••••" required autocomplete="current-password" type="password"/>
+                        <button type="button" onclick="togglePassword('password', this)" class="absolute inset-y-0 right-0 pr-4 flex items-center text-outline hover:text-primary transition-colors" tabindex="-1">
+                            <span class="material-symbols-outlined text-[20px]">visibility</span>
+                        </button>
                     </div>
                 </div>
 
@@ -139,7 +142,21 @@
                 </button>
             </form>
 
-            <footer class="mt-10 text-center">
+            {{-- Divider --}}
+            <div class="flex items-center gap-4 my-6">
+                <div class="flex-1 h-px bg-outline-variant/40"></div>
+                <span class="text-xs font-semibold text-outline uppercase tracking-widest">atau</span>
+                <div class="flex-1 h-px bg-outline-variant/40"></div>
+            </div>
+
+            {{-- Google Login --}}
+            <a href="{{ route('auth.google.redirect', 'bendahara') }}"
+                class="w-full flex items-center justify-center gap-3 py-3.5 px-6 bg-surface-container-lowest border border-outline-variant/50 rounded-xl text-on-surface font-semibold text-sm hover:bg-surface-container-low hover:border-outline/60 hover:shadow-md active:scale-[0.98] transition-all">
+                <img src="https://www.google.com/favicon.ico" alt="Google" class="w-5 h-5"/>
+                <span>Login dengan Google</span>
+            </a>
+
+            <footer class="mt-8 text-center">
                 <p class="text-sm text-on-surface-variant">
                     Belum punya akun bendahara?
                     <a class="font-bold text-primary hover:underline underline-offset-4 ml-1" href="/bendahara/register">Buat akun</a> sekarang!
@@ -163,6 +180,17 @@
         if(icon) icon.classList.add('hidden');
         if(spinner) spinner.classList.remove('hidden');
     });
+    function togglePassword(inputId, btn) {
+        const input = document.getElementById(inputId);
+        const icon = btn.querySelector('.material-symbols-outlined');
+        if (input.type === 'password') {
+            input.type = 'text';
+            icon.textContent = 'visibility_off';
+        } else {
+            input.type = 'password';
+            icon.textContent = 'visibility';
+        }
+    }
 </script>
 </body>
 </html>

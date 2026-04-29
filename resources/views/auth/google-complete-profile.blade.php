@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Login | Mahasiswa - MONET</title>
+<title>Lengkapi Profil - MONET</title>
 <link rel="icon" type="image/png" href="https://cdn-1.yourmonet.web.id/images/monet.png">
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
@@ -49,15 +49,24 @@
                 <img src="https://cdn-1.yourmonet.web.id/images/monet2.png" alt="MONET" class="h-10 w-auto object-contain"/>
             </div>
             <h1 class="font-headline text-4xl font-bold text-on-surface leading-tight mb-6">
-                Selamat Datang <br/><span class="text-primary">Mahasiswa!</span>
+                Satu Langkah <br/><span class="text-primary">Lagi!</span>
             </h1>
             <p class="text-on-surface-variant max-w-sm leading-relaxed">
-                Silahkan masuk ke akun Anda untuk mengakses dashboard mahasiswa.
+                Akun Google Anda berhasil diverifikasi. Lengkapi profil untuk menyelesaikan pendaftaran.
             </p>
+            <div class="mt-8 p-4 bg-primary-fixed/40 rounded-xl flex items-center gap-3">
+                <span class="material-symbols-outlined text-primary text-2xl">verified</span>
+                <div>
+                    <p class="text-xs font-semibold text-on-surface-variant uppercase tracking-wider">Terverifikasi oleh Google</p>
+                    <p class="text-sm font-bold text-on-surface">{{ $googleUser['email'] }}</p>
+                </div>
+            </div>
         </div>
+        <div class="absolute top-[-10%] right-[-10%] w-64 h-64 bg-primary-fixed/20 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-[-5%] left-[-5%] w-48 h-48 bg-secondary-fixed/30 rounded-full blur-2xl"></div>
     </section>
 
-    {{-- Right Side: Login Form --}}
+    {{-- Right Side: Form --}}
     <section class="flex flex-col justify-center p-8 md:p-16">
         <div class="w-full max-w-md mx-auto">
             <div class="lg:hidden flex items-center gap-2 mb-8">
@@ -66,8 +75,14 @@
             </div>
 
             <header class="mb-8">
-                <h2 class="font-headline text-2xl font-bold text-on-surface mb-2">Masuk ke Akun</h2>
-                <p class="text-on-surface-variant text-sm">Masukkan kredensial Anda untuk masuk ke akun.</p>
+                <div class="flex items-center gap-2 mb-3">
+                    <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-green-600 text-base">check</span>
+                    </div>
+                    <span class="text-xs font-semibold text-green-700 uppercase tracking-wider">Google Terverifikasi</span>
+                </div>
+                <h2 class="font-headline text-2xl font-bold text-on-surface mb-2">Lengkapi Profil Anda</h2>
+                <p class="text-on-surface-variant text-sm">Masukkan nama dan buat kata sandi untuk akun Anda.</p>
             </header>
 
             {{-- Error Messages --}}
@@ -82,98 +97,77 @@
                 </div>
             @endif
 
-            {{-- Session Status --}}
-            @if (session('status'))
-                <div class="mb-6 p-4 bg-green-50 rounded-xl border border-green-200">
-                    <p class="text-green-700 text-sm">{{ session('status') }}</p>
+            {{-- Email read-only (dari Google) --}}
+            <div class="mb-5 p-3.5 bg-surface-container rounded-xl flex items-center gap-3 ring-1 ring-outline-variant/30">
+                <img src="https://www.google.com/favicon.ico" alt="Google" class="w-4 h-4"/>
+                <div class="flex-1 min-w-0">
+                    <p class="text-xs text-on-surface-variant font-medium">Email dari Google (tidak dapat diubah)</p>
+                    <p class="text-sm font-semibold text-on-surface truncate">{{ $googleUser['email'] }}</p>
                 </div>
-            @endif
+                <span class="material-symbols-outlined text-green-600 text-base">lock</span>
+            </div>
 
-            @if (session('success'))
-                <div class="mb-6 p-4 bg-green-50 rounded-xl border border-green-200 flex items-center gap-2">
-                    <span class="material-symbols-outlined text-green-600">check_circle</span>
-                    <p class="text-green-700 text-sm font-medium">{{ session('success') }}</p>
-                </div>
-            @endif
-
-            <form method="POST" action="/user/login" class="space-y-5">
+            <form method="POST" action="{{ route('auth.google.complete.post') }}" class="space-y-5">
                 @csrf
 
-                {{-- Email --}}
+                {{-- Nama --}}
                 <div class="space-y-2">
-                    <label class="block text-xs font-semibold uppercase tracking-wider text-on-surface-variant" for="email">Alamat Email</label>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-on-surface-variant" for="name">Nama Lengkap</label>
                     <div class="relative group">
                         <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-outline group-focus-within:text-primary transition-colors">
-                            <span class="material-symbols-outlined text-[20px]">mail</span>
+                            <span class="material-symbols-outlined text-[20px]">person</span>
                         </div>
                         <input
-                            class="w-full pl-11 pr-4 py-3.5 bg-surface-container-low rounded-xl border border-transparent focus:border-primary focus:ring-4 focus:ring-primary-fixed/30 outline-none transition-all text-on-surface placeholder:text-outline font-medium text-sm @error('email') border-error ring-4 ring-error/10 @enderror"
-                            id="email" name="email" placeholder="nama@email.com"
-                            value="{{ old('email') }}" required autofocus autocomplete="username" type="email"/>
+                            class="w-full pl-11 pr-4 py-3.5 bg-surface-container-low rounded-xl border border-transparent focus:border-primary focus:ring-4 focus:ring-primary-fixed/30 outline-none transition-all text-on-surface placeholder:text-outline font-medium text-sm @error('name') border-error ring-4 ring-error/10 @enderror"
+                            id="name" name="name" placeholder="Nama lengkap Anda"
+                            value="{{ old('name', $googleUser['name']) }}" required autofocus autocomplete="name" type="text"/>
                     </div>
                 </div>
 
                 {{-- Password --}}
                 <div class="space-y-2">
-                    <div class="flex justify-between items-center">
-                        <label class="block text-xs font-semibold uppercase tracking-wider text-on-surface-variant" for="password">Password</label>
-                    </div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-on-surface-variant" for="password">Buat Kata Sandi</label>
                     <div class="relative group">
                         <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-outline group-focus-within:text-primary transition-colors">
                             <span class="material-symbols-outlined text-[20px]">lock</span>
                         </div>
                         <input
-                            class="w-full pl-11 pr-11 py-3.5 bg-surface-container-low rounded-xl border border-transparent focus:border-primary focus:ring-4 focus:ring-primary-fixed/30 outline-none transition-all text-on-surface placeholder:text-outline font-medium text-sm"
-                            id="password" name="password" placeholder="••••••••" required autocomplete="current-password" type="password"/>
+                            class="w-full pl-11 pr-11 py-3.5 bg-surface-container-low rounded-xl border border-transparent focus:border-primary focus:ring-4 focus:ring-primary-fixed/30 outline-none transition-all text-on-surface placeholder:text-outline font-medium text-sm @error('password') border-error ring-4 ring-error/10 @enderror"
+                            id="password" name="password" placeholder="Minimal 8 karakter" required autocomplete="new-password" type="password"/>
                         <button type="button" onclick="togglePassword('password', this)" class="absolute inset-y-0 right-0 pr-4 flex items-center text-outline hover:text-primary transition-colors" tabindex="-1">
                             <span class="material-symbols-outlined text-[20px]">visibility</span>
                         </button>
                     </div>
                 </div>
 
-                {{-- Remember Me --}}
-                <div class="flex items-center gap-3">
-                    <div class="flex items-center justify-center">
-                        <input id="remember" type="checkbox" name="remember" class="w-5 h-5 rounded border-outline text-primary bg-surface-container-low focus:ring-primary focus:ring-offset-0 focus:ring-2 cursor-pointer transition-all hover:border-primary">
+                {{-- Confirm Password --}}
+                <div class="space-y-2">
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-on-surface-variant" for="password_confirmation">Konfirmasi Kata Sandi</label>
+                    <div class="relative group">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-outline group-focus-within:text-primary transition-colors">
+                            <span class="material-symbols-outlined text-[20px]">verified_user</span>
+                        </div>
+                        <input
+                            class="w-full pl-11 pr-11 py-3.5 bg-surface-container-low rounded-xl border border-transparent focus:border-primary focus:ring-4 focus:ring-primary-fixed/30 outline-none transition-all text-on-surface placeholder:text-outline font-medium text-sm"
+                            id="password_confirmation" name="password_confirmation" placeholder="Ulangi kata sandi" required autocomplete="new-password" type="password"/>
+                        <button type="button" onclick="togglePassword('password_confirmation', this)" class="absolute inset-y-0 right-0 pr-4 flex items-center text-outline hover:text-primary transition-colors" tabindex="-1">
+                            <span class="material-symbols-outlined text-[20px]">visibility</span>
+                        </button>
                     </div>
-                    <label for="remember" class="text-sm font-medium text-on-surface-variant cursor-pointer select-none">
-                        Ingat saya
-                    </label>
                 </div>
 
                 {{-- Submit --}}
-                <button id="btn-login-anggota"
+                <button id="btn-complete-profile"
                     class="w-full py-4 px-6 bg-gradient-to-r from-primary to-primary-container text-on-primary font-headline font-bold rounded-xl shadow-lg shadow-primary/20 hover:shadow-primary/40 active:scale-[0.98] transition-all flex items-center justify-center gap-2"
                     type="submit">
-                    <span class="btn-text">Masuk</span>
-                    <span class="material-symbols-outlined text-base btn-icon">arrow_forward</span>
+                    <span class="btn-text">Daftar</span>
+                    <span class="material-symbols-outlined text-base btn-icon">check_circle</span>
                     <svg class="hidden animate-spin h-5 w-5 text-white btn-spinner" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                         <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                     </svg>
                 </button>
             </form>
-
-            {{-- Divider --}}
-            <div class="flex items-center gap-4 my-6">
-                <div class="flex-1 h-px bg-outline-variant/40"></div>
-                <span class="text-xs font-semibold text-outline uppercase tracking-widest">atau</span>
-                <div class="flex-1 h-px bg-outline-variant/40"></div>
-            </div>
-
-            {{-- Google Login --}}
-            <a href="{{ route('auth.google.redirect', 'anggota') }}"
-                class="w-full flex items-center justify-center gap-3 py-3.5 px-6 bg-surface-container-lowest border border-outline-variant/50 rounded-xl text-on-surface font-semibold text-sm hover:bg-surface-container-low hover:border-outline/60 hover:shadow-md active:scale-[0.98] transition-all">
-                <img src="https://www.google.com/favicon.ico" alt="Google" class="w-5 h-5"/>
-                <span>Login dengan Google</span>
-            </a>
-
-            <footer class="mt-8 text-center">
-                <p class="text-sm text-on-surface-variant">
-                    Belum punya akun?
-                    <a class="font-bold text-primary hover:underline underline-offset-4 ml-1" href="/user/register">Buat akun</a> sekarang!
-                </p>
-            </footer>
         </div>
     </section>
 </main>
@@ -185,7 +179,6 @@
         const text = btn.querySelector('.btn-text');
         const icon = btn.querySelector('.btn-icon');
         const spinner = btn.querySelector('.btn-spinner');
-        
         btn.disabled = true;
         btn.classList.add('opacity-80', 'cursor-not-allowed');
         if(text) text.textContent = 'Memproses...';

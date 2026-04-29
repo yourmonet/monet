@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\AnggotaAuthController;
 use App\Http\Controllers\Auth\BendaharaAuthController;
+use App\Http\Controllers\Auth\GoogleAuthController;
 use App\Http\Controllers\Auth\PengurusAuthController;
 use App\Http\Controllers\KasMasukController;
 use App\Http\Controllers\KasKeluarController;
@@ -73,6 +74,16 @@ Route::prefix('bendahara')->name('bendahara.')->group(function () {
         Route::resource('kas-keluar', KasKeluarController::class)->only(['index', 'create', 'store']);
     });
 });
+
+// ─────────────────────────────────────────────────────────
+// GOOGLE OAUTH
+// ─────────────────────────────────────────────────────────
+// PENTING: callback & complete harus didefinisikan SEBELUM {role}
+// agar Laravel tidak menganggap "callback" sebagai nilai role.
+Route::get('/auth/google/callback', [GoogleAuthController::class, 'handleCallback'])->name('auth.google.callback');
+Route::get('/auth/google/complete', [GoogleAuthController::class, 'showCompleteProfile'])->name('auth.google.complete');
+Route::post('/auth/google/complete',[GoogleAuthController::class, 'completeProfile'])->name('auth.google.complete.post');
+Route::get('/auth/google/{role}',   [GoogleAuthController::class, 'redirectToGoogle'])->name('auth.google.redirect');
 
 // ─────────────────────────────────────────────────────────
 // PROFIL — prefix: /profil

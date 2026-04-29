@@ -108,8 +108,11 @@
                     <label class="block text-sm font-semibold text-on-surface-variant" for="password">Password</label>
                     <div class="relative group">
                         <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline group-focus-within:text-primary transition-colors">lock</span>
-                        <input class="w-full pl-10 pr-4 py-3 bg-surface-container-lowest border border-outline-variant/20 rounded-xl focus:ring-4 focus:ring-primary-fixed focus:border-primary focus:outline-none transition-all placeholder:text-outline/50 @error('password') border-error @enderror"
+                        <input class="w-full pl-10 pr-10 py-3 bg-surface-container-lowest border border-outline-variant/20 rounded-xl focus:ring-4 focus:ring-primary-fixed focus:border-primary focus:outline-none transition-all placeholder:text-outline/50 @error('password') border-error @enderror"
                             id="password" name="password" placeholder="Minimal 8 karakter" required autocomplete="new-password" type="password"/>
+                        <button type="button" onclick="togglePassword('password', this)" class="absolute inset-y-0 right-0 pr-3 flex items-center text-outline hover:text-primary transition-colors" tabindex="-1">
+                            <span class="material-symbols-outlined text-[20px]">visibility</span>
+                        </button>
                     </div>
                 </div>
 
@@ -117,8 +120,11 @@
                     <label class="block text-sm font-semibold text-on-surface-variant" for="password_confirmation">Konfirmasi Password</label>
                     <div class="relative group">
                         <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline group-focus-within:text-primary transition-colors">verified_user</span>
-                        <input class="w-full pl-10 pr-4 py-3 bg-surface-container-lowest border border-outline-variant/20 rounded-xl focus:ring-4 focus:ring-primary-fixed focus:border-primary focus:outline-none transition-all placeholder:text-outline/50"
+                        <input class="w-full pl-10 pr-10 py-3 bg-surface-container-lowest border border-outline-variant/20 rounded-xl focus:ring-4 focus:ring-primary-fixed focus:border-primary focus:outline-none transition-all placeholder:text-outline/50"
                             id="password_confirmation" name="password_confirmation" placeholder="Ulangi password" required autocomplete="new-password" type="password"/>
+                        <button type="button" onclick="togglePassword('password_confirmation', this)" class="absolute inset-y-0 right-0 pr-3 flex items-center text-outline hover:text-primary transition-colors" tabindex="-1">
+                            <span class="material-symbols-outlined text-[20px]">visibility</span>
+                        </button>
                     </div>
                 </div>
 
@@ -132,7 +138,21 @@
                 </button>
             </form>
 
-            <div class="mt-8 text-center">
+            {{-- Divider --}}
+            <div class="flex items-center gap-4 my-6">
+                <div class="flex-1 h-px bg-outline-variant/20"></div>
+                <span class="text-xs font-semibold text-outline uppercase tracking-widest">atau</span>
+                <div class="flex-1 h-px bg-outline-variant/20"></div>
+            </div>
+
+            {{-- Google Register --}}
+            <a href="{{ route('auth.google.redirect', 'bendahara') }}"
+                class="w-full flex items-center justify-center gap-3 py-3.5 px-6 bg-surface-container-lowest border border-outline-variant/30 rounded-xl text-on-surface font-semibold text-sm hover:bg-surface-container-low hover:border-outline/50 hover:shadow-md active:scale-[0.98] transition-all">
+                <img src="https://www.google.com/favicon.ico" alt="Google" class="w-5 h-5"/>
+                <span>Daftar dengan Google</span>
+            </a>
+
+            <div class="mt-6 text-center">
                 <p class="text-on-surface-variant font-medium text-sm">
                     Sudah punya akun bendahara?
                     <a class="text-primary font-bold hover:text-primary-container transition-colors ml-1" href="/bendahara/login">Masuk</a>
@@ -153,6 +173,17 @@
         if(text) text.textContent = 'Memproses...';
         if(spinner) spinner.classList.remove('hidden');
     });
+    function togglePassword(inputId, btn) {
+        const input = document.getElementById(inputId);
+        const icon = btn.querySelector('.material-symbols-outlined');
+        if (input.type === 'password') {
+            input.type = 'text';
+            icon.textContent = 'visibility_off';
+        } else {
+            input.type = 'password';
+            icon.textContent = 'visibility';
+        }
+    }
 </script>
 </body>
 </html>
