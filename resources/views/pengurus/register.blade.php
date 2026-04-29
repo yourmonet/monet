@@ -59,8 +59,8 @@
         <div class="absolute bottom-[-10%] right-[-5%] w-[400px] h-[400px] bg-primary-container rounded-full opacity-30 blur-3xl"></div>
     </div>
 
-    <div class="w-full lg:w-5/12 flex flex-col justify-center bg-surface px-8 md:px-16 lg:px-24 overflow-y-auto">
-        <div class="max-w-md w-full mx-auto py-8">
+    <div class="w-full lg:w-5/12 flex flex-col bg-surface px-8 md:px-16 lg:px-24 overflow-y-auto">
+        <div class="max-w-md w-full mx-auto py-12 my-auto">
 
             <div class="lg:hidden mb-12 flex items-center gap-3">
                 <img src="https://cdn-1.yourmonet.web.id/images/monet2.png" alt="MONET" class="h-8 w-auto object-contain"/>
