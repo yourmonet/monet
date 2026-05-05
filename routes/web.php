@@ -72,6 +72,9 @@ Route::prefix('bendahara')->name('bendahara.')->group(function () {
         Route::post('logout',   [BendaharaAuthController::class, 'logout'])->name('logout');
         Route::resource('kas-masuk', KasMasukController::class)->except(['show', 'edit', 'update', 'destroy']);
         Route::resource('kas-keluar', KasKeluarController::class)->only(['index', 'create', 'store']);
+        Route::get('profil-saya', [\App\Http\Controllers\ProfilController::class, 'edit'])->name('profil.edit');
+        Route::put('profil-saya', [\App\Http\Controllers\ProfilController::class, 'update'])->name('profil.update');
+        Route::resource('manajemen-data-anggota', \App\Http\Controllers\Bendahara\ManajemenAnggotaController::class);
     });
 });
 
@@ -88,10 +91,7 @@ Route::get('/auth/google/{role}',   [GoogleAuthController::class, 'redirectToGoo
 // ─────────────────────────────────────────────────────────
 // PROFIL — prefix: /profil
 // ─────────────────────────────────────────────────────────
-Route::middleware('auth')->group(function () {
-    Route::get('/profil', [\App\Http\Controllers\ProfilController::class, 'edit'])->name('profil.edit');
-    Route::put('/profil/update', [\App\Http\Controllers\ProfilController::class, 'update'])->name('profil.update');
-});
+// Profil sudah dipindah ke bendahara.
 
 Route::get('/login', function () {
     return redirect('/user/login');

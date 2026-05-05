@@ -25,6 +25,8 @@ class User extends Authenticatable
         'google_id',
         'role',
         'avatar',
+        'phone_number',
+        'status_kepatuhan_kas',
     ];
 
     public function isAnggota(): bool
@@ -49,6 +51,11 @@ class User extends Authenticatable
             'bendahara' => '/bendahara/dashboard',
             default     => '/user/dashboard',
         };
+    }
+
+    public function kasMasuks()
+    {
+        return $this->hasMany(KasMasuk::class);
     }
 
     /**

@@ -51,7 +51,8 @@
             <div class="text-[10px] uppercase tracking-widest text-outline font-bold mt-0.5 capitalize">{{ Auth::user()->role }}</div>
         </div>
         @if(Auth::user()->avatar)
-            <img src="{{ Storage::url(Auth::user()->avatar) }}" class="w-10 h-10 rounded-full object-cover shadow-sm">
+            @php $avatarUrl = Str::startsWith(Auth::user()->avatar, ['http://', 'https://']) ? Auth::user()->avatar : Storage::url(Auth::user()->avatar); @endphp
+            <img src="{{ $avatarUrl }}" class="w-10 h-10 rounded-full object-cover shadow-sm">
         @else
             <div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white text-sm font-bold shadow-sm">
                 {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
@@ -93,7 +94,7 @@
         <div class="flex flex-col lg:flex-row gap-8">
             <!-- Form Area -->
             <div class="flex-1 bg-white rounded-2xl shadow-sm border border-outline-variant/20 p-8">
-                <form action="{{ route('profil.update') }}" method="POST" enctype="multipart/form-data" class="flex flex-col gap-8">
+                <form action="{{ route('bendahara.profil.update') }}" method="POST" enctype="multipart/form-data" class="flex flex-col gap-8">
                     @csrf
                     @method('PUT')
                     
@@ -101,7 +102,8 @@
                     <div class="flex flex-col items-center gap-4 border-b border-outline-variant/30 pb-8">
                         <div class="relative group">
                             @if(Auth::user()->avatar)
-                                <img src="{{ Storage::url(Auth::user()->avatar) }}" id="avatar-preview" class="w-32 h-32 rounded-full object-cover border-4 border-primary-fixed shadow-md">
+                                @php $avatarUrl = Str::startsWith(Auth::user()->avatar, ['http://', 'https://']) ? Auth::user()->avatar : Storage::url(Auth::user()->avatar); @endphp
+                                <img src="{{ $avatarUrl }}" id="avatar-preview" class="w-32 h-32 rounded-full object-cover border-4 border-primary-fixed shadow-md">
                             @else
                                 <div id="avatar-preview" class="w-32 h-32 rounded-full bg-surface-container-highest border-4 border-primary-fixed shadow-md flex items-center justify-center text-4xl font-bold text-on-surface-variant">
                                     {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}

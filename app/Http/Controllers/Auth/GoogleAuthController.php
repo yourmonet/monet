@@ -74,6 +74,9 @@ class GoogleAuthController extends Controller
 
         if ($user) {
             // Sudah punya akun Google → langsung login & arahkan ke dashboard sesuai role terdaftar
+            if ($googleUser->getAvatar() && !$user->avatar) {
+                $user->update(['avatar' => $googleUser->getAvatar()]);
+            }
             Auth::login($user, true);
             return redirect($user->getDashboardRoute());
         }
@@ -82,7 +85,10 @@ class GoogleAuthController extends Controller
         $existingUser = User::where('email', $googleUser->getEmail())->first();
 
         if ($existingUser) {
-            $existingUser->update(['google_id' => $googleUser->getId()]);
+            $existingUser->update([
+                'google_id' => $googleUser->getId(),
+                'avatar'    => $existingUser->avatar ?: $googleUser->getAvatar()
+            ]);
             Auth::login($existingUser, true);
             return redirect($existingUser->getDashboardRoute());
         }
@@ -93,6 +99,7 @@ class GoogleAuthController extends Controller
                 'google_id' => $googleUser->getId(),
                 'name'      => $googleUser->getName(),
                 'email'     => $googleUser->getEmail(),
+                'avatar'    => $googleUser->getAvatar(),
                 'role'      => $role,
             ],
         ]);
@@ -136,6 +143,7 @@ class GoogleAuthController extends Controller
             'name'      => $request->name,
             'email'     => $googleUserData['email'],
             'google_id' => $googleUserData['google_id'],
+            'avatar'    => $googleUserData['avatar'] ?? null,
             'password'  => Hash::make($request->password),
             'role'      => $role,
         ]);

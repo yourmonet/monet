@@ -10,6 +10,12 @@ class KasMasuk extends Model
         'tanggal',
         'keterangan',
         'jumlah',
-        'sumber'
+        'sumber',
+        'user_id'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

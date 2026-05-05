@@ -11,9 +11,14 @@
             <span class="material-symbols-outlined">payments</span> Kas Keluar
         </a>
         @endif
-        <a class="flex items-center gap-3 px-4 py-3 {{ request()->routeIs('profil.*') ? 'bg-white text-blue-700 scale-95 shadow-sm' : 'text-on-surface-variant hover:bg-surface-container hover:text-on-surface' }} rounded-lg transition-all font-headline font-medium text-sm" href="{{ route('profil.edit') }}">
+        <a class="flex items-center gap-3 px-4 py-3 {{ request()->routeIs('bendahara.profil.*') ? 'bg-white text-blue-700 scale-95 shadow-sm' : 'text-on-surface-variant hover:bg-surface-container hover:text-on-surface' }} rounded-lg transition-all font-headline font-medium text-sm" href="{{ route('bendahara.profil.edit') }}">
             <span class="material-symbols-outlined">person</span> Profil Saya
         </a>
+        @if(Auth::user()->isBendahara())
+        <a class="flex items-center gap-3 px-4 py-3 {{ request()->routeIs('bendahara.manajemen-data-anggota.*') ? 'bg-white text-blue-700 scale-95 shadow-sm' : 'text-on-surface-variant hover:bg-surface-container hover:text-on-surface' }} rounded-lg transition-all font-headline font-medium text-sm" href="{{ route('bendahara.manajemen-data-anggota.index') }}">
+            <span class="material-symbols-outlined">manage_accounts</span> Manajemen Anggota
+        </a>
+        @endif
     </nav>
 
     <div class="mt-auto flex flex-col gap-1 border-t border-outline-variant/10 pt-4">
