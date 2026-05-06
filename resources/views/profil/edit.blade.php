@@ -8,6 +8,7 @@
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" rel="stylesheet"/>
 <script>
     tailwind.config = {
         darkMode: "class",
@@ -51,8 +52,14 @@
             <div class="text-[10px] uppercase tracking-widest text-outline font-bold mt-0.5 capitalize">{{ Auth::user()->role }}</div>
         </div>
         @if(Auth::user()->avatar)
-            @php $avatarUrl = Str::startsWith(Auth::user()->avatar, ['http://', 'https://']) ? Auth::user()->avatar : Storage::url(Auth::user()->avatar); @endphp
-            <img src="{{ $avatarUrl }}" class="w-10 h-10 rounded-full object-cover shadow-sm">
+            @php
+                $av = Auth::user()->avatar;
+                $avatarUrl = (str_starts_with($av, 'http://') || str_starts_with($av, 'https://')) ? $av : '/storage/' . $av;
+            @endphp
+            <img src="{{ $avatarUrl }}" class="w-10 h-10 rounded-full object-cover shadow-sm" alt="Profile" referrerpolicy="no-referrer" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="w-10 h-10 rounded-full object-cover shadow-sm bg-surface-container-high border border-outline-variant/30 text-on-surface-variant font-bold" style="display:none; align-items:center; justify-content:center;">
+                {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+            </div>
         @else
             <div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white text-sm font-bold shadow-sm">
                 {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
@@ -245,6 +252,34 @@
     </div>
 </div>
 
+{{-- Crop Modal --}}
+<div id="crop-modal" class="fixed inset-0 z-[110] flex items-center justify-center p-4 sm:p-6 hidden opacity-0 transition-opacity duration-300">
+    <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="hideCropModal()"></div>
+    <div class="bg-surface-container-lowest p-5 md:p-8 rounded-3xl shadow-2xl w-full max-w-lg max-h-full flex flex-col relative z-10 transform scale-95 transition-transform duration-300 gap-5">
+        <div class="flex justify-between items-center shrink-0">
+            <h2 class="text-xl font-headline font-extrabold text-on-surface">Sesuaikan Foto</h2>
+            <button type="button" onclick="hideCropModal()" class="text-outline hover:text-on-surface transition-colors">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        
+        <div class="w-full flex-1 min-h-[300px] bg-surface-container-high rounded-xl overflow-hidden border border-outline-variant/30 relative">
+            <img id="crop-image" src="" class="max-w-full max-h-full block">
+        </div>
+        
+        <div class="flex gap-3 pt-2">
+            <button type="button" onclick="hideCropModal()" class="flex-1 py-3 px-4 rounded-xl border border-outline-variant/30 text-on-surface-variant font-bold text-sm hover:bg-surface-container transition-colors">
+                Batal
+            </button>
+            <button type="button" id="save-crop-btn" class="flex-1 py-3 px-4 rounded-xl bg-primary text-white font-bold text-sm hover:bg-primary/90 shadow-md shadow-primary/20 transition-all flex items-center justify-center gap-2">
+                <span class="material-symbols-outlined text-lg">crop</span>
+                Simpan Potongan
+            </button>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
 <script>
     // Logout Modal Logic
     const modal = document.getElementById('logout-modal');
@@ -283,27 +318,118 @@
         });
     });
 
-    // Avatar Preview
+    // Avatar Preview & Cropper
     const avatarInput = document.getElementById('avatar-input');
     const avatarPreview = document.getElementById('avatar-preview');
+    const cropModal = document.getElementById('crop-modal');
+    const cropModalContent = cropModal.querySelector('div.bg-surface-container-lowest');
+    const cropImage = document.getElementById('crop-image');
+    const saveCropBtn = document.getElementById('save-crop-btn');
+    let cropper = null;
+
+    function showCropModal() {
+        cropModal.classList.remove('hidden');
+        setTimeout(() => {
+            cropModal.classList.remove('opacity-0');
+            cropModalContent.classList.remove('scale-95');
+            cropModalContent.classList.add('scale-100');
+        }, 10);
+    }
+
+    function hideCropModal() {
+        cropModal.classList.add('opacity-0');
+        cropModalContent.classList.remove('scale-100');
+        cropModalContent.classList.add('scale-95');
+        setTimeout(() => {
+            cropModal.classList.add('hidden');
+            if (cropper) {
+                cropper.destroy();
+                cropper = null;
+            }
+            // If they cancel without saving, clear the input so they can select the same file again
+            if (avatarInput.dataset.cropped !== 'true') {
+                avatarInput.value = '';
+            }
+        }, 300);
+    }
 
     avatarInput.addEventListener('change', function(e) {
         if (this.files && this.files[0]) {
+            // Check if it's the file we just cropped to avoid loop
+            if (this.dataset.cropped === 'true') {
+                this.dataset.cropped = 'false';
+                return;
+            }
+            
             const reader = new FileReader();
             reader.onload = function(e) {
-                if (avatarPreview.tagName === 'IMG') {
-                    avatarPreview.src = e.target.result;
-                } else {
-                    // Create img element if currently showing initials
-                    const img = document.createElement('img');
-                    img.id = 'avatar-preview';
-                    img.src = e.target.result;
-                    img.className = 'w-32 h-32 rounded-full object-cover border-4 border-primary-fixed shadow-md';
-                    avatarPreview.parentNode.replaceChild(img, avatarPreview);
+                cropImage.src = e.target.result;
+                showCropModal();
+                
+                if (cropper) {
+                    cropper.destroy();
                 }
+                
+                // Initialize Cropper after modal is fully visible
+                setTimeout(() => {
+                    cropper = new Cropper(cropImage, {
+                        aspectRatio: 1,
+                        viewMode: 1,
+                        dragMode: 'move',
+                        autoCropArea: 1,
+                        restore: false,
+                        guides: true,
+                        center: true,
+                        highlight: false,
+                        cropBoxMovable: true,
+                        cropBoxResizable: true,
+                        toggleDragModeOnDblclick: false,
+                    });
+                }, 350);
             }
             reader.readAsDataURL(this.files[0]);
         }
+    });
+
+    saveCropBtn.addEventListener('click', function() {
+        if (!cropper) return;
+        
+        const originalText = this.innerHTML;
+        this.innerHTML = '<span class="material-symbols-outlined animate-spin" style="animation: spin 1s linear infinite;">progress_activity</span> Memproses...';
+        this.disabled = true;
+
+        cropper.getCroppedCanvas({
+            width: 500, // max width resolution for output
+            height: 500,
+            imageSmoothingEnabled: true,
+            imageSmoothingQuality: 'high',
+        }).toBlob((blob) => {
+            // Update preview
+            const croppedUrl = URL.createObjectURL(blob);
+            if (avatarPreview.tagName === 'IMG') {
+                avatarPreview.src = croppedUrl;
+            } else {
+                const img = document.createElement('img');
+                img.id = 'avatar-preview';
+                img.src = croppedUrl;
+                img.className = 'w-32 h-32 rounded-full object-cover border-4 border-primary-fixed shadow-md';
+                avatarPreview.parentNode.replaceChild(img, avatarPreview);
+            }
+
+            // Create File object and set it to input
+            const file = new File([blob], 'avatar_cropped.png', { type: 'image/png' });
+            const dataTransfer = new DataTransfer();
+            dataTransfer.items.add(file);
+            
+            // Mark input so it doesn't trigger change event logic again
+            avatarInput.dataset.cropped = 'true';
+            avatarInput.files = dataTransfer.files;
+
+            // Reset button and close
+            this.innerHTML = originalText;
+            this.disabled = false;
+            hideCropModal();
+        }, 'image/png', 0.9);
     });
 </script>
 </body>

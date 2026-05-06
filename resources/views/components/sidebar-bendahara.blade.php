@@ -10,6 +10,9 @@
         <a class="flex items-center gap-3 px-4 py-3 {{ request()->routeIs('bendahara.kas-keluar.*') ? 'bg-white text-blue-700 scale-95 shadow-sm' : 'text-on-surface-variant hover:bg-surface-container hover:text-on-surface' }} rounded-lg transition-all font-headline font-medium text-sm" href="{{ route('bendahara.kas-keluar.index') }}">
             <span class="material-symbols-outlined">payments</span> Kas Keluar
         </a>
+        <a class="flex items-center gap-3 px-4 py-3 {{ request()->routeIs('bendahara.laporan.*') ? 'bg-white text-blue-700 scale-95 shadow-sm' : 'text-on-surface-variant hover:bg-surface-container hover:text-on-surface' }} rounded-lg transition-all font-headline font-medium text-sm" href="{{ route('bendahara.laporan.index') }}">
+            <span class="material-symbols-outlined">description</span> Laporan Keuangan
+        </a>
         @endif
         <a class="flex items-center gap-3 px-4 py-3 {{ request()->routeIs('bendahara.profil.*') ? 'bg-white text-blue-700 scale-95 shadow-sm' : 'text-on-surface-variant hover:bg-surface-container hover:text-on-surface' }} rounded-lg transition-all font-headline font-medium text-sm" href="{{ route('bendahara.profil.edit') }}">
             <span class="material-symbols-outlined">person</span> Profil Saya

@@ -51,8 +51,14 @@
             <div class="text-[10px] uppercase tracking-widest text-outline font-bold mt-0.5">Bendahara</div>
         </div>
         @if(Auth::user()->avatar)
-            @php $avatarUrl = Str::startsWith(Auth::user()->avatar, ['http://', 'https://']) ? Auth::user()->avatar : Storage::url(Auth::user()->avatar); @endphp
-            <img src="{{ $avatarUrl }}" class="w-10 h-10 rounded-full object-cover shadow-sm" alt="Profile">
+            @php
+                $av = Auth::user()->avatar;
+                $avatarUrl = (str_starts_with($av, 'http://') || str_starts_with($av, 'https://')) ? $av : '/storage/' . $av;
+            @endphp
+            <img src="{{ $avatarUrl }}" class="w-10 h-10 rounded-full object-cover shadow-sm" alt="Profile" referrerpolicy="no-referrer" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="w-10 h-10 rounded-full object-cover shadow-sm bg-surface-container-high border border-outline-variant/30 text-on-surface-variant font-bold" style="display:none; align-items:center; justify-content:center;">
+                {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+            </div>
         @else
             <div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white text-sm font-bold shadow-sm">
                 {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
@@ -97,8 +103,14 @@
             <div class="bg-surface-container-lowest rounded-3xl p-8 shadow-sm border border-outline-variant/30 text-center flex flex-col items-center">
                 <div class="relative mb-6">
                     @if($user->avatar)
-                        @php $avatarUrl = Str::startsWith($user->avatar, ['http://', 'https://']) ? $user->avatar : Storage::url($user->avatar); @endphp
-                        <img src="{{ $avatarUrl }}" class="w-32 h-32 rounded-full object-cover border-4 border-primary-fixed shadow-md" alt="Avatar">
+                        @php
+                $loopAv = $user->avatar;
+                $loopAvatarUrl = (str_starts_with($loopAv, 'http://') || str_starts_with($loopAv, 'https://')) ? $loopAv : '/storage/' . $loopAv;
+            @endphp
+            <img src="{{ $loopAvatarUrl }}" class="w-32 h-32 rounded-full object-cover border-4 border-primary-fixed shadow-md" alt="Avatar" referrerpolicy="no-referrer" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="w-32 h-32 rounded-full object-cover border-4 border-primary-fixed shadow-md bg-surface-container-high border border-outline-variant/30 text-on-surface-variant font-bold" style="display:none; align-items:center; justify-content:center;">
+                {{ strtoupper(substr($user->name, 0, 1)) }}
+            </div>
                     @else
                         <div class="w-32 h-32 rounded-full bg-surface-container-high border-4 border-primary-fixed shadow-md flex items-center justify-center text-4xl font-bold text-on-surface-variant">
                             {{ strtoupper(substr($user->name, 0, 1)) }}
