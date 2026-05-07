@@ -7,21 +7,34 @@ use Illuminate\Http\Request;
 
 class ManajemenAnggotaController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $users = \App\Models\User::orderBy('name')->get();
+        $query = \App\Models\User::withCount(['penagihans as belum_lunas_count' => function($q) {
+            $q->where('status', 'belum_lunas');
+        }]);
+
+        if ($request->filled('role')) {
+            $query->where('role', $request->role);
+        }
+
+        $users = $query->orderBy('name')->get();
         return view('bendahara.manajemen-anggota.index', compact('users'));
     }
 
     public function show($id)
     {
-        $user = \App\Models\User::with('kasMasuks')->findOrFail($id);
+        $user = \App\Models\User::with('kasMasuks')
+                    ->withCount(['penagihans as belum_lunas_count' => function($q) {
+                        $q->where('status', 'belum_lunas');
+                    }])->findOrFail($id);
         return view('bendahara.manajemen-anggota.show', compact('user'));
     }
 
     public function edit($id)
     {
-        $user = \App\Models\User::findOrFail($id);
+        $user = \App\Models\User::withCount(['penagihans as belum_lunas_count' => function($q) {
+            $q->where('status', 'belum_lunas');
+        }])->findOrFail($id);
         return view('bendahara.manajemen-anggota.edit', compact('user'));
     }
 
@@ -34,7 +47,6 @@ class ManajemenAnggotaController extends Controller
             'email' => 'required|email|max:255|unique:users,email,'.$id,
             'phone_number' => 'nullable|string|max:20',
             'role' => 'required|in:anggota,pengurus,bendahara',
-            'status_kepatuhan_kas' => 'required|in:lunas,tunggakan',
         ]);
 
         $user->update([
@@ -42,7 +54,6 @@ class ManajemenAnggotaController extends Controller
             'email' => $request->email,
             'phone_number' => $request->phone_number,
             'role' => $request->role,
-            'status_kepatuhan_kas' => $request->status_kepatuhan_kas,
         ]);
 
         return redirect()->route('bendahara.manajemen-data-anggota.index')->with('success', 'Data anggota berhasil diperbarui.');

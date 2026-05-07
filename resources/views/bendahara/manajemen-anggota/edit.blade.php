@@ -116,7 +116,7 @@
                             {{ strtoupper(substr($user->name, 0, 1)) }}
                         </div>
                     @endif
-                    <div class="absolute bottom-0 right-0 w-8 h-8 bg-green-500 border-4 border-white rounded-full"></div>
+                    <div class="absolute bottom-0 right-0 w-8 h-8 {{ $user->role === 'anggota' ? 'bg-surface-variant' : ($user->belum_lunas_count == 0 ? 'bg-green-500' : 'bg-red-500') }} border-4 border-white rounded-full"></div>
                 </div>
 
                 <h3 class="text-xl font-headline font-extrabold text-on-surface">{{ $user->name }}</h3>
@@ -135,12 +135,16 @@
 
                     <div class="flex justify-between items-center bg-surface-container/40 p-3 rounded-xl border border-outline-variant/20">
                         <span class="text-xs font-bold text-on-surface-variant uppercase tracking-wide">Kepatuhan Kas</span>
-                        @if($user->status_kepatuhan_kas === 'lunas')
+                        @if($user->role === 'anggota')
+                            <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-variant text-on-surface-variant text-xs font-bold">
+                                <span class="material-symbols-outlined text-[14px]">block</span> Bebas Kas
+                            </div>
+                        @elseif($user->belum_lunas_count == 0)
                             <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-100 text-green-800 text-xs font-bold">
                                 <div class="w-1.5 h-1.5 rounded-full bg-green-600"></div> Lunas
                             </div>
                         @else
-                            <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-100 text-red-800 text-xs font-bold">
+                            <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-100 text-red-800 text-xs font-bold tooltip-trigger" title="{{ $user->belum_lunas_count }} tagihan belum lunas">
                                 <div class="w-1.5 h-1.5 rounded-full bg-red-600"></div> Tunggakan
                             </div>
                         @endif
@@ -211,13 +215,19 @@
 
                         <div class="flex flex-col gap-2 relative">
                             <label class="text-sm font-semibold text-on-surface-variant">Status Kepatuhan Kas</label>
-                            <div class="relative">
-                                <select name="status_kepatuhan_kas" class="w-full pl-4 pr-10 py-3 bg-surface border border-outline-variant/50 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary text-sm transition-all appearance-none cursor-pointer">
-                                    <option value="lunas" {{ $user->status_kepatuhan_kas === 'lunas' ? 'selected' : '' }}>Lunas</option>
-                                    <option value="tunggakan" {{ $user->status_kepatuhan_kas === 'tunggakan' ? 'selected' : '' }}>Tunggakan</option>
-                                </select>
-                                <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-outline pointer-events-none">expand_more</span>
+                            <div class="relative p-3 bg-surface-container border border-outline-variant/30 rounded-xl flex items-center gap-2">
+                                @if($user->role === 'anggota')
+                                    <span class="material-symbols-outlined text-on-surface-variant">block</span>
+                                    <span class="text-sm font-bold text-on-surface-variant">Bebas Kas (Otomatis)</span>
+                                @elseif($user->belum_lunas_count == 0)
+                                    <span class="material-symbols-outlined text-green-600">check_circle</span>
+                                    <span class="text-sm font-bold text-green-800">Lunas (Otomatis)</span>
+                                @else
+                                    <span class="material-symbols-outlined text-red-600">warning</span>
+                                    <span class="text-sm font-bold text-red-800">Tunggakan ({{ $user->belum_lunas_count }} Tagihan)</span>
+                                @endif
                             </div>
+                            <p class="text-xs text-on-surface-variant mt-1">Status diperbarui otomatis berdasarkan data pembayaran.</p>
                         </div>
                     </div>
                 </div>

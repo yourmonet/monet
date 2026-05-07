@@ -8,6 +8,7 @@ use App\Http\Controllers\KasMasukController;
 use App\Http\Controllers\KasKeluarController;
 use App\Http\Controllers\LaporanKeuanganController;
 use App\Http\Controllers\MidtransCallbackController;
+use App\Http\Controllers\StatusPembayaranController;
 use Illuminate\Support\Facades\Route;
 
 // ─────────────────────────────────────────────────────────
@@ -53,6 +54,7 @@ Route::prefix('pengurus')->name('pengurus.')->group(function () {
     Route::middleware(['role:pengurus'])->group(function () {
         Route::get('dashboard', [PengurusAuthController::class, 'dashboard'])->name('dashboard');
         Route::post('logout',   [PengurusAuthController::class, 'logout'])->name('logout');
+        Route::get('status-pembayaran', [StatusPembayaranController::class, 'index'])->name('status-pembayaran.index');
     });
 });
 
@@ -79,6 +81,9 @@ Route::prefix('bendahara')->name('bendahara.')->group(function () {
         Route::get('profil-saya', [\App\Http\Controllers\ProfilController::class, 'edit'])->name('profil.edit');
         Route::put('profil-saya', [\App\Http\Controllers\ProfilController::class, 'update'])->name('profil.update');
         Route::resource('manajemen-data-anggota', \App\Http\Controllers\Bendahara\ManajemenAnggotaController::class);
+        
+        Route::get('status-pembayaran', [StatusPembayaranController::class, 'index'])->name('status-pembayaran.index');
+        Route::post('status-pembayaran/generate', [StatusPembayaranController::class, 'generateBulanIni'])->name('status-pembayaran.generate');
     });
 });
 

@@ -21,34 +21,43 @@ class MidtransCallbackController extends Controller
 
             $transactionStatus = $notification->transaction_status;
             $grossAmount = $notification->gross_amount;
-
-            if ($transactionStatus == 'settlement') {
-                KasMasuk::create([
-                    'tanggal' => now(),
-                    'keterangan' => 'Pembayaran dari Midtrans',
-                    'jumlah' => (int) $grossAmount,
-                    'sumber' => 'midtrans',
-                ]);
-            }
-
-            return response()->json(['status' => 'success']);
+            $orderId = $notification->order_id;
         } catch (\Exception $e) {
             // Fallback apabila class Notification gagal memproses payload lokal
             $transactionStatus = $request->transaction_status;
             $grossAmount = $request->gross_amount;
+            $orderId = $request->order_id;
+        }
 
-            if ($transactionStatus == 'settlement') {
-                KasMasuk::create([
-                    'tanggal' => now(),
-                    'keterangan' => 'Pembayaran dari Midtrans',
-                    'jumlah' => (int) $grossAmount,
-                    'sumber' => 'midtrans',
-                ]);
-                return response()->json(['status' => 'success']);
+        if ($transactionStatus == 'settlement') {
+            $penagihan = null;
+
+            if ($orderId && strpos($orderId, 'PENAGIHAN-') === 0) {
+                $penagihanId = str_replace('PENAGIHAN-', '', $orderId);
+                $penagihan = \App\Models\Penagihan::find($penagihanId);
             }
 
-            return response()->json(['error' => $e->getMessage()], 500);
+            $keterangan = $penagihan 
+                ? 'Pembayaran Tagihan Kas Bulan ' . $penagihan->periode_bulan . ' Tahun ' . $penagihan->periode_tahun 
+                : 'Pembayaran dari Midtrans';
+
+            $kasMasuk = KasMasuk::create([
+                'tanggal' => now(),
+                'keterangan' => $keterangan,
+                'jumlah' => (int) $grossAmount,
+                'sumber' => 'midtrans',
+                'user_id' => $penagihan ? $penagihan->user_id : null,
+            ]);
+
+            if ($penagihan) {
+                $penagihan->update([
+                    'status' => 'lunas',
+                    'kas_masuk_id' => $kasMasuk->id,
+                ]);
+            }
         }
+
+        return response()->json(['status' => 'success']);
     }
 
     public function handleCallbackKeluar(Request $request)

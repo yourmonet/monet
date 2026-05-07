@@ -58,6 +58,11 @@ class User extends Authenticatable
         return $this->hasMany(KasMasuk::class);
     }
 
+    public function penagihans()
+    {
+        return $this->hasMany(Penagihan::class);
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *
