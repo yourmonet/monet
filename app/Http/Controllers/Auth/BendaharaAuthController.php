@@ -98,19 +98,21 @@ class BendaharaAuthController extends Controller
         $totalPengeluaran = \App\Models\KasKeluar::sum('nominal');
         $totalSaldo = $totalPemasukan - $totalPengeluaran;
 
-        $kasMasuk = \App\Models\KasMasuk::latest('tanggal')->take(5)->get()->map(function ($item) {
+        // Ambil 10 data terbaru agar punya cukup sampel untuk digabungkan
+        $kasMasuk = \App\Models\KasMasuk::latest('created_at')->take(10)->get()->map(function ($item) {
             $item->type = 'masuk';
             $item->nominal_transaksi = $item->jumlah;
             return $item;
         });
 
-        $kasKeluar = \App\Models\KasKeluar::latest('tanggal')->take(5)->get()->map(function ($item) {
+        $kasKeluar = \App\Models\KasKeluar::latest('created_at')->take(10)->get()->map(function ($item) {
             $item->type = 'keluar';
             $item->nominal_transaksi = $item->nominal;
             return $item;
         });
 
-        $transaksiTerbaru = $kasMasuk->concat($kasKeluar)->sortByDesc('tanggal')->take(5);
+        // Gabungkan, lalu sortir berdasarkan waktu input yang paling akurat (created_at), baru ambil 5 teratas
+        $transaksiTerbaru = $kasMasuk->concat($kasKeluar)->sortByDesc('created_at')->take(5);
 
         return view('bendahara.dashboard', compact('pemasukanBulanIni', 'pengeluaranBulanIni', 'totalSaldo', 'transaksiTerbaru'));
     }

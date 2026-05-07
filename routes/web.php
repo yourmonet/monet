@@ -9,6 +9,7 @@ use App\Http\Controllers\KasKeluarController;
 use App\Http\Controllers\LaporanKeuanganController;
 use App\Http\Controllers\MidtransCallbackController;
 use App\Http\Controllers\StatusPembayaranController;
+use App\Http\Controllers\KategoriTransaksiController;
 use Illuminate\Support\Facades\Route;
 
 // ─────────────────────────────────────────────────────────
@@ -21,6 +22,7 @@ Route::get('/', function () {
 // Callback Midtrans (Sebaiknya pastikan route ini dikecualikan dari CSRF token)
 Route::post('/midtrans/callback', [MidtransCallbackController::class, 'handleCallback'])->name('midtrans.callback');
 Route::post('/midtrans/callback-keluar', [MidtransCallbackController::class, 'handleCallbackKeluar'])->name('midtrans.callback-keluar');
+
 // ─────────────────────────────────────────────────────────
 // ANGGOTA — prefix: /user
 // ─────────────────────────────────────────────────────────
@@ -75,6 +77,10 @@ Route::prefix('bendahara')->name('bendahara.')->group(function () {
         Route::post('logout',   [BendaharaAuthController::class, 'logout'])->name('logout');
         Route::resource('kas-masuk', KasMasukController::class)->except(['show', 'edit', 'update', 'destroy']);
         Route::resource('kas-keluar', KasKeluarController::class)->only(['index', 'create', 'store']);
+        
+        // Route Baru: Kategori Transaksi
+        Route::resource('kategori', KategoriTransaksiController::class);
+        
         Route::get('laporan-keuangan', [LaporanKeuanganController::class, 'index'])->name('laporan.index');
         Route::get('laporan-keuangan/pdf', [LaporanKeuanganController::class, 'exportPdf'])->name('laporan.pdf');
         Route::get('laporan-keuangan/excel', [LaporanKeuanganController::class, 'exportExcel'])->name('laporan.excel');

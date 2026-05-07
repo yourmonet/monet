@@ -9,7 +9,8 @@ class KasMasukController extends Controller
 {
     public function index()
     {
-        $kasMasuk = KasMasuk::orderBy('tanggal', 'desc')->get();
+        // Mengurutkan berdasarkan tanggal terbaru, lalu berdasarkan waktu input (created_at) terbaru
+        $kasMasuk = KasMasuk::orderBy('tanggal', 'desc')->orderBy('created_at', 'desc')->get();
         return view('bendahara.kas-masuk.index', compact('kasMasuk'));
     }
 
