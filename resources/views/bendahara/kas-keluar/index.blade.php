@@ -48,11 +48,22 @@
     <div class="flex items-center gap-3">
         <div class="text-right hidden sm:block">
             <div class="text-sm font-black text-blue-900 leading-tight">{{ Auth::user()->name }}</div>
-            <div class="text-[10px] uppercase tracking-widest text-outline font-bold mt-0.5">Bendahara</div>
+            <div class="text-[10px] uppercase tracking-widest text-outline font-bold mt-0.5">{{ Auth::user()->role ?? 'Bendahara' }}</div>
         </div>
-        <div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white text-sm font-bold shadow-sm">
-            {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
-        </div>
+        
+        {{-- LOGIKA FOTO PROFIL (GOOGLE, UPLOAD LOKAL, ATAU INISIAL NAMA) --}}
+        @if(Auth::user()->avatar)
+            @if(str_contains(Auth::user()->avatar, 'http'))
+                <img src="{{ Auth::user()->avatar }}" alt="Profil" class="w-10 h-10 rounded-full object-cover shadow-sm">
+            @else
+                <img src="{{ asset('storage/' . Auth::user()->avatar) }}" alt="Profil" class="w-10 h-10 rounded-full object-cover shadow-sm">
+            @endif
+        @else
+            <div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white text-sm font-bold shadow-sm">
+                {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+            </div>
+        @endif
+
     </div>
 </nav>
 
@@ -84,6 +95,7 @@
                     <tr class="bg-surface-container-low text-on-surface-variant font-headline text-sm uppercase tracking-wider border-b border-outline-variant/30">
                         <th class="px-6 py-4 font-bold">Tanggal</th>
                         <th class="px-6 py-4 font-bold">Keterangan</th>
+                        <th class="px-6 py-4 font-bold">Kategori</th> {{-- Kolom Baru --}}
                         <th class="px-6 py-4 font-bold">Sumber</th>
                         <th class="px-6 py-4 font-bold text-right">Nominal</th>
                     </tr>
@@ -93,6 +105,10 @@
                         <tr class="hover:bg-surface-container-lowest/50 transition-colors">
                             <td class="px-6 py-4 text-sm font-medium">{{ \Carbon\Carbon::parse($kk->tanggal)->translatedFormat('d F Y') }}</td>
                             <td class="px-6 py-4 text-sm">{{ $kk->keterangan }}</td>
+                            <td class="px-6 py-4 text-sm font-bold text-blue-900">
+                                {{-- Menampilkan nama kategori, atau "Tanpa Kategori" jika null --}}
+                                {{ $kk->kategori ? $kk->kategori->nama_kategori : 'Tanpa Kategori' }}
+                            </td>
                             <td class="px-6 py-4 text-sm capitalize">
                                 <span class="px-3 py-1 bg-secondary-container text-on-secondary-container rounded-full text-xs font-bold">
                                     {{ $kk->sumber }}
@@ -104,7 +120,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="4" class="px-6 py-8 text-center text-on-surface-variant text-sm">Belum ada data kas keluar.</td>
+                            <td colspan="5" class="px-6 py-8 text-center text-on-surface-variant text-sm">Belum ada data kas keluar.</td>
                         </tr>
                     @endforelse
                 </tbody>
