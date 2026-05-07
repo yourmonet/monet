@@ -107,7 +107,7 @@
                             {{ strtoupper(substr($user->name, 0, 1)) }}
                         </div>
                     @endif
-                    <div class="absolute bottom-0 right-0 w-8 h-8 {{ $user->status_kepatuhan_kas === 'lunas' ? 'bg-green-500' : 'bg-red-500' }} border-4 border-white rounded-full"></div>
+                    <div class="absolute bottom-0 right-0 w-8 h-8 {{ $user->role === 'anggota' ? 'bg-surface-variant' : ($user->belum_lunas_count == 0 ? 'bg-green-500' : 'bg-red-500') }} border-4 border-white rounded-full"></div>
                 </div>
 
                 <h3 class="text-2xl font-headline font-extrabold text-on-surface mb-1">{{ $user->name }}</h3>
@@ -137,13 +137,18 @@
 
                 <div class="w-full text-left">
                     <p class="text-xs font-bold text-on-surface-variant uppercase tracking-wide mb-2">Kepatuhan Kas</p>
-                    @if($user->status_kepatuhan_kas === 'lunas')
+                    @if($user->role === 'anggota')
+                        <div class="flex items-center gap-2 p-3 rounded-xl bg-surface-container border border-outline-variant/30">
+                            <span class="material-symbols-outlined text-outline">block</span>
+                            <span class="text-on-surface-variant font-bold text-sm">Bebas Kas</span>
+                        </div>
+                    @elseif($user->belum_lunas_count == 0)
                         <div class="flex items-center gap-2 p-3 rounded-xl bg-green-50 border border-green-200">
                             <span class="material-symbols-outlined text-green-600">check_circle</span>
                             <span class="text-green-800 font-bold text-sm">Kas Lunas</span>
                         </div>
                     @else
-                        <div class="flex items-center gap-2 p-3 rounded-xl bg-red-50 border border-red-200">
+                        <div class="flex items-center gap-2 p-3 rounded-xl bg-red-50 border border-red-200 tooltip-trigger" title="{{ $user->belum_lunas_count }} tagihan belum lunas">
                             <span class="material-symbols-outlined text-red-600">warning</span>
                             <span class="text-red-800 font-bold text-sm">Terdapat Tunggakan</span>
                         </div>

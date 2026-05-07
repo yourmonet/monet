@@ -84,8 +84,22 @@
         </div>
     @endif
 
-    <div class="bg-surface-container-lowest rounded-3xl p-8 shadow-sm border border-outline-variant/30">
-        <div class="overflow-x-auto">
+    <div class="bg-surface-container-lowest rounded-3xl shadow-sm border border-outline-variant/30 overflow-hidden">
+        <div class="p-6 border-b border-outline-variant/30 flex flex-col sm:flex-row justify-between items-center gap-4 bg-surface-container-low/50">
+            <h2 class="text-lg font-bold text-on-surface">Daftar Pengguna</h2>
+            <form action="{{ route('bendahara.manajemen-data-anggota.index') }}" method="GET" class="flex gap-2 w-full sm:w-auto">
+                <select name="role" class="w-full sm:w-auto rounded-xl border-outline-variant/50 focus:border-primary focus:ring focus:ring-primary/20 text-sm font-medium bg-white shadow-sm" onchange="this.form.submit()">
+                    <option value="">Semua Role</option>
+                    <option value="anggota" {{ request('role') === 'anggota' ? 'selected' : '' }}>Anggota</option>
+                    <option value="pengurus" {{ request('role') === 'pengurus' ? 'selected' : '' }}>Pengurus</option>
+                    <option value="bendahara" {{ request('role') === 'bendahara' ? 'selected' : '' }}>Bendahara</option>
+                </select>
+                <noscript>
+                    <button type="submit" class="bg-surface-container border border-outline-variant/40 px-4 py-2 rounded-xl text-sm font-bold">Filter</button>
+                </noscript>
+            </form>
+        </div>
+        <div class="p-8 pt-4 overflow-x-auto">
             <table class="w-full text-left border-collapse">
                 <thead>
                     <tr class="border-b border-outline-variant/30 text-sm font-bold text-on-surface-variant uppercase tracking-wider">
@@ -127,12 +141,16 @@
                                 </span>
                             </td>
                             <td class="py-4">
-                                @if($u->status_kepatuhan_kas === 'lunas')
+                                @if($u->role === 'anggota')
+                                    <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-variant text-on-surface-variant text-xs font-bold tooltip-trigger" title="Anggota tidak diwajibkan membayar kas">
+                                        <span class="material-symbols-outlined text-[14px]">block</span> Bebas Kas
+                                    </div>
+                                @elseif($u->belum_lunas_count == 0)
                                     <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-100 text-green-800 text-xs font-bold">
                                         <div class="w-1.5 h-1.5 rounded-full bg-green-600"></div> Lunas
                                     </div>
                                 @else
-                                    <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-100 text-red-800 text-xs font-bold">
+                                    <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-100 text-red-800 text-xs font-bold tooltip-trigger" title="{{ $u->belum_lunas_count }} tagihan belum lunas">
                                         <div class="w-1.5 h-1.5 rounded-full bg-red-600"></div> Tunggakan
                                     </div>
                                 @endif
