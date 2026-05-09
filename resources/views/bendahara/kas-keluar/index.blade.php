@@ -51,7 +51,6 @@
             <div class="text-[10px] uppercase tracking-widest text-outline font-bold mt-0.5">{{ Auth::user()->role ?? 'Bendahara' }}</div>
         </div>
         
-        {{-- LOGIKA FOTO PROFIL (GOOGLE, UPLOAD LOKAL, ATAU INISIAL NAMA) --}}
         @if(Auth::user()->avatar)
             @if(str_contains(Auth::user()->avatar, 'http'))
                 <img src="{{ Auth::user()->avatar }}" alt="Profil" class="w-10 h-10 rounded-full object-cover shadow-sm">
@@ -95,7 +94,7 @@
                     <tr class="bg-surface-container-low text-on-surface-variant font-headline text-sm uppercase tracking-wider border-b border-outline-variant/30">
                         <th class="px-6 py-4 font-bold">Tanggal</th>
                         <th class="px-6 py-4 font-bold">Keterangan</th>
-                        <th class="px-6 py-4 font-bold">Kategori</th> {{-- Kolom Baru --}}
+                        <th class="px-6 py-4 font-bold">Kategori</th>
                         <th class="px-6 py-4 font-bold">Sumber</th>
                         <th class="px-6 py-4 font-bold text-right">Nominal</th>
                     </tr>
@@ -106,7 +105,6 @@
                             <td class="px-6 py-4 text-sm font-medium">{{ \Carbon\Carbon::parse($kk->tanggal)->translatedFormat('d F Y') }}</td>
                             <td class="px-6 py-4 text-sm">{{ $kk->keterangan }}</td>
                             <td class="px-6 py-4 text-sm font-bold text-blue-900">
-                                {{-- Menampilkan nama kategori, atau "Tanpa Kategori" jika null --}}
                                 {{ $kk->kategori ? $kk->kategori->nama_kategori : 'Tanpa Kategori' }}
                             </td>
                             <td class="px-6 py-4 text-sm capitalize">
