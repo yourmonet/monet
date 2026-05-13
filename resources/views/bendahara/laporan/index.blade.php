@@ -195,7 +195,7 @@
                 <h3 class="text-3xl font-headline font-extrabold text-emerald-600 mb-1 tracking-tight">Rp {{ number_format($totalMasuk, 0, ',', '.') }}</h3>
                 <p class="text-[13px] text-on-surface-variant font-medium flex items-center gap-1.5">
                     <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                    {{ $kasMasuk->count() }} transaksi
+                    {{ $kasMasuk->total() }} transaksi
                 </p>
             </div>
         </div>
@@ -213,7 +213,7 @@
                 <h3 class="text-3xl font-headline font-extrabold text-red-600 mb-1 tracking-tight">Rp {{ number_format($totalKeluar, 0, ',', '.') }}</h3>
                 <p class="text-[13px] text-on-surface-variant font-medium flex items-center gap-1.5">
                     <span class="w-1.5 h-1.5 rounded-full bg-red-500"></span>
-                    {{ $kasKeluar->count() }} transaksi
+                    {{ $kasKeluar->total() }} transaksi
                 </p>
             </div>
         </div>
@@ -254,7 +254,7 @@
                     <h3 class="font-headline font-bold text-green-800 text-sm">Kas Masuk</h3>
                 </div>
                 <span class="text-xs font-bold text-green-700 bg-green-100 px-3 py-1 rounded-full">
-                    {{ $kasMasuk->count() }} transaksi
+                    {{ $kasMasuk->total() }} transaksi
                 </span>
             </div>
             <div class="overflow-x-auto">
@@ -297,6 +297,11 @@
                     @endif
                 </table>
             </div>
+            @if($kasMasuk->hasPages())
+            <div class="px-6 py-4 border-t border-outline-variant/20 bg-green-50/30">
+                {{ $kasMasuk->links() }}
+            </div>
+            @endif
         </div>
 
         {{-- Tabel Kas Keluar --}}
@@ -307,7 +312,7 @@
                     <h3 class="font-headline font-bold text-red-800 text-sm">Kas Keluar</h3>
                 </div>
                 <span class="text-xs font-bold text-error bg-error-container px-3 py-1 rounded-full">
-                    {{ $kasKeluar->count() }} transaksi
+                    {{ $kasKeluar->total() }} transaksi
                 </span>
             </div>
             <div class="overflow-x-auto">
@@ -350,6 +355,11 @@
                     @endif
                 </table>
             </div>
+            @if($kasKeluar->hasPages())
+            <div class="px-6 py-4 border-t border-outline-variant/20 bg-red-50/30">
+                {{ $kasKeluar->links() }}
+            </div>
+            @endif
         </div>
     </div>
 

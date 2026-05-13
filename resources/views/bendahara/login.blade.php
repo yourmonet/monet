@@ -121,13 +121,18 @@
                     </div>
                 </div>
 
-                <div class="flex items-center gap-3">
-                    <div class="flex items-center justify-center">
-                        <input id="remember" type="checkbox" name="remember" class="w-5 h-5 rounded border-outline text-primary bg-surface-container-low focus:ring-primary focus:ring-offset-0 focus:ring-2 cursor-pointer transition-all hover:border-primary">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="flex items-center justify-center">
+                            <input id="remember" type="checkbox" name="remember" class="w-5 h-5 rounded border-outline text-primary bg-surface-container-low focus:ring-primary focus:ring-offset-0 focus:ring-2 cursor-pointer transition-all hover:border-primary">
+                        </div>
+                        <label for="remember" class="text-sm font-medium text-on-surface-variant cursor-pointer select-none">
+                            Ingat saya
+                        </label>
                     </div>
-                    <label for="remember" class="text-sm font-medium text-on-surface-variant cursor-pointer select-none">
-                        Ingat saya
-                    </label>
+                    <a href="{{ route('password.request') }}" class="text-sm font-semibold text-primary hover:underline">
+                        Lupa Password?
+                    </a>
                 </div>
 
                 <button id="btn-login-bendahara"

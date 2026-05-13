@@ -27,6 +27,8 @@ class User extends Authenticatable
         'avatar',
         'phone_number',
         'status_kepatuhan_kas',
+        'verification_code',
+        'verification_code_expires_at',
     ];
 
     public function isAnggota(): bool
@@ -82,6 +84,7 @@ class User extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
+            'verification_code_expires_at' => 'datetime',
             'password' => 'hashed',
         ];
     }

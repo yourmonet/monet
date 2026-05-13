@@ -35,7 +35,7 @@ Route::prefix('user')->name('user.')->group(function () {
     Route::post('register',[AnggotaAuthController::class, 'register']);
 
     // Protected: dashboard & logout (hanya untuk role anggota)
-    Route::middleware(['role:anggota'])->group(function () {
+    Route::middleware(['role:anggota', 'verified'])->group(function () {
         Route::get('dashboard', [AnggotaAuthController::class, 'dashboard'])->name('dashboard');
         Route::post('logout',   [AnggotaAuthController::class, 'logout'])->name('logout');
     });
@@ -53,7 +53,7 @@ Route::prefix('pengurus')->name('pengurus.')->group(function () {
     Route::post('register',[PengurusAuthController::class, 'register']);
 
     // Protected: dashboard & logout (hanya untuk role pengurus)
-    Route::middleware(['role:pengurus'])->group(function () {
+    Route::middleware(['role:pengurus', 'verified'])->group(function () {
         Route::get('dashboard', [PengurusAuthController::class, 'dashboard'])->name('dashboard');
         Route::post('logout',   [PengurusAuthController::class, 'logout'])->name('logout');
         Route::get('status-pembayaran', [StatusPembayaranController::class, 'index'])->name('status-pembayaran.index');
@@ -72,7 +72,7 @@ Route::prefix('bendahara')->name('bendahara.')->group(function () {
     Route::post('register',[BendaharaAuthController::class, 'register']);
 
     // Protected: dashboard & logout (hanya untuk role bendahara)
-    Route::middleware(['role:bendahara'])->group(function () {
+    Route::middleware(['role:bendahara', 'verified'])->group(function () {
         Route::get('dashboard', [BendaharaAuthController::class, 'dashboard'])->name('dashboard');
         Route::post('logout',   [BendaharaAuthController::class, 'logout'])->name('logout');
         Route::resource('kas-masuk', KasMasukController::class)->except(['show', 'edit', 'update', 'destroy']);
