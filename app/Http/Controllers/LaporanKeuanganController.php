@@ -33,6 +33,7 @@ class LaporanKeuanganController extends Controller
         $bulan = (int) $request->input('bulan', $defaultBulan);
         $tahun = (int) $request->input('tahun', $defaultTahun);
 
+ fitur-pembayaran-kasv3
             $kasMasuk = KasMasuk::whereMonth('tanggal', $bulan)
         ->whereYear('tanggal', $tahun)
         ->orderBy('tanggal', 'asc')
@@ -56,6 +57,20 @@ class LaporanKeuanganController extends Controller
     $saldoBersih = $totalMasuk - $totalKeluar;
     $countMasuk = $kasMasuk->total();
     $countKeluar = $kasKeluar->total();
+
+        $kasMasukQuery = KasMasuk::whereMonth('tanggal', $bulan)
+            ->whereYear('tanggal', $tahun);
+
+        $kasKeluarQuery = KasKeluar::whereMonth('tanggal', $bulan)
+            ->whereYear('tanggal', $tahun);
+
+        $totalMasuk   = (clone $kasMasukQuery)->sum('jumlah');
+        $totalKeluar  = (clone $kasKeluarQuery)->sum('nominal');
+        $saldoBersih  = $totalMasuk - $totalKeluar;
+ main
+
+        $kasMasuk = $kasMasukQuery->orderBy('tanggal', 'asc')->paginate(10, ['*'], 'masuk_page')->withQueryString();
+        $kasKeluar = $kasKeluarQuery->orderBy('tanggal', 'asc')->paginate(10, ['*'], 'keluar_page')->withQueryString();
 
         // Daftar tahun untuk dropdown (dari data terlama hingga sekarang)
         $tahunTersedia = collect();

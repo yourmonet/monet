@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\VerifyEmailCode;
 
 class AnggotaAuthController extends Controller
 {
@@ -69,14 +71,20 @@ class AnggotaAuthController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
-        $user = User::create([
-            'name'     => $request->name,
-            'email'    => $request->email,
+        $code = sprintf("%06d", mt_rand(1, 999999));
+
+        session()->put('pending_registration', [
+            'name' => $request->name,
+            'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role'     => 'anggota',
+            'role' => 'anggota',
+            'verification_code' => $code,
+            'verification_code_expires_at' => now()->addMinutes(15),
         ]);
 
-        return redirect('/user/login')->with('success', 'Akun berhasil dibuat. Silakan login.');
+        Mail::to($request->email)->send(new VerifyEmailCode($code));
+
+        return redirect()->route('verification.notice');
     }
 
     // ─────────────────── DASHBOARD ───────────────────

@@ -50,9 +50,18 @@
             <div class="text-sm font-black text-blue-900 leading-tight">{{ Auth::user()->name }}</div>
             <div class="text-[10px] uppercase tracking-widest text-outline font-bold mt-0.5">Bendahara</div>
         </div>
-        <div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white text-sm font-bold shadow-sm">
-            {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
-        </div>
+        
+        @if(Auth::user()->avatar)
+            @if(str_contains(Auth::user()->avatar, 'http'))
+                <img src="{{ Auth::user()->avatar }}" alt="Profil" class="w-10 h-10 rounded-full object-cover shadow-sm">
+            @else
+                <img src="{{ asset('storage/' . Auth::user()->avatar) }}" alt="Profil" class="w-10 h-10 rounded-full object-cover shadow-sm">
+            @endif
+        @else
+            <div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white text-sm font-bold shadow-sm">
+                {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+            </div>
+        @endif
     </div>
 </nav>
 
@@ -83,11 +92,42 @@
                 @enderror
             </div>
 
+            {{-- 🌟 FITUR BARU: DROPDOWN KATEGORI 🌟 --}}
+            <div>
+                <label for="kategori_id" class="block text-sm font-bold text-on-surface mb-2">Kategori Pemasukan</label>
+                <select name="kategori_id" id="kategori_id" required
+                    class="w-full rounded-xl border border-outline-variant/50 bg-surface focus:ring-2 focus:ring-primary focus:border-primary px-4 py-3 text-sm transition-colors outline-none">
+                    <option value="" disabled selected>-- Pilih Kategori Pemasukan --</option>
+                    @foreach($kategori as $kat)
+                        <option value="{{ $kat->id }}" {{ old('kategori_id') == $kat->id ? 'selected' : '' }}>
+                            {{ $kat->nama_kategori }}
+                        </option>
+                    @endforeach
+                </select>
+                @error('kategori_id')
+                    <p class="text-error text-xs mt-1 font-semibold">{{ $message }}</p>
+                @enderror
+            </div>
+
             <div>
                 <label for="keterangan" class="block text-sm font-bold text-on-surface mb-2">Keterangan</label>
                 <input type="text" name="keterangan" id="keterangan" value="{{ old('keterangan') }}" required placeholder="Contoh: Iuran anggota bulan Januari"
                     class="w-full rounded-xl border border-outline-variant/50 bg-surface focus:ring-2 focus:ring-primary focus:border-primary px-4 py-3 text-sm transition-colors outline-none">
                 @error('keterangan')
+                    <p class="text-error text-xs mt-1 font-semibold">{{ $message }}</p>
+                @enderror
+            </div>
+
+            {{-- Saya tambahkan Sumber Kas disini agar sesuai dengan tabel index --}}
+            <div>
+                <label for="sumber" class="block text-sm font-bold text-on-surface mb-2">Sumber</label>
+                <select name="sumber" id="sumber" required
+                    class="w-full rounded-xl border border-outline-variant/50 bg-surface focus:ring-2 focus:ring-primary focus:border-primary px-4 py-3 text-sm transition-colors outline-none">
+                    <option value="Manual" {{ old('sumber') == 'Manual' ? 'selected' : '' }}>Manual (Tunai/Transfer Biasa)</option>
+                    <option value="Midtrans" {{ old('sumber') == 'Midtrans' ? 'selected' : '' }}>Midtrans</option>
+                    <option value="Lainnya" {{ old('sumber') == 'Lainnya' ? 'selected' : '' }}>Lainnya</option>
+                </select>
+                @error('sumber')
                     <p class="text-error text-xs mt-1 font-semibold">{{ $message }}</p>
                 @enderror
             </div>

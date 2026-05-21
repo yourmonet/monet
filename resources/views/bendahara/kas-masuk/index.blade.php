@@ -17,17 +17,9 @@
                     "secondary": "#4c5d8d", "tertiary": "#7b2600", "outline-variant": "#c3c6d6",
                     "surface-container-low": "#f3f4f6", "outline": "#737685", "on-primary": "#ffffff",
                     "secondary-fixed": "#dae2ff", "inverse-surface": "#2e3132", "inverse-primary": "#b2c5ff",
-                    "secondary-fixed-dim": "#b4c5fb", "on-secondary-fixed-variant": "#344573",
-                    "on-secondary": "#ffffff", "error-container": "#ffdad6", "surface-variant": "#e1e2e4",
-                    "surface-dim": "#d9dadc", "surface-container": "#edeef0", "surface-container-high": "#e7e8ea",
-                    "on-secondary-fixed": "#021945", "on-surface-variant": "#434654", "background": "#f8f9fb",
-                    "on-secondary-container": "#415382", "surface-tint": "#0c56d0", "inverse-on-surface": "#f0f1f3",
-                    "surface-container-highest": "#e1e2e4", "surface-container-lowest": "#ffffff",
-                    "on-primary-fixed-variant": "#0040a2", "secondary-container": "#b6c8fe", "on-primary-fixed": "#001848",
-                    "on-primary-container": "#c4d2ff", "tertiary-container": "#a33500", "on-tertiary-container": "#ffc6b2",
+                    "surface-variant": "#e1e2e4", "surface-container-lowest": "#ffffff",
                     "on-surface": "#191c1e", "on-error-container": "#93000a", "primary-container": "#0052cc",
-                    "surface": "#f8f9fb", "on-background": "#191c1e", "primary": "#003d9b",
-                    "primary-fixed": "#dae2ff", "error": "#ba1a1a"
+                    "surface": "#f8f9fb", "on-background": "#191c1e", "primary": "#003d9b", "error": "#ba1a1a"
                 },
                 borderRadius: { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.75rem", "full": "0.75rem" },
                 fontFamily: { "headline": ["Manrope"], "body": ["Inter"], "label": ["Inter"] }
@@ -48,6 +40,7 @@
     <div class="flex items-center gap-3">
         <div class="text-right hidden sm:block">
             <div class="text-sm font-black text-blue-900 leading-tight">{{ Auth::user()->name }}</div>
+ fitur-pembayaran-kasv3
             <div class="text-[10px] uppercase tracking-widest text-outline font-bold mt-0.5">Bendahara</div>
         </div>
         @if(Auth::user()->avatar)
@@ -59,6 +52,17 @@
             <div class="w-10 h-10 rounded-full bg-primary text-white text-sm font-bold shadow-sm" style="display:none; align-items:center; justify-content:center;">
                 {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
             </div>
+
+            <div class="text-[10px] uppercase tracking-widest text-outline font-bold mt-0.5">{{ Auth::user()->role ?? 'Bendahara' }}</div>
+        </div>
+        
+        @if(Auth::user()->avatar)
+            @if(str_contains(Auth::user()->avatar, 'http'))
+                <img src="{{ Auth::user()->avatar }}" alt="Profil" class="w-10 h-10 rounded-full object-cover shadow-sm">
+            @else
+                <img src="{{ asset('storage/' . Auth::user()->avatar) }}" alt="Profil" class="w-10 h-10 rounded-full object-cover shadow-sm">
+            @endif
+main
         @else
             <div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white text-sm font-bold shadow-sm">
                 {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
@@ -72,10 +76,17 @@
 <main class="ml-64 pt-20 p-8 min-h-screen">
     <header class="flex justify-between items-end mb-10">
         <div>
+ fitur-pembayaran-kasv3
             <h1 class="text-3xl font-headline font-extrabold tracking-tight text-on-surface">Data Kas Masuk</h1>
             <p class="text-on-surface-variant font-body mt-1">Kelola data pemasukan keuangan organisasi secara real-time.</p>
         </div>
         <a href="{{ route('bendahara.kas-masuk.create') }}" class="bg-primary text-white px-5 py-2.5 rounded-xl font-bold flex items-center gap-2 hover:bg-primary/90 transition shadow-sm hover:shadow-md">
+
+            <h1 class="text-4xl font-headline font-extrabold tracking-tight text-on-surface">Data Kas Masuk</h1>
+            <p class="text-gray-500 font-body mt-1">Kelola data pemasukan keuangan organisasi.</p>
+        </div>
+        <a href="{{ route('bendahara.kas-masuk.create') }}" class="flex items-center gap-2 px-5 py-3 bg-primary text-white rounded-xl font-bold text-sm hover:bg-blue-800 transition-all shadow-md">
+ main
             <span class="material-symbols-outlined text-xl">add</span>
             Tambah Kas Masuk
         </a>
@@ -88,6 +99,7 @@
         </div>
     @endif
     
+fitur-pembayaran-kasv3
     <!-- Clean Rounded Card Table Container -->
     <div class="bg-surface-container-lowest rounded-3xl shadow-sm border border-outline-variant/30 overflow-hidden">
         <!-- Filter Header Section -->
@@ -142,6 +154,42 @@
                 </thead>
                 <tbody class="divide-y divide-outline-variant/20">
                     @include('bendahara.kas-masuk._rows')
+
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-gray-50 text-gray-600 font-headline text-sm uppercase tracking-wider border-b border-gray-200">
+                        <th class="px-6 py-4 font-bold">Tanggal</th>
+                        <th class="px-6 py-4 font-bold">Keterangan</th>
+                        <th class="px-6 py-4 font-bold">Kategori</th>
+                        <th class="px-6 py-4 font-bold">Sumber</th>
+                        <th class="px-6 py-4 font-bold text-right">Jumlah</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100">
+                    @forelse($kasMasuk as $km)
+                        <tr class="hover:bg-gray-50/50 transition-colors">
+                            <td class="px-6 py-4 text-sm font-medium">{{ \Carbon\Carbon::parse($km->tanggal)->translatedFormat('d F Y') }}</td>
+                            <td class="px-6 py-4 text-sm">{{ $km->keterangan }}</td>
+                            <td class="px-6 py-4 text-sm font-bold text-blue-900">
+                                {{ $km->kategori ? $km->kategori->nama_kategori : 'Tanpa Kategori' }}
+                            </td>
+                            <td class="px-6 py-4 text-sm capitalize">
+                                <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs font-bold">
+                                    {{ $km->sumber }}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 text-sm font-bold text-right text-green-600">
+                                Rp {{ number_format($km->jumlah, 0, ',', '.') }}
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="5" class="px-6 py-8 text-center text-gray-400 text-sm">Belum ada data kas masuk.</td>
+                        </tr>
+                    @endforelse
+ main
                 </tbody>
             </table>
         </div>

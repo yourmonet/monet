@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\VerifyEmailCode;
 
 class BendaharaAuthController extends Controller
 {
@@ -69,14 +71,20 @@ class BendaharaAuthController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
-        $user = User::create([
-            'name'     => $request->name,
-            'email'    => $request->email,
+        $code = sprintf("%06d", mt_rand(1, 999999));
+
+        session()->put('pending_registration', [
+            'name' => $request->name,
+            'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role'     => 'bendahara',
+            'role' => 'bendahara',
+            'verification_code' => $code,
+            'verification_code_expires_at' => now()->addMinutes(15),
         ]);
 
-        return redirect('/bendahara/login')->with('success', 'Akun berhasil dibuat. Silakan login.');
+        Mail::to($request->email)->send(new VerifyEmailCode($code));
+
+        return redirect()->route('verification.notice');
     }
 
     // ─────────────────── DASHBOARD ───────────────────
@@ -98,19 +106,21 @@ class BendaharaAuthController extends Controller
         $totalPengeluaran = \App\Models\KasKeluar::sum('nominal');
         $totalSaldo = $totalPemasukan - $totalPengeluaran;
 
-        $kasMasuk = \App\Models\KasMasuk::latest('tanggal')->take(5)->get()->map(function ($item) {
+        // Ambil 10 data terbaru agar punya cukup sampel untuk digabungkan
+        $kasMasuk = \App\Models\KasMasuk::latest('created_at')->take(10)->get()->map(function ($item) {
             $item->type = 'masuk';
             $item->nominal_transaksi = $item->jumlah;
             return $item;
         });
 
-        $kasKeluar = \App\Models\KasKeluar::latest('tanggal')->take(5)->get()->map(function ($item) {
+        $kasKeluar = \App\Models\KasKeluar::latest('created_at')->take(10)->get()->map(function ($item) {
             $item->type = 'keluar';
             $item->nominal_transaksi = $item->nominal;
             return $item;
         });
 
-        $transaksiTerbaru = $kasMasuk->concat($kasKeluar)->sortByDesc('tanggal')->take(5);
+        // Gabungkan, lalu sortir berdasarkan waktu input yang paling akurat (created_at), baru ambil 5 teratas
+        $transaksiTerbaru = $kasMasuk->concat($kasKeluar)->sortByDesc('created_at')->take(5);
 
         return view('bendahara.dashboard', compact('pemasukanBulanIni', 'pengeluaranBulanIni', 'totalSaldo', 'transaksiTerbaru'));
     }
