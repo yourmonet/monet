@@ -99,9 +99,9 @@
                 </noscript>
             </form>
         </div>
-        <div class="p-8 pt-4 overflow-x-auto">
+        <div class="p-8 pt-4 overflow-x-auto overflow-y-auto max-h-[520px]">
             <table class="w-full text-left border-collapse">
-                <thead>
+                <thead class="sticky top-0 bg-surface-container-lowest z-10 shadow-sm">
                     <tr class="border-b border-outline-variant/30 text-sm font-bold text-on-surface-variant uppercase tracking-wider">
                         <th class="pb-4 pl-4">Profil</th>
                         <th class="pb-4">Peran</th>
@@ -157,18 +157,19 @@
                             </td>
                             <td class="py-4 text-right pr-4">
                                 <div class="flex items-center justify-end gap-2">
-                                    <a href="{{ route('bendahara.manajemen-data-anggota.show', $u->id) }}" class="p-2 rounded-xl text-primary hover:bg-primary-container/40 transition-colors tooltip-trigger" title="Lihat Detail & Riwayat Kas">
+                                    <a href="{{ route('bendahara.manajemen-data-anggota.show', $u->id) }}" class="p-2 rounded-xl text-primary hover:bg-primary-container/40 transition-colors tooltip-trigger" title="Lihat Detail &amp; Riwayat Kas">
                                         <span class="material-symbols-outlined text-[20px]">visibility</span>
                                     </a>
-                                    <a href="{{ route('bendahara.manajemen-data-anggota.edit', $u->id) }}" class="p-2 rounded-xl text-on-surface-variant hover:bg-surface-container transition-colors tooltip-trigger" title="Edit Data & Status">
-                                        <span class="material-symbols-outlined text-[20px]">edit</span>
-                                    </a>
+                                    <!-- Edit disabled for Bendahara role -->
                                 </div>
                             </td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
+        </div>
+        <div class="px-6 py-4 border-t border-outline-variant/30">
+            {{ $users->appends(request()->query())->links() }}
         </div>
     </div>
 </main>

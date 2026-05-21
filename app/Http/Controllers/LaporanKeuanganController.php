@@ -33,19 +33,29 @@ class LaporanKeuanganController extends Controller
         $bulan = (int) $request->input('bulan', $defaultBulan);
         $tahun = (int) $request->input('tahun', $defaultTahun);
 
-        $kasMasuk = KasMasuk::whereMonth('tanggal', $bulan)
-            ->whereYear('tanggal', $tahun)
-            ->orderBy('tanggal', 'asc')
-            ->get();
+            $kasMasuk = KasMasuk::whereMonth('tanggal', $bulan)
+        ->whereYear('tanggal', $tahun)
+        ->orderBy('tanggal', 'asc')
+        ->paginate(30);
 
-        $kasKeluar = KasKeluar::whereMonth('tanggal', $bulan)
-            ->whereYear('tanggal', $tahun)
-            ->orderBy('tanggal', 'asc')
-            ->get();
+    $kasKeluar = KasKeluar::whereMonth('tanggal', $bulan)
+        ->whereYear('tanggal', $tahun)
+        ->orderBy('tanggal', 'asc')
+        ->paginate(30);
 
-        $totalMasuk   = $kasMasuk->sum('jumlah');
-        $totalKeluar  = $kasKeluar->sum('nominal');
-        $saldoBersih  = $totalMasuk - $totalKeluar;
+    $totalMasukAll   = KasMasuk::whereMonth('tanggal', $bulan)
+            ->whereYear('tanggal', $tahun)
+            ->sum('jumlah');
+        $totalKeluarAll = KasKeluar::whereMonth('tanggal', $bulan)
+            ->whereYear('tanggal', $tahun)
+            ->sum('nominal');
+        // For display use total across all pages
+        $totalMasuk = $totalMasukAll;
+        $totalKeluar = $totalKeluarAll;
+
+    $saldoBersih = $totalMasuk - $totalKeluar;
+    $countMasuk = $kasMasuk->total();
+    $countKeluar = $kasKeluar->total();
 
         // Daftar tahun untuk dropdown (dari data terlama hingga sekarang)
         $tahunTersedia = collect();
@@ -57,11 +67,15 @@ class LaporanKeuanganController extends Controller
             $tahunTersedia->push($y);
         }
 
-        return view('bendahara.laporan.index', compact(
-            'kasMasuk', 'kasKeluar',
-            'totalMasuk', 'totalKeluar', 'saldoBersih',
-            'bulan', 'tahun', 'tahunTersedia'
-        ));
+        
+    // Updated controller return with count variables
+    return view('bendahara.laporan.index', compact(
+        'kasMasuk', 'kasKeluar',
+        'totalMasuk', 'totalKeluar', 'saldoBersih',
+        'bulan', 'tahun', 'tahunTersedia',
+        'countMasuk', 'countKeluar'
+    ));
+
     }
 
     /**

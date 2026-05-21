@@ -55,6 +55,8 @@ Route::prefix('pengurus')->name('pengurus.')->group(function () {
         Route::get('dashboard', [PengurusAuthController::class, 'dashboard'])->name('dashboard');
         Route::post('logout',   [PengurusAuthController::class, 'logout'])->name('logout');
         Route::get('status-pembayaran', [StatusPembayaranController::class, 'index'])->name('status-pembayaran.index');
+        Route::get('pembayaran', [\App\Http\Controllers\User\PembayaranKasController::class, 'index'])->name('pembayaran.index');
+        Route::post('pembayaran', [\App\Http\Controllers\User\PembayaranKasController::class, 'store'])->name('pembayaran.store');
     });
 });
 
@@ -84,6 +86,8 @@ Route::prefix('bendahara')->name('bendahara.')->group(function () {
         
         Route::get('status-pembayaran', [StatusPembayaranController::class, 'index'])->name('status-pembayaran.index');
         Route::post('status-pembayaran/generate', [StatusPembayaranController::class, 'generateBulanIni'])->name('status-pembayaran.generate');
+        Route::get('pembayaran', [\App\Http\Controllers\User\PembayaranKasController::class, 'index'])->name('pembayaran.index');
+        Route::post('pembayaran', [\App\Http\Controllers\User\PembayaranKasController::class, 'store'])->name('pembayaran.store');
     });
 });
 

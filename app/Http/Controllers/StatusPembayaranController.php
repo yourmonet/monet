@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Penagihan;
+use App\Models\PembayaranKas;
+use App\Models\TagihanKas;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class StatusPembayaranController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Penagihan::with(['user', 'kasMasuk']);
+        $query = PembayaranKas::with(['user', 'tagihanKas']);
 
         // Filter status
         if ($request->filled('status')) {
@@ -20,19 +22,25 @@ class StatusPembayaranController extends Controller
 
         // Filter bulan
         if ($request->filled('bulan')) {
-            $query->where('periode_bulan', $request->bulan);
+            $bulan = sprintf('%02d', $request->bulan);
+            $query->where('periode', 'like', "%-{$bulan}");
         }
 
         // Filter tahun
         if ($request->filled('tahun')) {
-            $query->where('periode_tahun', $request->tahun);
+            $query->where('periode', 'like', "{$request->tahun}-%");
         }
 
-        // Filter role anggota
+        // Filter role (hanya bendahara & pengurus)
         if ($request->filled('role')) {
             $role = $request->role;
             $query->whereHas('user', function ($q) use ($role) {
                 $q->where('role', $role);
+            });
+        } else {
+            // Default only load pengurus and bendahara
+            $query->whereHas('user', function ($q) {
+                $q->whereIn('role', ['pengurus', 'bendahara']);
             });
         }
 
@@ -44,22 +52,22 @@ class StatusPembayaranController extends Controller
             });
         }
 
-        $penagihans = $query->orderBy('periode_tahun', 'desc')
-                            ->orderBy('periode_bulan', 'desc')
-                            ->get();
+        // Urutkan berdasarkan periode terbaru (karena format periode YYYY-MM bisa disorting langsung)
+        $pembayarans = $query->orderBy('periode', 'desc')
+                            ->paginate(30);
 
         // View context based on role
-        if (auth()->user()->role === 'pengurus') {
-            return view('pengurus.status-pembayaran.index', compact('penagihans'));
+        if (Auth::user()->role === 'pengurus') {
+            return view('pengurus.status-pembayaran.index', compact('pembayarans'));
         }
 
-        return view('bendahara.status-pembayaran.index', compact('penagihans'));
+        return view('bendahara.status-pembayaran.index', compact('pembayarans'));
     }
 
     public function generateBulanIni(Request $request)
     {
         // Hanya bendahara
-        if (auth()->user()->role !== 'bendahara') {
+        if (Auth::user()->role !== 'bendahara') {
             abort(403);
         }
 
@@ -71,27 +79,44 @@ class StatusPembayaranController extends Controller
 
         $bulan = $request->input('generate_bulan', Carbon::now()->month);
         $tahun = $request->input('generate_tahun', Carbon::now()->year);
-        
-        // Nominal iuran, bisa disesuaikan. Default 50000
-        $jumlahIuran = $request->input('jumlah', 50000);
+        $jumlahIuran = $request->input('jumlah', 25000); // Default to 25.000 for Monet
 
-        // Hanya untuk pengurus dan bendahara (anggota tidak bayar kas)
+        // Cek apakah TagihanKas untuk bulan & tahun ini sudah dibuat
+        $tagihanExist = TagihanKas::where('periode_bulan', $bulan)
+                                  ->where('periode_tahun', $tahun)
+                                  ->first();
+
+        if ($tagihanExist) {
+            return redirect()->back()->with('error', "Tagihan bulan ini sudah tersedia!");
+        }
+
+        // Buat master TagihanKas
+        $tagihan = TagihanKas::create([
+            'periode_bulan' => $bulan,
+            'periode_tahun' => $tahun,
+            'nominal' => $jumlahIuran,
+            'created_by' => Auth::id()
+        ]);
+
+        // Cari semua user bendahara & pengurus
         $pengurusDanBendahara = User::whereIn('role', ['pengurus', 'bendahara'])->get();
         $generatedCount = 0;
 
+        $periodeString = sprintf('%04d-%02d', $tahun, $bulan);
+
         foreach ($pengurusDanBendahara as $userTarget) {
-            $exists = Penagihan::where('user_id', $userTarget->id)
-                                ->where('periode_bulan', $bulan)
-                                ->where('periode_tahun', $tahun)
+            // Pastikan belum ada pembayaran kas untuk periode ini
+            $exists = PembayaranKas::where('user_id', $userTarget->id)
+                                ->where('periode', $periodeString)
                                 ->exists();
 
             if (!$exists) {
-                Penagihan::create([
+                PembayaranKas::create([
                     'user_id' => $userTarget->id,
-                    'periode_bulan' => $bulan,
-                    'periode_tahun' => $tahun,
-                    'jumlah' => $jumlahIuran,
-                    'status' => 'belum_lunas'
+                    'tagihan_kas_id' => $tagihan->id,
+                    'periode' => $periodeString,
+                    'nominal' => $jumlahIuran,
+                    'status' => 'Belum Bayar'
                 ]);
                 $generatedCount++;
             }

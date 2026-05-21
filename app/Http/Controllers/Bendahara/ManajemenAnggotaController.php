@@ -17,7 +17,7 @@ class ManajemenAnggotaController extends Controller
             $query->where('role', $request->role);
         }
 
-        $users = $query->orderBy('name')->get();
+        $users = $query->orderBy('name')->paginate(30);
         return view('bendahara.manajemen-anggota.index', compact('users'));
     }
 
@@ -32,30 +32,14 @@ class ManajemenAnggotaController extends Controller
 
     public function edit($id)
     {
-        $user = \App\Models\User::withCount(['penagihans as belum_lunas_count' => function($q) {
-            $q->where('status', 'belum_lunas');
-        }])->findOrFail($id);
-        return view('bendahara.manajemen-anggota.edit', compact('user'));
+        // Editing member profiles is not allowed for Bendahara role
+        return redirect()->route('bendahara.manajemen-data-anggota.show', $id)
+            ->with('error', 'Anda tidak memiliki izin untuk mengedit profil anggota.');
     }
 
     public function update(Request $request, $id)
     {
-        $user = \App\Models\User::findOrFail($id);
-        
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:users,email,'.$id,
-            'phone_number' => 'nullable|string|max:20',
-            'role' => 'required|in:anggota,pengurus,bendahara',
-        ]);
-
-        $user->update([
-            'name' => $request->name,
-            'email' => $request->email,
-            'phone_number' => $request->phone_number,
-            'role' => $request->role,
-        ]);
-
-        return redirect()->route('bendahara.manajemen-data-anggota.index')->with('success', 'Data anggota berhasil diperbarui.');
+        // Disallow updates – return forbidden response
+        abort(403, 'Tidak diizinkan mengubah data anggota.');
     }
 }
