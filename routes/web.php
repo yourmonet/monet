@@ -102,6 +102,7 @@ Route::prefix('bendahara')->name('bendahara.')->group(function () {
         
         Route::get('status-pembayaran', [StatusPembayaranController::class, 'index'])->name('status-pembayaran.index');
         Route::post('status-pembayaran/generate', [StatusPembayaranController::class, 'generateBulanIni'])->name('status-pembayaran.generate');
+        Route::post('status-pembayaran/{id}/pengingat', [StatusPembayaranController::class, 'kirimPengingat'])->name('status-pembayaran.pengingat');
         Route::get('pembayaran', [\App\Http\Controllers\User\PembayaranKasController::class, 'index'])->name('pembayaran.index');
         Route::post('pembayaran', [\App\Http\Controllers\User\PembayaranKasController::class, 'store'])->name('pembayaran.store');
 

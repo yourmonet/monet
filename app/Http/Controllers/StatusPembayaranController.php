@@ -8,6 +8,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use App\Notifications\TagihanKasBaruNotification;
+use App\Notifications\PengingatTagihanNotification;
 
 class StatusPembayaranController extends Controller
 {
@@ -104,6 +106,7 @@ class StatusPembayaranController extends Controller
 
         $periodeString = sprintf('%04d-%02d', $tahun, $bulan);
 
+        /** @var \App\Models\User $userTarget */
         foreach ($pengurusDanBendahara as $userTarget) {
             // Pastikan belum ada pembayaran kas untuk periode ini
             $exists = PembayaranKas::where('user_id', $userTarget->id)
@@ -119,9 +122,31 @@ class StatusPembayaranController extends Controller
                     'status' => 'Belum Bayar'
                 ]);
                 $generatedCount++;
+
+                // Kirim notifikasi ke user (pengurus/bendahara)
+                $userTarget->notify(new TagihanKasBaruNotification($bulan, $tahun, $jumlahIuran));
             }
         }
 
-        return redirect()->back()->with('success', "Berhasil membuat {$generatedCount} tagihan untuk periode Bulan {$bulan} Tahun {$tahun}.");
+        return redirect()->back()->with('success', "Berhasil membuat {$generatedCount} tagihan untuk periode Bulan {$bulan} Tahun {$tahun} dan notifikasi telah dikirim.");
+    }
+
+    public function kirimPengingat($id)
+    {
+        // Hanya bendahara
+        if (Auth::user()->role !== 'bendahara') {
+            abort(403);
+        }
+
+        $pembayaran = PembayaranKas::with('user')->findOrFail($id);
+
+        if ($pembayaran->status !== 'Belum Bayar') {
+            return redirect()->back()->with('error', 'Tagihan ini sudah dibayar atau sedang menunggu verifikasi.');
+        }
+
+        // Kirim notifikasi pengingat
+        $pembayaran->user->notify(new PengingatTagihanNotification($pembayaran->periode, $pembayaran->nominal));
+
+        return redirect()->back()->with('success', "Pengingat tagihan berhasil dikirim ke {$pembayaran->user->name}.");
     }
 }

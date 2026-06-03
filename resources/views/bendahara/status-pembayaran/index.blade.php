@@ -139,6 +139,7 @@
                         <th class="px-6 py-4 text-right">Nominal (Rp)</th>
                         <th class="px-6 py-4 text-center">Status</th>
                         <th class="px-6 py-4">Tgl Pembayaran</th>
+                        <th class="px-6 py-4 text-center">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-outline-variant/20">
@@ -189,10 +190,22 @@
                             <td class="px-6 py-4 text-on-surface-variant font-medium">
                                 {{ $pembayaran->bukti_pembayaran ? \Carbon\Carbon::parse($pembayaran->updated_at)->format('d/m/Y H:i') : '-' }}
                             </td>
+                            <td class="px-6 py-4 text-center">
+                                @if($pembayaran->status === 'Belum Bayar')
+                                    <form action="{{ route('bendahara.status-pembayaran.pengingat', $pembayaran->id) }}" method="POST" class="inline-block">
+                                        @csrf
+                                        <button type="submit" class="bg-primary/10 text-primary hover:bg-primary hover:text-white px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1 border border-primary/20">
+                                            <span class="material-symbols-outlined text-[14px]">notifications_active</span> Ingatkan
+                                        </button>
+                                    </form>
+                                @else
+                                    <span class="text-outline-variant">-</span>
+                                @endif
+                            </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="px-6 py-12 text-center text-on-surface-variant">
+                            <td colspan="7" class="px-6 py-12 text-center text-on-surface-variant">
                                 <div class="flex flex-col items-center justify-center">
                                     <span class="material-symbols-outlined text-4xl mb-3 text-outline-variant">inbox</span>
                                     <p class="font-medium">Belum ada data tagihan atau pembayaran.</p>
