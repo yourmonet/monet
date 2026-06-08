@@ -38,6 +38,9 @@ Route::prefix('user')->name('user.')->group(function () {
     Route::middleware(['role:anggota', 'verified'])->group(function () {
         Route::get('dashboard', [AnggotaAuthController::class, 'dashboard'])->name('dashboard');
         Route::post('logout',   [AnggotaAuthController::class, 'logout'])->name('logout');
+        Route::get('pembayaran', [\App\Http\Controllers\User\PembayaranKasController::class, 'index'])->name('pembayaran.index');
+        Route::post('pembayaran', [\App\Http\Controllers\User\PembayaranKasController::class, 'store'])->name('pembayaran.store');
+        Route::resource('pengajuan-dana', \App\Http\Controllers\PengajuanDanaController::class)->only(['index', 'create', 'store', 'show']);
     });
 });
 
@@ -57,8 +60,15 @@ Route::prefix('pengurus')->name('pengurus.')->group(function () {
         Route::get('dashboard', [PengurusAuthController::class, 'dashboard'])->name('dashboard');
         Route::post('logout',   [PengurusAuthController::class, 'logout'])->name('logout');
         Route::get('status-pembayaran', [StatusPembayaranController::class, 'index'])->name('status-pembayaran.index');
+        Route::post('status-pembayaran/{id}/ingatkan', [StatusPembayaranController::class, 'sendReminder'])->name('status-pembayaran.ingatkan');
+        Route::post('status-pembayaran/reminder-massal', [StatusPembayaranController::class, 'sendMassReminder'])->name('status-pembayaran.reminder-massal');
         Route::get('pembayaran', [\App\Http\Controllers\User\PembayaranKasController::class, 'index'])->name('pembayaran.index');
         Route::post('pembayaran', [\App\Http\Controllers\User\PembayaranKasController::class, 'store'])->name('pembayaran.store');
+        Route::get('pengajuan-dana/export/pdf', [\App\Http\Controllers\PengajuanDanaController::class, 'exportPdf'])->name('pengajuan-dana.pdf');
+        Route::get('pengajuan-dana/export/excel', [\App\Http\Controllers\PengajuanDanaController::class, 'exportExcel'])->name('pengajuan-dana.excel');
+        Route::resource('pengajuan-dana', \App\Http\Controllers\PengajuanDanaController::class);
+        Route::post('pengajuan-dana/{id}/approve', [\App\Http\Controllers\PengajuanDanaController::class, 'approve'])->name('pengajuan-dana.approve');
+        Route::post('pengajuan-dana/{id}/reject', [\App\Http\Controllers\PengajuanDanaController::class, 'reject'])->name('pengajuan-dana.reject');
     });
 });
 
@@ -92,8 +102,17 @@ Route::prefix('bendahara')->name('bendahara.')->group(function () {
         
         Route::get('status-pembayaran', [StatusPembayaranController::class, 'index'])->name('status-pembayaran.index');
         Route::post('status-pembayaran/generate', [StatusPembayaranController::class, 'generateBulanIni'])->name('status-pembayaran.generate');
+        Route::post('status-pembayaran/{id}/verify', [StatusPembayaranController::class, 'verify'])->name('status-pembayaran.verify');
+        Route::post('status-pembayaran/{id}/reject', [StatusPembayaranController::class, 'reject'])->name('status-pembayaran.reject');
+        Route::post('status-pembayaran/{id}/ingatkan', [StatusPembayaranController::class, 'sendReminder'])->name('status-pembayaran.ingatkan');
+        Route::post('status-pembayaran/reminder-massal', [StatusPembayaranController::class, 'sendMassReminder'])->name('status-pembayaran.reminder-massal');
         Route::get('pembayaran', [\App\Http\Controllers\User\PembayaranKasController::class, 'index'])->name('pembayaran.index');
         Route::post('pembayaran', [\App\Http\Controllers\User\PembayaranKasController::class, 'store'])->name('pembayaran.store');
+        Route::get('pengajuan-dana/export/pdf', [\App\Http\Controllers\PengajuanDanaController::class, 'exportPdf'])->name('pengajuan-dana.pdf');
+        Route::get('pengajuan-dana/export/excel', [\App\Http\Controllers\PengajuanDanaController::class, 'exportExcel'])->name('pengajuan-dana.excel');
+        Route::resource('pengajuan-dana', \App\Http\Controllers\PengajuanDanaController::class);
+        Route::post('pengajuan-dana/{id}/approve', [\App\Http\Controllers\PengajuanDanaController::class, 'approve'])->name('pengajuan-dana.approve');
+        Route::post('pengajuan-dana/{id}/reject', [\App\Http\Controllers\PengajuanDanaController::class, 'reject'])->name('pengajuan-dana.reject');
     });
 });
 

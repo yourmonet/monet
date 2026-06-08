@@ -15,7 +15,8 @@ class KasMasuk extends Model
         'jumlah',
         'sumber',
         'user_id',
-        'kategori_id' // Tambahan untuk relasi kategori
+        'kategori_id', // Tambahan untuk relasi kategori
+        'pembayaran_kas_id' // Hubungan dengan pembayaran kas
     ];
 
     public function user()
@@ -27,5 +28,10 @@ class KasMasuk extends Model
     public function kategori()
     {
         return $this->belongsTo(KategoriTransaksi::class, 'kategori_id');
+    }
+
+    public function pembayaranKas()
+    {
+        return $this->belongsTo(PembayaranKas::class, 'pembayaran_kas_id');
     }
 }

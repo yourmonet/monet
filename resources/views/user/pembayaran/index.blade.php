@@ -80,7 +80,7 @@
     <header class="flex justify-between items-end mb-10">
         <div>
             <div class="flex items-center gap-2 text-sm text-on-surface-variant font-medium mb-1">
-                <a href="{{ route(Auth::user()->role . '.dashboard') }}" class="hover:text-primary transition-colors">Dashboard</a>
+                <a href="{{ route(Auth::user()->role === 'anggota' ? 'user.dashboard' : Auth::user()->role . '.dashboard') }}" class="hover:text-primary transition-colors">Dashboard</a>
                 <span class="material-symbols-outlined text-xs">chevron_right</span>
                 <span class="text-primary font-semibold">Pembayaran Kas</span>
             </div>
@@ -187,7 +187,7 @@
                     <div class="w-48 h-auto overflow-hidden rounded-xl border border-outline-variant/30 shadow-inner bg-white p-2">
                         <img src="{{ asset('images/qris.jpg') }}" alt="QRIS DANA" class="w-full h-auto object-contain cursor-zoom-in" onclick="openImageModal('{{ asset('images/qris.jpg') }}', 'QRIS Bisnis DANA Monet')"/>
                     </div>
-                    <p class="text-[10px] text-on-surface-variant font-medium text-center mt-3">Silakan scan kode QRIS diatas dengan nominal pembayaran <span class="font-bold text-primary">Rp 25.000</span></p>
+                    <p class="text-[10px] text-on-surface-variant font-medium text-center mt-3">Silakan scan kode QRIS diatas dengan nominal pembayaran <span class="font-bold text-primary">Rp 5.000</span></p>
                 </div>
 
                 {{-- Upload Form --}}

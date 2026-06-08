@@ -1,0 +1,36 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        if (!Schema::hasTable('pengajuan_danas')) {
+            Schema::create('pengajuan_danas', function (Blueprint $table) {
+                $table->id();
+                $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+                $table->string('jenis_pengajuan');
+                $table->integer('jumlah_dana');
+                $table->text('keterangan');
+                $table->string('status')->default('Pending');
+                $table->text('catatan_pengurus')->nullable();
+                $table->string('file_pendukung')->nullable();
+                $table->timestamps();
+            });
+        }
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('pengajuan_danas');
+    }
+};

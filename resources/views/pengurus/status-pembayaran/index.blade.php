@@ -60,6 +60,12 @@
             <h1 class="text-3xl font-headline font-extrabold tracking-tight text-on-surface">Status Pembayaran Kas</h1>
             <p class="text-on-surface-variant font-body mt-1">Pantau status pembayaran kas pengurus dan bendahara.</p>
         </div>
+        <form action="{{ route('pengurus.status-pembayaran.reminder-massal') }}" method="POST" onsubmit="return confirm('Kirim email pengingat kepada seluruh anggota yang belum bayar/ditolak?')">
+            @csrf
+            <button type="submit" class="bg-secondary text-white px-5 py-2.5 rounded-xl font-bold flex items-center gap-2 hover:bg-secondary/90 transition shadow-sm hover:shadow-md">
+                <span class="material-symbols-outlined">campaign</span> Kirim Pengingat Massal
+            </button>
+        </form>
     </header>
 
     <div class="bg-surface-container-lowest rounded-3xl shadow-sm border border-outline-variant/30 overflow-hidden">
@@ -114,6 +120,7 @@
                         <th class="px-6 py-4 text-right">Nominal (Rp)</th>
                         <th class="px-6 py-4 text-center">Status</th>
                         <th class="px-6 py-4">Tgl Pembayaran</th>
+                        <th class="px-6 py-4 text-center">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-outline-variant/20">
@@ -163,6 +170,18 @@
                             </td>
                             <td class="px-6 py-4 text-on-surface-variant font-medium">
                                 {{ $pembayaran->bukti_pembayaran ? \Carbon\Carbon::parse($pembayaran->updated_at)->format('d/m/Y H:i') : '-' }}
+                            </td>
+                            <td class="px-6 py-4 text-center">
+                                @if(in_array($pembayaran->status, ['Belum Bayar', 'Ditolak']))
+                                    <form action="{{ route('pengurus.status-pembayaran.ingatkan', $pembayaran->id) }}" method="POST" class="inline">
+                                        @csrf
+                                        <button type="submit" class="inline-flex items-center gap-1 px-3 py-1.5 bg-secondary-fixed text-on-secondary-fixed-variant rounded-xl text-xs font-bold hover:bg-secondary-fixed-dim transition" title="Kirim Pengingat">
+                                            <span class="material-symbols-outlined text-[14px]">campaign</span> Ingatkan
+                                        </button>
+                                    </form>
+                                @else
+                                    <span class="text-xs text-outline">—</span>
+                                @endif
                             </td>
                         </tr>
                     @empty

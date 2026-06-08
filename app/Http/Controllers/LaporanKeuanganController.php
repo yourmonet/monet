@@ -33,31 +33,6 @@ class LaporanKeuanganController extends Controller
         $bulan = (int) $request->input('bulan', $defaultBulan);
         $tahun = (int) $request->input('tahun', $defaultTahun);
 
- fitur-pembayaran-kasv3
-            $kasMasuk = KasMasuk::whereMonth('tanggal', $bulan)
-        ->whereYear('tanggal', $tahun)
-        ->orderBy('tanggal', 'asc')
-        ->paginate(30);
-
-    $kasKeluar = KasKeluar::whereMonth('tanggal', $bulan)
-        ->whereYear('tanggal', $tahun)
-        ->orderBy('tanggal', 'asc')
-        ->paginate(30);
-
-    $totalMasukAll   = KasMasuk::whereMonth('tanggal', $bulan)
-            ->whereYear('tanggal', $tahun)
-            ->sum('jumlah');
-        $totalKeluarAll = KasKeluar::whereMonth('tanggal', $bulan)
-            ->whereYear('tanggal', $tahun)
-            ->sum('nominal');
-        // For display use total across all pages
-        $totalMasuk = $totalMasukAll;
-        $totalKeluar = $totalKeluarAll;
-
-    $saldoBersih = $totalMasuk - $totalKeluar;
-    $countMasuk = $kasMasuk->total();
-    $countKeluar = $kasKeluar->total();
-
         $kasMasukQuery = KasMasuk::whereMonth('tanggal', $bulan)
             ->whereYear('tanggal', $tahun);
 
@@ -67,10 +42,12 @@ class LaporanKeuanganController extends Controller
         $totalMasuk   = (clone $kasMasukQuery)->sum('jumlah');
         $totalKeluar  = (clone $kasKeluarQuery)->sum('nominal');
         $saldoBersih  = $totalMasuk - $totalKeluar;
- main
 
-        $kasMasuk = $kasMasukQuery->orderBy('tanggal', 'asc')->paginate(10, ['*'], 'masuk_page')->withQueryString();
-        $kasKeluar = $kasKeluarQuery->orderBy('tanggal', 'asc')->paginate(10, ['*'], 'keluar_page')->withQueryString();
+        $kasMasuk = (clone $kasMasukQuery)->orderBy('tanggal', 'asc')->paginate(10, ['*'], 'masuk_page')->withQueryString();
+        $kasKeluar = (clone $kasKeluarQuery)->orderBy('tanggal', 'asc')->paginate(10, ['*'], 'keluar_page')->withQueryString();
+
+        $countMasuk = $kasMasuk->total();
+        $countKeluar = $kasKeluar->total();
 
         // Daftar tahun untuk dropdown (dari data terlama hingga sekarang)
         $tahunTersedia = collect();
@@ -82,14 +59,12 @@ class LaporanKeuanganController extends Controller
             $tahunTersedia->push($y);
         }
 
-        
-    // Updated controller return with count variables
-    return view('bendahara.laporan.index', compact(
-        'kasMasuk', 'kasKeluar',
-        'totalMasuk', 'totalKeluar', 'saldoBersih',
-        'bulan', 'tahun', 'tahunTersedia',
-        'countMasuk', 'countKeluar'
-    ));
+        return view('bendahara.laporan.index', compact(
+            'kasMasuk', 'kasKeluar',
+            'totalMasuk', 'totalKeluar', 'saldoBersih',
+            'bulan', 'tahun', 'tahunTersedia',
+            'countMasuk', 'countKeluar'
+        ));
 
     }
 

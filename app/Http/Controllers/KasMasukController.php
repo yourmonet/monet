@@ -10,15 +10,16 @@ class KasMasukController extends Controller
 {
     public function index(Request $request)
     {
-fitur-pembayaran-kasv3
-        $query = KasMasuk::with('user');
+        $query = KasMasuk::with(['user', 'kategori']);
 
         // Search bar (nama transaksi, kategori, deskripsi, nama anggota/penginput)
         if ($request->filled('search')) {
             $search = $request->input('search');
             $query->where(function ($q) use ($search) {
                 $q->where('keterangan', 'like', "%{$search}%")
-                  ->orWhere('sumber', 'like', "%{$search}%")
+                  ->orWhereHas('kategori', function ($qu) use ($search) {
+                      $qu->where('nama_kategori', 'like', "%{$search}%");
+                  })
                   ->orWhereHas('user', function ($qu) use ($search) {
                       $qu->where('name', 'like', "%{$search}%");
                   });
@@ -30,29 +31,29 @@ fitur-pembayaran-kasv3
             $query->whereDate('tanggal', $request->input('tanggal'));
         }
 
-        // Kategori transaksi (sumber)
-        if ($request->filled('sumber')) {
-            $query->where('sumber', $request->input('sumber'));
+        // Kategori transaksi (kategori_id)
+        if ($request->filled('kategori_id')) {
+            $query->where('kategori_id', $request->input('kategori_id'));
         }
 
         // Sorting
         $sort = $request->input('sort', 'date_desc');
         if ($sort === 'date_desc') {
-            $query->orderBy('tanggal', 'desc');
+            $query->orderBy('tanggal', 'desc')->orderBy('created_at', 'desc');
         } elseif ($sort === 'date_asc') {
-            $query->orderBy('tanggal', 'asc');
+            $query->orderBy('tanggal', 'asc')->orderBy('created_at', 'asc');
         } elseif ($sort === 'amount_desc') {
             $query->orderBy('jumlah', 'desc');
         } elseif ($sort === 'amount_asc') {
             $query->orderBy('jumlah', 'asc');
         } else {
-            $query->orderBy('tanggal', 'desc');
+            $query->orderBy('tanggal', 'desc')->orderBy('created_at', 'desc');
         }
 
         $kasMasuk = $query->paginate(30);
 
         // Get unique categories for filter
-        $categories = KasMasuk::select('sumber')->distinct()->pluck('sumber')->filter()->values();
+        $categories = KategoriTransaksi::where('jenis', 'pemasukan')->get();
 
         if ($request->ajax()) {
             return response()->json([
@@ -62,12 +63,6 @@ fitur-pembayaran-kasv3
         }
 
         return view('bendahara.kas-masuk.index', compact('kasMasuk', 'categories'));
-
-        // Mengurutkan berdasarkan tanggal terbaru, lalu waktu input (created_at) terbaru
-        // Ditambahkan with('kategori') agar nama kategori langsung ditarik dari database dengan efisien
-        $kasMasuk = KasMasuk::with('kategori')->orderBy('tanggal', 'desc')->orderBy('created_at', 'desc')->get();
-        return view('bendahara.kas-masuk.index', compact('kasMasuk'));
-main
     }
 
     public function create()
@@ -93,6 +88,7 @@ main
             'keterangan' => $request->keterangan,
             'jumlah' => $request->jumlah,
             'sumber' => $request->sumber,
+            'user_id' => auth()->id(),
         ]);
 
         return redirect()->route('bendahara.kas-masuk.index')

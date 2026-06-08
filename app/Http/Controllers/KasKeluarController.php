@@ -10,46 +10,36 @@ class KasKeluarController extends Controller
 {
     public function index(Request $request)
     {
- fitur-pembayaran-kasv3
-        $query = KasKeluar::query();
+        $query = KasKeluar::with('kategori');
 
-        // Search bar (nama transaksi, kategori, deskripsi)
+        // Search bar
         if ($request->filled('search')) {
             $search = $request->input('search');
             $query->where(function ($q) use ($search) {
                 $q->where('keterangan', 'like', "%{$search}%")
-                  ->orWhere('sumber', 'like', "%{$search}%");
+                  ->orWhereHas('kategori', function ($qu) use ($search) {
+                      $qu->where('nama_kategori', 'like', "%{$search}%");
+                  });
             });
         }
 
-        // Filter tanggal (format: YYYY-MM-DD)
+        // Filter tanggal
         if ($request->filled('tanggal')) {
             $query->whereDate('tanggal', $request->input('tanggal'));
         }
 
-        // Kategori transaksi (sumber)
+        // Filter sumber
         if ($request->filled('sumber')) {
             $query->where('sumber', $request->input('sumber'));
         }
 
         // Sorting
-        $sort = $request->input('sort', 'date_desc');
-        if ($sort === 'date_desc') {
-            $query->orderBy('tanggal', 'desc');
-        } elseif ($sort === 'date_asc') {
-            $query->orderBy('tanggal', 'asc');
-        } elseif ($sort === 'amount_desc') {
-            $query->orderBy('nominal', 'desc');
-        } elseif ($sort === 'amount_asc') {
-            $query->orderBy('nominal', 'asc');
-        } else {
-            $query->orderBy('tanggal', 'desc');
-        }
+        $query->orderBy('tanggal', 'desc')->orderBy('created_at', 'desc');
 
         $kasKeluar = $query->paginate(30);
 
-        // Get unique categories for filter
-        $categories = KasKeluar::select('sumber')->distinct()->pluck('sumber')->filter()->values();
+        // Get unique sumber values for filter dropdown
+        $categories = KasKeluar::select('sumber')->distinct()->pluck('sumber');
 
         if ($request->ajax()) {
             return response()->json([
@@ -59,11 +49,6 @@ class KasKeluarController extends Controller
         }
 
         return view('bendahara.kas-keluar.index', compact('kasKeluar', 'categories'));
-
-        // Panggil juga relasi kategorinya agar lebih ringan dimuat
-        $kasKeluar = KasKeluar::with('kategori')->orderBy('tanggal', 'desc')->orderBy('created_at', 'desc')->get();
-        return view('bendahara.kas-keluar.index', compact('kasKeluar'));
-main
     }
 
     public function create()

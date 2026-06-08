@@ -15,6 +15,7 @@ class PembayaranKas extends Model
         'nominal',
         'bukti_pembayaran',
         'catatan',
+        'alasan_penolakan',
         'status',
     ];
 
@@ -26,5 +27,10 @@ class PembayaranKas extends Model
     public function tagihanKas()
     {
         return $this->belongsTo(TagihanKas::class, 'tagihan_kas_id');
+    }
+
+    public function kasMasuk()
+    {
+        return $this->hasOne(KasMasuk::class, 'pembayaran_kas_id');
     }
 }

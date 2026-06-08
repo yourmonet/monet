@@ -40,29 +40,17 @@
     <div class="flex items-center gap-3">
         <div class="text-right hidden sm:block">
             <div class="text-sm font-black text-blue-900 leading-tight">{{ Auth::user()->name }}</div>
- fitur-pembayaran-kasv3
-            <div class="text-[10px] uppercase tracking-widest text-outline font-bold mt-0.5">Bendahara</div>
+            <div class="text-[10px] uppercase tracking-widest text-outline font-bold mt-0.5">{{ Auth::user()->role ?? 'Bendahara' }}</div>
         </div>
         @if(Auth::user()->avatar)
             @php
-                $loopAv = Auth::user()->avatar;
-                $loopAvatarUrl = (str_starts_with($loopAv, 'http://') || str_starts_with($loopAv, 'https://')) ? $loopAv : '/storage/' . $loopAv;
+                $avatarUrl = Auth::user()->avatar;
+                $avatarSrc = (str_starts_with($avatarUrl, 'http://') || str_starts_with($avatarUrl, 'https://')) ? $avatarUrl : asset('storage/' . $avatarUrl);
             @endphp
-            <img src="{{ $loopAvatarUrl }}" class="w-10 h-10 rounded-full object-cover border border-outline-variant/30 shadow-sm" alt="Avatar" referrerpolicy="no-referrer" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <img src="{{ $avatarSrc }}" class="w-10 h-10 rounded-full object-cover border border-outline-variant/30 shadow-sm" alt="Avatar" referrerpolicy="no-referrer" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
             <div class="w-10 h-10 rounded-full bg-primary text-white text-sm font-bold shadow-sm" style="display:none; align-items:center; justify-content:center;">
                 {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
             </div>
-
-            <div class="text-[10px] uppercase tracking-widest text-outline font-bold mt-0.5">{{ Auth::user()->role ?? 'Bendahara' }}</div>
-        </div>
-        
-        @if(Auth::user()->avatar)
-            @if(str_contains(Auth::user()->avatar, 'http'))
-                <img src="{{ Auth::user()->avatar }}" alt="Profil" class="w-10 h-10 rounded-full object-cover shadow-sm">
-            @else
-                <img src="{{ asset('storage/' . Auth::user()->avatar) }}" alt="Profil" class="w-10 h-10 rounded-full object-cover shadow-sm">
-            @endif
-main
         @else
             <div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white text-sm font-bold shadow-sm">
                 {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
@@ -76,17 +64,15 @@ main
 <main class="ml-64 pt-20 p-8 min-h-screen">
     <header class="flex justify-between items-end mb-10">
         <div>
- fitur-pembayaran-kasv3
+ 
             <h1 class="text-3xl font-headline font-extrabold tracking-tight text-on-surface">Data Kas Masuk</h1>
             <p class="text-on-surface-variant font-body mt-1">Kelola data pemasukan keuangan organisasi secara real-time.</p>
         </div>
-        <a href="{{ route('bendahara.kas-masuk.create') }}" class="bg-primary text-white px-5 py-2.5 rounded-xl font-bold flex items-center gap-2 hover:bg-primary/90 transition shadow-sm hover:shadow-md">
 
-            <h1 class="text-4xl font-headline font-extrabold tracking-tight text-on-surface">Data Kas Masuk</h1>
-            <p class="text-gray-500 font-body mt-1">Kelola data pemasukan keuangan organisasi.</p>
-        </div>
+
+
         <a href="{{ route('bendahara.kas-masuk.create') }}" class="flex items-center gap-2 px-5 py-3 bg-primary text-white rounded-xl font-bold text-sm hover:bg-blue-800 transition-all shadow-md">
- main
+
             <span class="material-symbols-outlined text-xl">add</span>
             Tambah Kas Masuk
         </a>
@@ -99,7 +85,7 @@ main
         </div>
     @endif
     
-fitur-pembayaran-kasv3
+
     <!-- Clean Rounded Card Table Container -->
     <div class="bg-surface-container-lowest rounded-3xl shadow-sm border border-outline-variant/30 overflow-hidden">
         <!-- Filter Header Section -->
@@ -189,7 +175,7 @@ fitur-pembayaran-kasv3
                             <td colspan="5" class="px-6 py-8 text-center text-gray-400 text-sm">Belum ada data kas masuk.</td>
                         </tr>
                     @endforelse
- main
+
                 </tbody>
             </table>
         </div>

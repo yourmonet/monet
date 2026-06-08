@@ -7,6 +7,7 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@500;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+<meta name="csrf-token" content="{{ csrf_token() }}">
 <script>
     tailwind.config = {
         darkMode: "class",
@@ -68,9 +69,17 @@
             <h1 class="text-3xl font-headline font-extrabold tracking-tight text-on-surface">Status Pembayaran Kas</h1>
             <p class="text-on-surface-variant font-body mt-1">Pantau status pembayaran kas pengurus dan bendahara.</p>
         </div>
-        <button onclick="document.getElementById('modal-generate').classList.remove('hidden')" class="bg-primary text-white px-5 py-2.5 rounded-xl font-bold flex items-center gap-2 hover:bg-primary/90 transition shadow-sm hover:shadow-md">
-            <span class="material-symbols-outlined">add_task</span> Generate Tagihan Baru
-        </button>
+        <div class="flex items-center gap-3">
+            <form action="{{ route('bendahara.status-pembayaran.reminder-massal') }}" method="POST" onsubmit="return confirm('Kirim email pengingat kepada seluruh anggota yang belum bayar/ditolak?')">
+                @csrf
+                <button type="submit" class="bg-secondary text-white px-5 py-2.5 rounded-xl font-bold flex items-center gap-2 hover:bg-secondary/90 transition shadow-sm hover:shadow-md">
+                    <span class="material-symbols-outlined">campaign</span> Kirim Pengingat Massal
+                </button>
+            </form>
+            <button onclick="document.getElementById('modal-generate').classList.remove('hidden')" class="bg-primary text-white px-5 py-2.5 rounded-xl font-bold flex items-center gap-2 hover:bg-primary/90 transition shadow-sm hover:shadow-md">
+                <span class="material-symbols-outlined">add_task</span> Generate Tagihan Baru
+            </button>
+        </div>
     </header>
 
     @if (session('success'))
@@ -139,6 +148,7 @@
                         <th class="px-6 py-4 text-right">Nominal (Rp)</th>
                         <th class="px-6 py-4 text-center">Status</th>
                         <th class="px-6 py-4">Tgl Pembayaran</th>
+                        <th class="px-6 py-4 text-center">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-outline-variant/20">
@@ -189,10 +199,43 @@
                             <td class="px-6 py-4 text-on-surface-variant font-medium">
                                 {{ $pembayaran->bukti_pembayaran ? \Carbon\Carbon::parse($pembayaran->updated_at)->format('d/m/Y H:i') : '-' }}
                             </td>
+                            <td class="px-6 py-4 text-center">
+                                @if($pembayaran->status === 'Menunggu Verifikasi' && $pembayaran->bukti_pembayaran)
+                                    <div class="flex items-center justify-center gap-1.5">
+                                        <button onclick="openBuktiModal('{{ asset('storage/' . $pembayaran->bukti_pembayaran) }}', '{{ $pembayaran->user->name }}', '{{ Carbon\Carbon::createFromFormat('Y-m', $pembayaran->periode)->translatedFormat('F Y') }}')" class="p-1.5 bg-surface-container hover:bg-surface-container-high rounded-lg text-primary transition-all" title="Lihat Bukti">
+                                            <span class="material-symbols-outlined text-[18px]">visibility</span>
+                                        </button>
+                                        <form action="{{ route('bendahara.status-pembayaran.verify', $pembayaran->id) }}" method="POST" class="inline" onsubmit="return confirm('Verifikasi pembayaran ini sebagai LUNAS?')">
+                                            @csrf
+                                            <button type="submit" class="p-1.5 bg-green-100 hover:bg-green-200 rounded-lg text-green-700 transition-all" title="Verifikasi (Lunas)">
+                                                <span class="material-symbols-outlined text-[18px]">check_circle</span>
+                                            </button>
+                                        </form>
+                                        <button type="button" onclick="openRejectModal('{{ $pembayaran->id }}', '{{ $pembayaran->user->name }}')" class="p-1.5 bg-red-100 hover:bg-red-200 rounded-lg text-red-700 transition-all" title="Tolak">
+                                            <span class="material-symbols-outlined text-[18px]">cancel</span>
+                                        </button>
+                                    </div>
+                                @elseif($pembayaran->bukti_pembayaran)
+                                    <button onclick="openBuktiModal('{{ asset('storage/' . $pembayaran->bukti_pembayaran) }}', '{{ $pembayaran->user->name }}', '{{ Carbon\Carbon::createFromFormat('Y-m', $pembayaran->periode)->translatedFormat('F Y') }}')" class="p-1.5 bg-surface-container hover:bg-surface-container-high rounded-lg text-primary transition-all" title="Lihat Bukti">
+                                        <span class="material-symbols-outlined text-[18px]">visibility</span>
+                                    </button>
+                                @else
+                                    @if(in_array($pembayaran->status, ['Belum Bayar', 'Ditolak']))
+                                        <form action="{{ route('bendahara.status-pembayaran.ingatkan', $pembayaran->id) }}" method="POST" class="inline">
+                                            @csrf
+                                            <button type="submit" class="inline-flex items-center gap-1 px-3 py-1.5 bg-secondary-fixed text-on-secondary-fixed-variant rounded-xl text-xs font-bold hover:bg-secondary-fixed-dim transition" title="Kirim Pengingat">
+                                                <span class="material-symbols-outlined text-[14px]">campaign</span> Ingatkan
+                                            </button>
+                                        </form>
+                                    @else
+                                        <span class="text-xs text-outline">—</span>
+                                    @endif
+                                @endif
+                            </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="px-6 py-12 text-center text-on-surface-variant">
+                            <td colspan="7" class="px-6 py-12 text-center text-on-surface-variant">
                                 <div class="flex flex-col items-center justify-center">
                                     <span class="material-symbols-outlined text-4xl mb-3 text-outline-variant">inbox</span>
                                     <p class="font-medium">Belum ada data tagihan atau pembayaran.</p>
@@ -235,7 +278,7 @@
                 </div>
                 <div>
                     <label class="block text-sm font-bold text-on-surface-variant mb-1">Nominal (Rp)</label>
-                    <input type="number" name="jumlah" value="25000" class="w-full rounded-xl border-outline-variant/50 focus:border-primary focus:ring focus:ring-primary/20 bg-surface text-sm" required>
+                    <input type="number" name="jumlah" value="5000" class="w-full rounded-xl border-outline-variant/50 focus:border-primary focus:ring focus:ring-primary/20 bg-surface text-sm" required>
                 </div>
                 <p class="text-xs text-on-surface-variant mt-2">
                     Tagihan ini hanya akan di-generate untuk role <b>Bendahara</b> dan <b>Pengurus</b>. Anggota tidak memiliki kewajiban kas.
@@ -248,6 +291,84 @@
         </form>
     </div>
 </div>
+
+{{-- Modal Lihat Bukti Pembayaran --}}
+<div id="bukti-modal" class="fixed inset-0 z-[110] flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
+    <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeBuktiModal()"></div>
+    <div id="bukti-modal-content" class="bg-white p-5 rounded-3xl max-w-lg w-full max-h-[85vh] relative z-10 overflow-hidden flex flex-col items-center shadow-2xl mx-4 transform scale-95 transition-transform duration-300">
+        <button onclick="closeBuktiModal()" class="absolute top-4 right-4 bg-surface hover:bg-surface-container-high text-on-surface rounded-full p-2 flex items-center justify-center transition-colors border border-outline-variant/20 shadow-sm z-20">
+            <span class="material-symbols-outlined text-lg font-bold">close</span>
+        </button>
+        <div class="w-full overflow-y-auto flex justify-center items-center p-2 mt-8">
+            <img id="bukti-img" src="" class="max-w-full max-h-[55vh] object-contain rounded-2xl shadow-inner border border-outline-variant/20" alt="Bukti Pembayaran">
+        </div>
+        <p id="bukti-caption" class="text-sm font-extrabold mt-4 text-center text-on-surface"></p>
+    </div>
+</div>
+
+{{-- Modal Reject Pembayaran --}}
+<div id="modal-reject" class="fixed inset-0 z-[120] hidden bg-on-surface/50 backdrop-blur-sm flex items-center justify-center">
+    <div class="bg-surface-container-lowest rounded-3xl w-full max-w-md mx-4 overflow-hidden shadow-xl transform transition-all">
+        <div class="px-6 py-5 border-b border-outline-variant/30 flex justify-between items-center">
+            <h3 class="text-xl font-headline font-bold text-on-surface">Tolak Pembayaran</h3>
+            <button onclick="closeRejectModal()" class="text-on-surface-variant hover:text-error transition">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <form id="reject-form" action="" method="POST">
+            @csrf
+            <div class="p-6 space-y-4">
+                <p class="text-sm text-on-surface-variant">Tolak pembayaran dari <span id="reject-user-name" class="font-bold"></span>?</p>
+                <div>
+                    <label class="block text-sm font-bold text-on-surface-variant mb-1 font-headline">Alasan Penolakan</label>
+                    <textarea name="alasan_penolakan" rows="3" class="w-full rounded-xl border-outline-variant/50 focus:border-primary focus:ring focus:ring-primary/20 bg-surface text-sm" placeholder="Contoh: Bukti transfer tidak jelas / nominal kurang..." required></textarea>
+                </div>
+            </div>
+            <div class="px-6 py-4 bg-surface-container-low border-t border-outline-variant/30 flex justify-end gap-3">
+                <button type="button" onclick="closeRejectModal()" class="px-5 py-2 rounded-xl text-sm font-bold text-on-surface-variant hover:bg-surface-container transition">Batal</button>
+                <button type="submit" class="px-5 py-2 rounded-xl text-sm font-bold text-white bg-error hover:bg-error/90 transition shadow-sm">Tolak Pembayaran</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    const buktiModal = document.getElementById('bukti-modal');
+    const buktiModalContent = document.getElementById('bukti-modal-content');
+    const buktiImg = document.getElementById('bukti-img');
+    const buktiCaption = document.getElementById('bukti-caption');
+
+    function openBuktiModal(src, nama, periode) {
+        buktiImg.src = src;
+        buktiCaption.textContent = 'Bukti Transfer — ' + nama + ' (' + periode + ')';
+        buktiModal.classList.remove('hidden');
+        setTimeout(() => {
+            buktiModal.classList.remove('opacity-0');
+            buktiModalContent.classList.remove('scale-95');
+            buktiModalContent.classList.add('scale-100');
+        }, 10);
+    }
+
+    function closeBuktiModal() {
+        buktiModal.classList.add('opacity-0');
+        buktiModalContent.classList.remove('scale-100');
+        buktiModalContent.classList.add('scale-95');
+        setTimeout(() => {
+            buktiModal.classList.add('hidden');
+        }, 300);
+    }
+
+    function openRejectModal(id, name) {
+        const form = document.getElementById('reject-form');
+        form.action = `/bendahara/status-pembayaran/${id}/reject`;
+        document.getElementById('reject-user-name').textContent = name;
+        document.getElementById('modal-reject').classList.remove('hidden');
+    }
+
+    function closeRejectModal() {
+        document.getElementById('modal-reject').classList.add('hidden');
+    }
+</script>
 
 </body>
 </html>

@@ -122,7 +122,37 @@ class BendaharaAuthController extends Controller
         // Gabungkan, lalu sortir berdasarkan waktu input yang paling akurat (created_at), baru ambil 5 teratas
         $transaksiTerbaru = $kasMasuk->concat($kasKeluar)->sortByDesc('created_at')->take(5);
 
-        return view('bendahara.dashboard', compact('pemasukanBulanIni', 'pengeluaranBulanIni', 'totalSaldo', 'transaksiTerbaru'));
+        // Statistik Tagihan
+        $totalTagihan = \App\Models\PembayaranKas::count();
+        $tagihanBelumBayar = \App\Models\PembayaranKas::where('status', 'Belum Bayar')->count();
+        $tagihanLunas = \App\Models\PembayaranKas::where('status', 'Lunas')->count();
+        
+        $today = \Carbon\Carbon::today();
+        $tagihanJatuhTempo = \App\Models\PembayaranKas::whereIn('status', ['Belum Bayar', 'Ditolak'])
+            ->get()
+            ->filter(function($pembayaran) use ($today) {
+                $parts = explode('-', $pembayaran->periode);
+                if (count($parts) === 2) {
+                    $dueDate = \Carbon\Carbon::create($parts[0], $parts[1], 10);
+                    return $today->greaterThan($dueDate);
+                }
+                return false;
+            })
+            ->count();
+            
+        $jumlahReminderTerkirim = \App\Models\PembayaranKasReminder::count();
+
+        return view('bendahara.dashboard', compact(
+            'pemasukanBulanIni', 
+            'pengeluaranBulanIni', 
+            'totalSaldo', 
+            'transaksiTerbaru',
+            'totalTagihan',
+            'tagihanBelumBayar',
+            'tagihanLunas',
+            'tagihanJatuhTempo',
+            'jumlahReminderTerkirim'
+        ));
     }
 
     // ─────────────────── LOGOUT ───────────────────
