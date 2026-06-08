@@ -16,19 +16,21 @@ class PengajuanDanaController extends Controller
     {
         $query = PengajuanDana::with('user');
 
-        if ($request->filled('status')) {
-            $query->where('status', $request->status);
+        if ($request->filled('status') && $request->status !== 'Semua') {
+            $query->where('status', strtolower($request->status));
         }
 
         if ($request->filled('search')) {
             $search = $request->search;
-            $query->whereHas('user', function ($q) use ($search) {
-                $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('email', 'like', "%{$search}%");
-            })->orWhere('jenis_pengajuan', 'like', "%{$search}%");
+            $query->where(function($q) use ($search) {
+                $q->whereHas('user', function ($uq) use ($search) {
+                    $uq->where('name', 'like', "%{$search}%")
+                      ->orWhere('email', 'like', "%{$search}%");
+                })->orWhere('jenis_pengajuan', 'like', "%{$search}%");
+            });
         }
 
-        $pengajuans = $query->orderBy('created_at', 'desc')->paginate(15);
+        $pengajuans = $query->orderBy('created_at', 'desc')->paginate(10);
 
         return view('bendahara.pengajuan-dana.index', compact('pengajuans'));
     }
@@ -38,33 +40,59 @@ class PengajuanDanaController extends Controller
      */
     public function show($id)
     {
-        $pengajuan = PengajuanDana::with('user')->findOrFail($id);
+        $pengajuan = PengajuanDana::with(['user', 'reviewer'])->findOrFail($id);
         return view('bendahara.pengajuan-dana.show', compact('pengajuan'));
     }
 
     /**
-     * Process (approve/reject) the specified fund request.
+     * Setujui pengajuan
      */
-    public function proses(Request $request, $id)
+    public function approve(Request $request, $id)
     {
-        $request->validate([
-            'status' => ['required', 'string', 'in:disetujui,ditolak'],
-            'catatan_pengurus' => ['nullable', 'string', 'max:1000'],
-        ], [
-            'status.required' => 'Status persetujuan wajib ditentukan.',
-            'status.in' => 'Status persetujuan tidak valid.',
-            'catatan_pengurus.max' => 'Catatan maksimal 1000 karakter.',
-        ]);
-
         $pengajuan = PengajuanDana::findOrFail($id);
-        $pengajuan->update([
-            'status' => $request->status,
-            'catatan_pengurus' => $request->catatan_pengurus,
+
+        if ($pengajuan->status !== 'pending') {
+            return redirect()->back()->with('error', 'Pengajuan dana tidak dapat diproses lagi.');
+        }
+
+        $request->validate([
+            'catatan_reviewer' => 'nullable|string'
         ]);
 
-        $statusText = $request->status === 'disetujui' ? 'disetujui' : 'ditolak';
+        $pengajuan->update([
+            'status' => 'approved',
+            'reviewer_id' => Auth::id(),
+            'reviewed_at' => now(),
+            'catatan_reviewer' => $request->catatan_reviewer,
+        ]);
 
         return redirect()->route('bendahara.pengajuan-dana.index')
-            ->with('success', "Pengajuan dana milik {$pengajuan->user->name} berhasil {$statusText}.");
+            ->with('success', 'Pengajuan dana berhasil disetujui.');
+    }
+
+    /**
+     * Tolak pengajuan
+     */
+    public function reject(Request $request, $id)
+    {
+        $pengajuan = PengajuanDana::findOrFail($id);
+
+        if ($pengajuan->status !== 'pending') {
+            return redirect()->back()->with('error', 'Pengajuan dana tidak dapat diproses lagi.');
+        }
+
+        $request->validate([
+            'catatan_reviewer' => 'nullable|string'
+        ]);
+
+        $pengajuan->update([
+            'status' => 'rejected',
+            'reviewer_id' => Auth::id(),
+            'reviewed_at' => now(),
+            'catatan_reviewer' => $request->catatan_reviewer,
+        ]);
+
+        return redirect()->route('bendahara.pengajuan-dana.index')
+            ->with('success', 'Pengajuan dana telah ditolak.');
     }
 }
