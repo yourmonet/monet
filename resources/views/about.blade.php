@@ -10,7 +10,7 @@
     <link href="https://fonts.googleapis.com" rel="preconnect"/>
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet"/>
-    <link rel="favicon" href="https://cdn-1.yourmonet.web.id/images/monet.png" type="image/x-icon">
+    <link rel="icon" type="image/png" href="https://cdn-1.yourmonet.web.id/images/monet.png">monet.png" type="image/x-icon">
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <!-- AOS Animation -->
@@ -246,7 +246,7 @@
         <div class="max-w-4xl mx-auto px-margin-mobile md:px-margin-desktop" data-aos="fade-up">
             <h2 class="font-display-lg text-4xl md:text-display-lg text-on-surface mb-stack-lg font-light">Siap Mengatur Keuangan Organisasi Anda?</h2>
             <p class="font-body-lg text-body-lg text-on-surface-variant mb-16 leading-relaxed">Tingkatkan presisi akuntansi dan kurangi risiko finansial dengan Monet hari ini.</p>
-            <a class="inline-flex justify-center items-center bg-primary text-on-primary font-label-md text-label-md px-12 py-5 rounded-full hover:bg-on-primary-fixed-variant transition-all duration-200" href="{{ route('user.register') }}">
+            <a class="inline-flex justify-center items-center bg-primary text-on-primary font-label-md text-label-md px-12 py-5 rounded-full hover:bg-on-primary-fixed-variant transition-all duration-200" href="{{ route('register') }}">
                 Mulai Sekarang
             </a>
         </div>

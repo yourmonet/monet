@@ -10,7 +10,7 @@
     <link href="https://fonts.googleapis.com" rel="preconnect"/>
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet"/>
-    <link rel="favicon" href="https://cdn-1.yourmonet.web.id/images/monet.png" type="image/x-icon">
+    <link rel="icon" type="image/png" href="https://cdn-1.yourmonet.web.id/images/monet.png">
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <!-- AOS Animation -->
@@ -184,7 +184,7 @@
             MONET diciptakan untuk membantu organisasi mengelola keuangan dengan lebih cerdas dan transparan.
         </p>
         <div data-aos="fade-up" data-aos-delay="200" class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-6">
-            <a class="inline-flex justify-center items-center bg-primary text-white font-label-md text-label-md px-10 py-4 rounded-full hover:bg-blue-800 transition-all duration-300 shadow-lg shadow-primary/30" href="{{ route('user.register') }}">
+            <a class="inline-flex justify-center items-center bg-primary text-white font-label-md text-label-md px-10 py-4 rounded-full hover:bg-blue-800 transition-all duration-300 shadow-lg shadow-primary/30" href="{{ route('register') }}">
                 Mulai Sekarang
             </a>
             <a class="inline-flex justify-center items-center group text-white font-label-md text-label-md px-10 py-4 border border-white/30 hover:bg-white/10 rounded-full backdrop-blur-sm transition-all duration-300" href="{{ route('about') }}">
@@ -363,7 +363,7 @@
     <div class="max-w-4xl mx-auto px-margin-mobile md:px-margin-desktop" data-aos="fade-up">
         <h2 class="font-display-lg text-4xl md:text-display-lg text-on-surface mb-stack-lg font-light">Siap Mengatur Keuangan Organisasi Anda?</h2>
         <p class="font-body-lg text-body-lg text-on-surface-variant mb-16 leading-relaxed">Tingkatkan presisi akuntansi dan kurangi risiko finansial dengan Monet hari ini.</p>
-        <a class="inline-flex justify-center items-center bg-primary text-on-primary font-label-md text-label-md px-12 py-5 rounded-full hover:bg-on-primary-fixed-variant transition-all duration-200" href="{{ route('user.register') }}">
+        <a class="inline-flex justify-center items-center bg-primary text-on-primary font-label-md text-label-md px-12 py-5 rounded-full hover:bg-on-primary-fixed-variant transition-all duration-200" href="{{ route('register') }}">
             Mulai Sekarang
         </a>
     </div>

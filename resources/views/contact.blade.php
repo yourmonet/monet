@@ -10,7 +10,7 @@
     <link href="https://fonts.googleapis.com" rel="preconnect"/>
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet"/>
-    <link rel="favicon" href="https://cdn-1.yourmonet.web.id/images/monet.png" type="image/x-icon">
+    <link rel="icon" type="image/png" href="https://cdn-1.yourmonet.web.id/images/monet.png">
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <!-- AOS Animation -->

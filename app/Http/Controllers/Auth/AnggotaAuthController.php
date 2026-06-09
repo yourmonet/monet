@@ -91,15 +91,13 @@ class AnggotaAuthController extends Controller
 
     public function dashboard(): View
     {
-        $currentMonth = \Carbon\Carbon::now()->month;
-        $currentYear = \Carbon\Carbon::now()->year;
+        $startOfMonth = \Carbon\Carbon::now()->startOfMonth()->toDateString();
+        $endOfMonth = \Carbon\Carbon::now()->endOfMonth()->toDateString();
 
-        $pemasukanBulanIni = \App\Models\KasMasuk::whereMonth('tanggal', $currentMonth)
-            ->whereYear('tanggal', $currentYear)
+        $pemasukanBulanIni = \App\Models\KasMasuk::whereBetween('tanggal', [$startOfMonth, $endOfMonth])
             ->sum('jumlah');
 
-        $pengeluaranBulanIni = \App\Models\KasKeluar::whereMonth('tanggal', $currentMonth)
-            ->whereYear('tanggal', $currentYear)
+        $pengeluaranBulanIni = \App\Models\KasKeluar::whereBetween('tanggal', [$startOfMonth, $endOfMonth])
             ->sum('nominal');
 
         $totalPemasukan = \App\Models\KasMasuk::sum('jumlah');
