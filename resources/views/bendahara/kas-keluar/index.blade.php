@@ -105,11 +105,12 @@
                 </div>
                 <!-- Kategori / Sumber -->
                 <div class="w-full md:w-40 shrink-0">
-                    <select id="sumber" name="sumber" 
+                    <select id="kategori_id" name="kategori_id" 
                         class="w-full rounded-xl border-outline-variant/50 focus:border-primary focus:ring focus:ring-primary/20 text-sm capitalize">
                         <option value="">Semua Kategori</option>
                         @foreach($categories as $cat)
-                            <option value="{{ $cat }}">{{ $cat }}</option>
+                            <!-- Perbaikan bug dropdown Kas Keluar -->
+                            <option value="{{ $cat->id }}">{{ $cat->nama_kategori }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -135,7 +136,7 @@
                     <tr>
                         <th class="px-6 py-4">Tanggal</th>
                         <th class="px-6 py-4">Keterangan</th>
-                        <th class="px-6 py-4">Sumber / Kategori</th>
+                        <th class="px-6 py-4">Kategori</th>
                         <th class="px-6 py-4 text-center">Status</th>
                         <th class="px-6 py-4 text-right">Nominal</th>
                     </tr>

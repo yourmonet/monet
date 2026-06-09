@@ -128,11 +128,12 @@
                     </div>
                     <!-- Kategori / Sumber -->
                     <div class="w-full md:w-40 shrink-0">
-                        <select id="sumber" name="sumber"
+                        <select id="kategori_id" name="kategori_id"
                             class="w-full rounded-xl border-outline-variant/50 focus:border-primary focus:ring focus:ring-primary/20 text-sm capitalize">
                             <option value="">Semua Kategori</option>
                             @foreach($categories as $cat)
-                            <option value="{{ $cat }}">{{ $cat }}</option>
+                            <!-- Perbaikan bug dropdown: value menggunakan ID, text menggunakan nama_kategori -->
+                            <option value="{{ $cat->id }}">{{ $cat->nama_kategori }}</option>
                             @endforeach
                         </select>
                     </div>

@@ -28,9 +28,9 @@ class KasKeluarController extends Controller
             $query->whereDate('tanggal', $request->input('tanggal'));
         }
 
-        // Filter sumber
-        if ($request->filled('sumber')) {
-            $query->where('sumber', $request->input('sumber'));
+        // Filter kategori (Perbaikan Bug Dropdown Kas Keluar)
+        if ($request->filled('kategori_id')) {
+            $query->where('kategori_id', $request->input('kategori_id'));
         }
 
         // Sorting
@@ -38,8 +38,8 @@ class KasKeluarController extends Controller
 
         $kasKeluar = $query->paginate(30);
 
-        // Get unique sumber values for filter dropdown
-        $categories = KasKeluar::select('sumber')->distinct()->pluck('sumber');
+        // Get unique categories values for filter dropdown (Mengambil dari model KategoriTransaksi)
+        $categories = KategoriTransaksi::where('jenis', 'pengeluaran')->get();
 
         if ($request->ajax()) {
             return response()->json([

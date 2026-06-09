@@ -6,9 +6,9 @@
         <td class="px-6 py-4">
             <div class="font-bold text-on-surface">{{ $kk->keterangan }}</div>
         </td>
-        <td class="px-6 py-4">
-            <div class="capitalize font-semibold text-on-surface-variant">{{ $kk->sumber }}</div>
-            <div class="text-[11px] text-outline font-bold mt-0.5 bg-surface-container/60 inline-block px-2 py-0.5 rounded-lg border border-outline-variant/30">{{ $kk->kategori ? $kk->kategori->nama_kategori : 'Tanpa Kategori' }}</div>
+        <!-- Perbaikan UI tabel agar konsisten dengan Kas Masuk -->
+        <td class="px-6 py-4 capitalize font-semibold text-on-surface-variant">
+            {{ $kk->kategori ? $kk->kategori->nama_kategori : 'Tanpa Kategori' }}
         </td>
         <td class="px-6 py-4 text-center">
             <span class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-[11px] font-bold bg-success-container/70 text-on-success-container border border-success/20">
