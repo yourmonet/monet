@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>Monet - Sistem Keuangan Organisasi</title>
+    <title>MONEY ON INTERNET - MONET</title>
     <!-- Material Symbols -->
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
     <!-- Google Fonts -->
@@ -136,10 +136,10 @@
         </a>
         <!-- Navigation Links (Desktop) -->
         <div class="hidden md:flex space-x-margin-desktop">
-            <a class="text-on-surface-variant font-label-md text-label-md hover:text-primary transition-colors duration-200" href="#features">Fitur</a>
-            <a class="text-on-surface-variant font-label-md text-label-md hover:text-primary transition-colors duration-200" href="#solutions">Tentang Kami</a>
-            <a class="text-on-surface-variant font-label-md text-label-md hover:text-primary transition-colors duration-200" href="#pricing">Harga</a>
-            <a class="text-on-surface-variant font-label-md text-label-md hover:text-primary transition-colors duration-200" href="#about">Kontak</a>
+            <a class="text-on-surface-variant font-label-md text-label-md hover:text-primary transition-colors duration-200" href="">Beranda</a>
+            <a class="text-on-surface-variant font-label-md text-label-md hover:text-primary transition-colors duration-200" href="">Tentang Kami</a>
+            <!-- <a class="text-on-surface-variant font-label-md text-label-md hover:text-primary transition-colors duration-200" href="">Harga</a> -->
+            <a class="text-on-surface-variant font-label-md text-label-md hover:text-primary transition-colors duration-200" href="">Kontak</a>
         </div>
         <!-- Actions -->
         <div class="flex items-center space-x-gutter">
@@ -171,32 +171,32 @@
                 Mulai Sekarang
             </a>
             <a class="inline-flex justify-center items-center group text-white font-label-md text-label-md px-10 py-4 border border-white/30 hover:bg-white/10 rounded-full backdrop-blur-sm transition-all duration-300" href="#features">
-                Lihat Demo <span class="material-symbols-outlined ml-2 group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                Tentang Kami <span class="material-symbols-outlined ml-2 group-hover:translate-x-1 transition-transform">arrow_forward</span>
             </a>
         </div>
     </div>
 </header>
 
-<!-- Social Proof Section -->
-<section class="border-t border-outline-variant/30 bg-surface py-20">
+
+<!-- <section class="border-t border-outline-variant/30 bg-surface py-20">
     <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
         <p class="text-center font-label-sm text-label-sm text-on-surface-variant mb-12 uppercase tracking-[0.2em]">Dipercaya oleh instansi terkemuka</p>
         <div class="flex flex-wrap justify-center items-center gap-24 opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
-            <!-- Placeholders for logos -->
+
             <span class="font-headline-md text-headline-md font-bold text-outline-variant">GlobalNGO</span>
             <span class="font-headline-md text-headline-md font-bold text-outline-variant">TechCorp Ind</span>
             <span class="font-headline-md text-headline-md font-bold text-outline-variant">Grup Finansial</span>
             <span class="font-headline-md text-headline-md font-bold text-outline-variant">Yayasan Bakti</span>
         </div>
     </div>
-</section>
+</section> -->
 
 <!-- Features Section -->
 <section class="py-32 bg-surface-container-lowest" id="features">
     <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
         <div class="text-center max-w-3xl mx-auto mb-32">
-            <h2 class="font-display-lg text-display-lg text-on-surface mb-stack-md font-light">Infrastruktur Keuangan Terpadu</h2>
-            <p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed">Arsitektur sistem yang dibangun untuk menangani kompleksitas pelaporan dan penganggaran organisasi skala menengah hingga besar.</p>
+            <h2 class="font-display-lg text-display-lg text-on-surface mb-stack-md font-light">Mengapa harus MONET?</h2>
+            <p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed">Kami memiliki fitur unggulan yang dapat digunakan untuk keperluan organisasi Anda.</p>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-x-24 gap-y-32">
             <!-- Feature 1 -->
@@ -204,69 +204,87 @@
                 <div class="w-24 h-24 rounded-full bg-primary-fixed/20 flex items-center justify-center text-primary mb-stack-lg group-hover:scale-110 transition-transform duration-500">
                     <span class="material-symbols-outlined text-[48px] font-light">donut_large</span>
                 </div>
-                <h3 class="font-headline-lg text-headline-lg text-on-surface mb-stack-md font-medium">Pelaporan Real-time</h3>
-                <p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed max-w-md">Pantau likuiditas dan metrik finansial krusial dalam hitungan detik. Dashboard interaktif yang menerjemahkan data mentah menjadi wawasan strategis.</p>
+                <h3 class="font-headline-lg text-headline-lg text-on-surface mb-stack-md font-medium">Laporan Keuangan Real-time</h3>
+                <p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed max-w-md">Pantau laporan keuangan secara realtime dimanapun dan kapanpun.</p>
             </div>
             <!-- Feature 2 -->
             <div class="flex flex-col items-center text-center group">
                 <div class="w-24 h-24 rounded-full bg-surface-variant/50 flex items-center justify-center text-on-surface-variant mb-stack-lg group-hover:scale-110 transition-transform duration-500">
                     <span class="material-symbols-outlined text-[48px] font-light">timeline</span>
                 </div>
-                <h3 class="font-headline-lg text-headline-lg text-on-surface mb-stack-md font-medium">Jejak Audit</h3>
-                <p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed max-w-md">Rekam setiap perubahan dengan log sistem yang tidak dapat diubah (immutable), menjamin kepatuhan regulasi secara otomatis.</p>
+                <h3 class="font-headline-lg text-headline-lg text-on-surface mb-stack-md font-medium">Transparansi First</h3>
+                <p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed max-w-md">Bukan hanya bendahara saja, pengurus biasa dapat memantau laporan keuangan organisasi.</p>
             </div>
             <!-- Feature 3 -->
             <div class="flex flex-col items-center text-center group">
                 <div class="w-24 h-24 rounded-full bg-surface-variant/50 flex items-center justify-center text-on-surface-variant mb-stack-lg group-hover:scale-110 transition-transform duration-500">
                     <span class="material-symbols-outlined text-[48px] font-light">account_balance</span>
                 </div>
-                <h3 class="font-headline-lg text-headline-lg text-on-surface mb-stack-md font-medium">Alat Anggaran</h3>
-                <p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed max-w-md">Alokasikan dana antar departemen dengan batasan presisi dan notifikasi over-budget proaktif untuk kontrol yang lebih baik.</p>
+                <h3 class="font-headline-lg text-headline-lg text-on-surface mb-stack-md font-medium">Pencairan Mudah</h3>
+                <p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed max-w-md">Terhubung dengan banyak Bank besar di Indonesia yang dapat memudahkan pencairan dana organisasi Anda.</p>
             </div>
             <!-- Feature 4 -->
             <div class="flex flex-col items-center text-center group">
-                <div class="w-24 h-24 rounded-full bg-primary-fixed/20 flex items-center justify-center text-primary mb-stack-lg group-hover:scale-110 transition-transform duration-500">
-                    <span class="material-symbols-outlined text-[48px] font-light">hub</span>
+                <div class="w-24 h-24 rounded-full bg-primary-fixed/20 flex items-center justify-center text-primary mb-stack-lg group-hover:scale-110 transition-transform duration-500 p-4">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a2/Logo_QRIS.svg" alt="QRIS" class="w-full h-full object-contain">
                 </div>
-                <h3 class="font-headline-lg text-headline-lg text-on-surface mb-stack-md font-medium">Akses Multi-pengguna &amp; RBAC</h3>
-                <p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed max-w-md">Sistem Role-Based Access Control memastikan staf hanya melihat modul yang relevan dengan otoritas mereka, menjaga kerahasiaan data.</p>
+                <h3 class="font-headline-lg text-headline-lg text-on-surface mb-stack-md font-medium">Pembayaran Mudah & Cepat</h3>
+                <p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed max-w-md">Sistem kami menggunakan QRIS sebagai metode pembayaran untuk kemudahan transaksi.</p>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Solutions Section -->
-<section class="py-32 bg-surface" id="solutions">
+<!-- Team Section -->
+<section class="py-32 bg-surface" id="team">
     <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
-        <div class="mb-32 max-w-3xl">
-            <h2 class="font-display-lg text-display-lg text-on-surface mb-stack-md font-light">Solusi Untuk Setiap Skala</h2>
-            <p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed">Dari entitas nirlaba hingga korporasi multinasional, platform kami beradaptasi dengan alur kerja finansial Anda tanpa batas.</p>
+        <div class="mb-24 text-center">
+            <h2 class="font-display-lg text-display-lg text-on-surface mb-stack-md font-light">Tim Kami</h2>
+            <p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed">Ini adalah orang-orang dibalik layar MONET.</p>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-x-24 gap-y-16">
-            <!-- Sol 1 -->
-            <div class="border-t border-outline-variant/30 pt-10 hover:border-primary transition-colors duration-500">
-                <h3 class="font-headline-md text-headline-md text-on-surface mb-stack-md">Organisasi Nirlaba (LSM)</h3>
-                <p class="font-body-md text-body-md text-on-surface-variant mb-stack-lg leading-relaxed">Laporan pertanggungjawaban donor yang transparan dengan pelacakan hibah berbasis proyek. Tingkatkan kepercayaan pemberi dana.</p>
-                <a class="inline-flex items-center text-primary font-label-md text-label-md uppercase tracking-widest hover:text-on-primary-fixed-variant group" href="#">Pelajari lebih lanjut <span class="material-symbols-outlined ml-2 text-[20px] group-hover:translate-x-1 transition-transform">arrow_forward</span></a>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-16">
+            <!-- Member 1 -->
+            <div class="flex flex-col items-center text-center">
+                <div class="w-40 h-40 rounded-full overflow-hidden mb-6 border-4 border-primary/10 hover:border-primary/30 transition-colors shadow-lg shadow-outline-variant/20">
+                    <img src="https://cdn-1.yourmonet.web.id/images/team/sidiq.jpeg" alt="Aldy Alfiansyah" class="w-full h-full object-cover select-none" oncontextmenu="return false;" draggable="false">
+                </div>
+                <h3 class="font-headline-md text-headline-md text-on-surface mb-1">Achmad Assidiq L</h3>
+                <p class="font-body-md text-body-md text-primary font-medium mb-3">Product Owner</p>
+                <!-- <p class="font-body-sm text-body-sm text-on-surface-variant">Mengarahkan visi produk dan memastikan setiap modul memenuhi standar tertinggi.</p> -->
             </div>
-            <!-- Sol 2 -->
-            <div class="border-t border-outline-variant/30 pt-10 hover:border-primary transition-colors duration-500">
-                <h3 class="font-headline-md text-headline-md text-on-surface mb-stack-md">UKM Berkembang</h3>
-                <p class="font-body-md text-body-md text-on-surface-variant mb-stack-lg leading-relaxed">Tinggalkan spreadsheet manual. Otomatisasi faktur, rekonsiliasi bank, dan proyeksi arus kas untuk mendukung ekspansi agresif.</p>
-                <a class="inline-flex items-center text-primary font-label-md text-label-md uppercase tracking-widest hover:text-on-primary-fixed-variant group" href="#">Pelajari lebih lanjut <span class="material-symbols-outlined ml-2 text-[20px] group-hover:translate-x-1 transition-transform">arrow_forward</span></a>
+            <!-- Member 2 -->
+            <div class="flex flex-col items-center text-center">
+                <div class="w-40 h-40 rounded-full overflow-hidden mb-6 border-4 border-primary/10 hover:border-primary/30 transition-colors shadow-lg shadow-outline-variant/20">
+                    <img src="https://cdn-1.yourmonet.web.id/images/team/aldilah.jpeg" alt="Fahri" class="w-full h-full object-cover select-none" oncontextmenu="return false;" draggable="false">
+                </div>
+                <h3 class="font-headline-md text-headline-md text-on-surface mb-1">Aldilah Rihadatul'ais</h3>
+                <p class="font-body-md text-body-md text-primary font-medium mb-3">Scrum Master</p>
+                <!-- <p class="font-body-sm text-body-sm text-on-surface-variant">Arsitek utama sistem keuangan dan pengembangan fitur inti.</p> -->
             </div>
-            <!-- Sol 3 -->
-            <div class="border-t border-outline-variant/30 pt-10 hover:border-primary transition-colors duration-500">
-                <h3 class="font-headline-md text-headline-md text-on-surface mb-stack-md">Korporasi Besar</h3>
-                <p class="font-body-md text-body-md text-on-surface-variant mb-stack-lg leading-relaxed">Konsolidasi multi-entitas, kepatuhan perpajakan kompleks, dan integrasi API dengan sistem ERP warisan Anda.</p>
-                <a class="inline-flex items-center text-primary font-label-md text-label-md uppercase tracking-widest hover:text-on-primary-fixed-variant group" href="#">Pelajari lebih lanjut <span class="material-symbols-outlined ml-2 text-[20px] group-hover:translate-x-1 transition-transform">arrow_forward</span></a>
+            <!-- Member 3 -->
+            <div class="flex flex-col items-center text-center">
+                <div class="w-40 h-40 rounded-full overflow-hidden mb-6 border-4 border-primary/10 hover:border-primary/30 transition-colors shadow-lg shadow-outline-variant/20">
+                    <img src="https://cdn-1.yourmonet.web.id/images/team/aldy.JPG" alt="Siti Nurhaliza" class="w-full h-full object-cover select-none" oncontextmenu="return false;" draggable="false">
+                </div>
+                <h3 class="font-headline-md text-headline-md text-on-surface mb-1">Aldy Alfiansyah</h3>
+                <p class="font-body-md text-body-md text-primary font-medium mb-3">Developer 1</p>
+                <!-- <p class="font-body-sm text-body-sm text-on-surface-variant">Merancang antarmuka pengguna yang intuitif dan profesional untuk sistem MONET.</p> -->
+            </div>
+            <!-- Member 4 -->
+            <div class="flex flex-col items-center text-center">
+                <div class="w-40 h-40 rounded-full overflow-hidden mb-6 border-4 border-primary/10 hover:border-primary/30 transition-colors shadow-lg shadow-outline-variant/20">
+                    <img src="https://cdn-1.yourmonet.web.id/images/team/fahri.jpeg" alt="Budi Santoso" class="w-full h-full object-cover select-none" oncontextmenu="return false;" draggable="false">
+                </div>
+                <h3 class="font-headline-md text-headline-md text-on-surface mb-1">Fahri Bintang M</h3>
+                <p class="font-body-md text-body-md text-primary font-medium mb-3">Developer 2</p>
+                <!-- <p class="font-body-sm text-body-sm text-on-surface-variant">Memastikan tidak ada celah dalam keamanan dan akurasi fungsional sistem.</p> -->
             </div>
         </div>
     </div>
 </section>
 
 <!-- Testimonial Section -->
-<section class="py-32 bg-primary-fixed/5 relative overflow-hidden">
+<!-- <section class="py-32 bg-primary-fixed/5 relative overflow-hidden">
     <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop relative z-10">
         <div class="max-w-5xl mx-auto text-center">
             <span class="material-symbols-outlined text-primary/20 text-[80px] mb-stack-lg block font-light">format_quote</span>
@@ -279,17 +297,17 @@
             </div>
         </div>
     </div>
-</section>
+</section> -->
 
 <!-- Pricing Preview -->
-<section class="py-32 bg-surface" id="pricing">
+<!-- <section class="py-32 bg-surface" id="pricing">
     <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
         <div class="text-center max-w-3xl mx-auto mb-32">
             <h2 class="font-display-lg text-display-lg text-on-surface mb-stack-md font-light">Investasi yang Rasional</h2>
             <p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed">Struktur harga yang dirancang transparan, terintegrasi mulus dengan pertumbuhan Anda.</p>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 max-w-5xl mx-auto divide-y md:divide-y-0 md:divide-x divide-outline-variant/30">
-            <!-- Plan 1 -->
+
             <div class="p-16 flex flex-col items-center text-center hover:bg-surface-container-lowest transition-colors duration-500">
                 <h3 class="font-label-md text-label-md uppercase tracking-[0.2em] text-on-surface-variant mb-stack-lg">Profesional</h3>
                 <div class="mb-stack-md flex items-baseline justify-center">
@@ -304,7 +322,7 @@
                 </ul>
                 <a class="block text-center w-full max-w-xs mx-auto bg-surface border border-outline-variant text-on-surface font-label-md text-label-md py-4 rounded-full hover:bg-surface-container transition-colors" href="#">Pilih Profesional</a>
             </div>
-            <!-- Plan 2 (Highlighted) -->
+
             <div class="p-16 flex flex-col items-center text-center bg-primary-fixed/5 hover:bg-primary-fixed/10 transition-colors duration-500 relative">
                 <div class="absolute top-8 right-8 text-primary font-label-sm text-label-sm uppercase tracking-widest">Paling Populer</div>
                 <h3 class="font-label-md text-label-md uppercase tracking-[0.2em] text-primary mb-stack-lg">Enterprise</h3>
@@ -321,7 +339,7 @@
             </div>
         </div>
     </div>
-</section>
+</section> -->
 
 <!-- CTA Section -->
 <section class="py-32 bg-surface text-center border-t border-outline-variant/30">
@@ -329,7 +347,7 @@
         <h2 class="font-display-lg text-display-lg text-on-surface mb-stack-lg font-light">Siap Mengatur Keuangan Organisasi Anda?</h2>
         <p class="font-body-lg text-body-lg text-on-surface-variant mb-16 leading-relaxed">Tingkatkan presisi akuntansi dan kurangi risiko finansial dengan Monet hari ini.</p>
         <a class="inline-flex justify-center items-center bg-primary text-on-primary font-label-md text-label-md px-12 py-5 rounded-full hover:bg-on-primary-fixed-variant transition-all duration-200" href="{{ route('user.register') }}">
-            Mulai Uji Coba Gratis
+            Mulai Sekarang
         </a>
     </div>
 </section>
@@ -343,7 +361,7 @@
                 <img src="https://cdn-1.yourmonet.web.id/images/monet2.png" alt="Monet Logo" class="h-8 w-auto object-contain">
             </a>
             <p class="text-body-sm font-body-sm text-on-surface-variant leading-relaxed">
-                © 2024 Monet Organizational Finance. All rights reserved. Precision in Every Transaction.
+                &copy; <script>document.write( new Date().getFullYear() );</script> Money On Internet (MONET). All rights reserved.
             </p>
         </div>
         <!-- Links Column 1 -->
