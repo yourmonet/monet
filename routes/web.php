@@ -17,7 +17,15 @@ use Illuminate\Support\Facades\Route;
 // ─────────────────────────────────────────────────────────
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('home');
+
+Route::get('/tentang-kami', function () {
+    return view('about');
+})->name('about');
+
+Route::get('/kontak', function () {
+    return view('contact');
+})->name('contact');
 
 // Callback Midtrans (Sebaiknya pastikan route ini dikecualikan dari CSRF token)
 Route::post('/midtrans/callback', [MidtransCallbackController::class, 'handleCallback'])->name('midtrans.callback');
@@ -127,8 +135,12 @@ Route::get('/auth/google/complete', [GoogleAuthController::class, 'showCompleteP
 Route::post('/auth/google/complete',[GoogleAuthController::class, 'completeProfile'])->name('auth.google.complete.post');
 Route::get('/auth/google/{role}',   [GoogleAuthController::class, 'redirectToGoogle'])->name('auth.google.redirect');
 
+require __DIR__.'/auth.php';
+
 Route::get('/login', function () {
-    return redirect('/user/login');
+    return view('auth.select-role', ['action' => 'login']);
 })->name('login');
 
-require __DIR__.'/auth.php';
+Route::get('/register', function () {
+    return view('auth.select-role', ['action' => 'register']);
+})->name('register');

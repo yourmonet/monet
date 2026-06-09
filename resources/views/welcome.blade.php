@@ -13,6 +13,8 @@
     <link rel="favicon" href="https://cdn-1.yourmonet.web.id/images/monet.png" type="image/x-icon">
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- AOS Animation -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <!-- Tailwind Config -->
     <script id="tailwind-config">
         tailwind.config = {
@@ -136,21 +138,36 @@
         </a>
         <!-- Navigation Links (Desktop) -->
         <div class="hidden md:flex space-x-margin-desktop">
-            <a class="text-on-surface-variant font-label-md text-label-md hover:text-primary transition-colors duration-200" href="">Beranda</a>
-            <a class="text-on-surface-variant font-label-md text-label-md hover:text-primary transition-colors duration-200" href="">Tentang Kami</a>
+            <a class="{{ request()->routeIs('home') ? 'text-primary' : 'text-on-surface-variant' }} font-label-md text-label-md hover:text-primary transition-colors duration-200" href="{{ route('home') }}">Beranda</a>
+            <a class="{{ request()->routeIs('about') ? 'text-primary' : 'text-on-surface-variant' }} font-label-md text-label-md hover:text-primary transition-colors duration-200" href="{{ route('about') }}">Tentang Kami</a>
             <!-- <a class="text-on-surface-variant font-label-md text-label-md hover:text-primary transition-colors duration-200" href="">Harga</a> -->
-            <a class="text-on-surface-variant font-label-md text-label-md hover:text-primary transition-colors duration-200" href="">Kontak</a>
+            <a class="{{ request()->routeIs('contact') ? 'text-primary font-bold' : 'text-on-surface-variant' }} font-label-md text-label-md hover:text-primary transition-colors duration-200" href="{{ route('contact') }}">Kontak</a>
         </div>
         <!-- Actions -->
-        <div class="flex items-center space-x-gutter">
+        <div class="flex items-center space-x-4 md:space-x-gutter">
             <a class="hidden md:inline-block text-on-surface-variant font-label-md text-label-md hover:text-primary transition-colors duration-200" href="{{ route('login') }}">Masuk</a>
-            <a class="bg-primary text-on-primary font-label-md text-label-md px-gutter py-stack-sm rounded-full hover:bg-on-primary-fixed-variant transition-colors duration-200" href="{{ route('user.register') }}">Daftar</a>
+            <a class="bg-primary text-on-primary font-label-md text-label-md px-6 py-2 rounded-full hover:bg-on-primary-fixed-variant transition-colors duration-200" href="{{ route('register') }}">Daftar</a>
+            <!-- Mobile Menu Toggle -->
+            <button id="mobile-menu-btn" class="md:hidden flex items-center justify-center text-on-surface hover:text-primary transition-colors">
+                <span class="material-symbols-outlined text-[32px]">menu</span>
+            </button>
+        </div>
+    </div>
+    <!-- Mobile Menu Dropdown -->
+    <div id="mobile-menu" class="hidden md:hidden absolute top-full left-0 w-full bg-surface border-b border-outline-variant/30 shadow-lg">
+        <div class="flex flex-col px-margin-mobile py-4 space-y-4">
+            <a class="{{ request()->routeIs('home') ? 'text-primary' : 'text-on-surface-variant' }} font-label-md text-label-md" href="{{ route('home') }}">Beranda</a>
+            <a class="{{ request()->routeIs('about') ? 'text-primary' : 'text-on-surface-variant' }} font-label-md text-label-md" href="{{ route('about') }}">Tentang Kami</a>
+            <a class="{{ request()->routeIs('contact') ? 'text-primary font-bold' : 'text-on-surface-variant' }} font-label-md text-label-md" href="{{ route('contact') }}">Kontak</a>
+            <div class="border-t border-outline-variant/30 pt-4">
+                <a class="block text-on-surface-variant font-label-md text-label-md hover:text-primary" href="{{ route('login') }}">Masuk</a>
+            </div>
         </div>
     </div>
 </nav>
 
 <!-- Hero Section -->
-<header class="relative min-h-[90vh] flex items-center justify-center overflow-hidden pt-24 pb-32">
+<header class="relative min-h-[90vh] flex items-center justify-center overflow-hidden pt-20 pb-16 md:pt-24 md:pb-32">
     <!-- Video Background -->
     <video autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover z-0">
         <source src="https://cdn-1.yourmonet.web.id/videos/money-video.mp4" type="video/mp4">
@@ -160,17 +177,17 @@
     <div class="absolute inset-0 bg-black/60 z-0 pointer-events-none"></div>
 
     <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop relative z-10 flex flex-col items-center text-center">
-        <h1 class="font-display-lg text-display-lg text-white font-light leading-tight mb-8">
+        <h1 data-aos="fade-up" class="font-display-lg text-4xl md:text-display-lg text-white font-light leading-tight mb-8">
             Kelola keuangan lebih cerdas dengan <br/><span class="text-primary-container font-semibold">MONET.</span>
         </h1>
-        <p class="font-body-lg text-body-lg text-gray-200 max-w-2xl leading-relaxed mb-10">
+        <p data-aos="fade-up" data-aos-delay="100" class="font-body-lg text-body-lg text-gray-200 max-w-2xl leading-relaxed mb-10">
             MONET diciptakan untuk membantu organisasi mengelola keuangan dengan lebih cerdas dan transparan.
         </p>
-        <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-6">
+        <div data-aos="fade-up" data-aos-delay="200" class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-6">
             <a class="inline-flex justify-center items-center bg-primary text-white font-label-md text-label-md px-10 py-4 rounded-full hover:bg-blue-800 transition-all duration-300 shadow-lg shadow-primary/30" href="{{ route('user.register') }}">
                 Mulai Sekarang
             </a>
-            <a class="inline-flex justify-center items-center group text-white font-label-md text-label-md px-10 py-4 border border-white/30 hover:bg-white/10 rounded-full backdrop-blur-sm transition-all duration-300" href="#features">
+            <a class="inline-flex justify-center items-center group text-white font-label-md text-label-md px-10 py-4 border border-white/30 hover:bg-white/10 rounded-full backdrop-blur-sm transition-all duration-300" href="{{ route('about') }}">
                 Tentang Kami <span class="material-symbols-outlined ml-2 group-hover:translate-x-1 transition-transform">arrow_forward</span>
             </a>
         </div>
@@ -192,15 +209,15 @@
 </section> -->
 
 <!-- Features Section -->
-<section class="py-32 bg-surface-container-lowest" id="features">
+<section class="py-16 md:py-32 bg-surface-container-lowest" id="features">
     <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
-        <div class="text-center max-w-3xl mx-auto mb-32">
-            <h2 class="font-display-lg text-display-lg text-on-surface mb-stack-md font-light">Mengapa harus MONET?</h2>
+        <div class="text-center max-w-3xl mx-auto mb-16 md:mb-32" data-aos="fade-up">
+            <h2 class="font-display-lg text-4xl md:text-display-lg text-on-surface mb-stack-md font-light">Mengapa harus MONET?</h2>
             <p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed">Kami memiliki fitur unggulan yang dapat digunakan untuk keperluan organisasi Anda.</p>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-x-24 gap-y-32">
             <!-- Feature 1 -->
-            <div class="flex flex-col items-center text-center group">
+            <div class="flex flex-col items-center text-center group" data-aos="fade-up" data-aos-delay="100">
                 <div class="w-24 h-24 rounded-full bg-primary-fixed/20 flex items-center justify-center text-primary mb-stack-lg group-hover:scale-110 transition-transform duration-500">
                     <span class="material-symbols-outlined text-[48px] font-light">donut_large</span>
                 </div>
@@ -208,7 +225,7 @@
                 <p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed max-w-md">Pantau laporan keuangan secara realtime dimanapun dan kapanpun.</p>
             </div>
             <!-- Feature 2 -->
-            <div class="flex flex-col items-center text-center group">
+            <div class="flex flex-col items-center text-center group" data-aos="fade-up" data-aos-delay="200">
                 <div class="w-24 h-24 rounded-full bg-surface-variant/50 flex items-center justify-center text-on-surface-variant mb-stack-lg group-hover:scale-110 transition-transform duration-500">
                     <span class="material-symbols-outlined text-[48px] font-light">timeline</span>
                 </div>
@@ -216,7 +233,7 @@
                 <p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed max-w-md">Bukan hanya bendahara saja, pengurus biasa dapat memantau laporan keuangan organisasi.</p>
             </div>
             <!-- Feature 3 -->
-            <div class="flex flex-col items-center text-center group">
+            <div class="flex flex-col items-center text-center group" data-aos="fade-up" data-aos-delay="300">
                 <div class="w-24 h-24 rounded-full bg-surface-variant/50 flex items-center justify-center text-on-surface-variant mb-stack-lg group-hover:scale-110 transition-transform duration-500">
                     <span class="material-symbols-outlined text-[48px] font-light">account_balance</span>
                 </div>
@@ -224,7 +241,7 @@
                 <p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed max-w-md">Terhubung dengan banyak Bank besar di Indonesia yang dapat memudahkan pencairan dana organisasi Anda.</p>
             </div>
             <!-- Feature 4 -->
-            <div class="flex flex-col items-center text-center group">
+            <div class="flex flex-col items-center text-center group" data-aos="fade-up" data-aos-delay="400">
                 <div class="w-24 h-24 rounded-full bg-primary-fixed/20 flex items-center justify-center text-primary mb-stack-lg group-hover:scale-110 transition-transform duration-500 p-4">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/a/a2/Logo_QRIS.svg" alt="QRIS" class="w-full h-full object-contain">
                 </div>
@@ -236,15 +253,15 @@
 </section>
 
 <!-- Team Section -->
-<section class="py-32 bg-surface" id="team">
+<section class="py-16 md:py-32 bg-surface" id="team">
     <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
-        <div class="mb-24 text-center">
-            <h2 class="font-display-lg text-display-lg text-on-surface mb-stack-md font-light">Tim Kami</h2>
+        <div class="mb-16 md:mb-24 text-center" data-aos="fade-up">
+            <h2 class="font-display-lg text-4xl md:text-display-lg text-on-surface mb-stack-md font-light">Tim Kami</h2>
             <p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed">Ini adalah orang-orang dibalik layar MONET.</p>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-16">
             <!-- Member 1 -->
-            <div class="flex flex-col items-center text-center">
+            <div class="flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="100">
                 <div class="w-40 h-40 rounded-full overflow-hidden mb-6 border-4 border-primary/10 hover:border-primary/30 transition-colors shadow-lg shadow-outline-variant/20">
                     <img src="https://cdn-1.yourmonet.web.id/images/team/sidiq.jpeg" alt="Aldy Alfiansyah" class="w-full h-full object-cover select-none" oncontextmenu="return false;" draggable="false">
                 </div>
@@ -253,7 +270,7 @@
                 <!-- <p class="font-body-sm text-body-sm text-on-surface-variant">Mengarahkan visi produk dan memastikan setiap modul memenuhi standar tertinggi.</p> -->
             </div>
             <!-- Member 2 -->
-            <div class="flex flex-col items-center text-center">
+            <div class="flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="200">
                 <div class="w-40 h-40 rounded-full overflow-hidden mb-6 border-4 border-primary/10 hover:border-primary/30 transition-colors shadow-lg shadow-outline-variant/20">
                     <img src="https://cdn-1.yourmonet.web.id/images/team/aldilah.jpeg" alt="Fahri" class="w-full h-full object-cover select-none" oncontextmenu="return false;" draggable="false">
                 </div>
@@ -262,7 +279,7 @@
                 <!-- <p class="font-body-sm text-body-sm text-on-surface-variant">Arsitek utama sistem keuangan dan pengembangan fitur inti.</p> -->
             </div>
             <!-- Member 3 -->
-            <div class="flex flex-col items-center text-center">
+            <div class="flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="300">
                 <div class="w-40 h-40 rounded-full overflow-hidden mb-6 border-4 border-primary/10 hover:border-primary/30 transition-colors shadow-lg shadow-outline-variant/20">
                     <img src="https://cdn-1.yourmonet.web.id/images/team/aldy.JPG" alt="Siti Nurhaliza" class="w-full h-full object-cover select-none" oncontextmenu="return false;" draggable="false">
                 </div>
@@ -271,7 +288,7 @@
                 <!-- <p class="font-body-sm text-body-sm text-on-surface-variant">Merancang antarmuka pengguna yang intuitif dan profesional untuk sistem MONET.</p> -->
             </div>
             <!-- Member 4 -->
-            <div class="flex flex-col items-center text-center">
+            <div class="flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="400">
                 <div class="w-40 h-40 rounded-full overflow-hidden mb-6 border-4 border-primary/10 hover:border-primary/30 transition-colors shadow-lg shadow-outline-variant/20">
                     <img src="https://cdn-1.yourmonet.web.id/images/team/fahri.jpeg" alt="Budi Santoso" class="w-full h-full object-cover select-none" oncontextmenu="return false;" draggable="false">
                 </div>
@@ -342,9 +359,9 @@
 </section> -->
 
 <!-- CTA Section -->
-<section class="py-32 bg-surface text-center border-t border-outline-variant/30">
-    <div class="max-w-4xl mx-auto px-margin-mobile md:px-margin-desktop">
-        <h2 class="font-display-lg text-display-lg text-on-surface mb-stack-lg font-light">Siap Mengatur Keuangan Organisasi Anda?</h2>
+<section class="py-16 md:py-32 bg-surface text-center border-t border-outline-variant/30">
+    <div class="max-w-4xl mx-auto px-margin-mobile md:px-margin-desktop" data-aos="fade-up">
+        <h2 class="font-display-lg text-4xl md:text-display-lg text-on-surface mb-stack-lg font-light">Siap Mengatur Keuangan Organisasi Anda?</h2>
         <p class="font-body-lg text-body-lg text-on-surface-variant mb-16 leading-relaxed">Tingkatkan presisi akuntansi dan kurangi risiko finansial dengan Monet hari ini.</p>
         <a class="inline-flex justify-center items-center bg-primary text-on-primary font-label-md text-label-md px-12 py-5 rounded-full hover:bg-on-primary-fixed-variant transition-all duration-200" href="{{ route('user.register') }}">
             Mulai Sekarang
@@ -354,37 +371,37 @@
 
 <!-- Footer (Shared Component) -->
 <footer class="bg-surface border-t border-outline-variant/30 full-width mt-auto">
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-gutter px-margin-mobile md:px-margin-desktop py-24 max-w-container-max mx-auto">
-        <!-- Brand & Copyright -->
-        <div class="md:col-span-1 space-y-stack-md">
-            <a href="/" class="inline-block">
-                <img src="https://cdn-1.yourmonet.web.id/images/monet2.png" alt="Monet Logo" class="h-8 w-auto object-contain">
-            </a>
-            <p class="text-body-sm font-body-sm text-on-surface-variant leading-relaxed">
-                &copy; <script>document.write( new Date().getFullYear() );</script> Money On Internet (MONET). All rights reserved.
-            </p>
-        </div>
-        <!-- Links Column 1 -->
-        <div class="md:col-span-1 space-y-stack-md flex flex-col">
-            <h4 class="text-label-sm font-label-sm text-on-surface-variant uppercase tracking-[0.2em] mb-4">Product</h4>
-            <a class="text-body-md font-body-md text-on-surface hover:text-primary transition-colors duration-200" href="#">Features</a>
-            <a class="text-body-md font-body-md text-on-surface hover:text-primary transition-colors duration-200" href="#">Solutions</a>
-            <a class="text-body-md font-body-md text-on-surface hover:text-primary transition-colors duration-200" href="#">Pricing</a>
-        </div>
-        <!-- Links Column 2 -->
-        <div class="md:col-span-1 space-y-stack-md flex flex-col">
-            <h4 class="text-label-sm font-label-sm text-on-surface-variant uppercase tracking-[0.2em] mb-4">Company</h4>
-            <a class="text-body-md font-body-md text-on-surface hover:text-primary transition-colors duration-200" href="#">About Us</a>
-            <a class="text-body-md font-body-md text-on-surface hover:text-primary transition-colors duration-200" href="#">Contact</a>
-        </div>
-        <!-- Links Column 3 -->
-        <div class="md:col-span-1 space-y-stack-md flex flex-col">
-            <h4 class="text-label-sm font-label-sm text-on-surface-variant uppercase tracking-[0.2em] mb-4">Legal</h4>
-            <a class="text-body-md font-body-md text-on-surface hover:text-primary transition-colors duration-200" href="#">Privacy Policy</a>
-            <a class="text-body-md font-body-md text-on-surface hover:text-primary transition-colors duration-200" href="#">Terms of Service</a>
-            <a class="text-body-md font-body-md text-on-surface hover:text-primary transition-colors duration-200" href="#">Security</a>
-        </div>
+    <div class="flex flex-col md:flex-row justify-between items-center px-margin-mobile md:px-margin-desktop py-8 max-w-container-max mx-auto gap-4">
+        <!-- Brand Logo -->
+        <a href="/" class="inline-block">
+            <img src="https://cdn-1.yourmonet.web.id/images/monet2.png" alt="Monet Logo" class="h-8 w-auto object-contain">
+        </a>
+        <!-- Copyright Text -->
+        <p class="text-body-sm font-body-sm text-on-surface-variant text-center md:text-right">
+            &copy; <script>document.write( new Date().getFullYear() );</script> Money On Internet (MONET). All rights reserved.
+        </p>
     </div>
 </footer>
+<!-- AOS Animation Script -->
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+    AOS.init({
+        duration: 800,
+        once: true,
+        offset: 100,
+    });
+
+    // Mobile Menu Toggle
+    document.getElementById('mobile-menu-btn')?.addEventListener('click', function() {
+        const menu = document.getElementById('mobile-menu');
+        if (menu.classList.contains('hidden')) {
+            menu.classList.remove('hidden');
+            menu.classList.add('flex');
+        } else {
+            menu.classList.add('hidden');
+            menu.classList.remove('flex');
+        }
+    });
+</script>
 </body>
 </html>
