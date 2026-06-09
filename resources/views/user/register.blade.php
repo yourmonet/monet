@@ -66,7 +66,7 @@
 
             <div class="lg:hidden mb-12 flex items-center gap-3">
                 <img src="https://cdn-1.yourmonet.web.id/images/monet2.png" alt="MONET" class="h-8 w-auto object-contain"/>
-                <span class="text-xl font-headline font-black text-primary">MONET</span>
+                <span class="text-xl font-headline font-black text-primary"></span>
             </div>
 
             <div class="mb-8">

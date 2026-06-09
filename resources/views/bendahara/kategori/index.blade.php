@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html class="light" lang="id">
 <head>
 <meta charset="utf-8"/>
@@ -34,8 +34,9 @@
 <body class="bg-surface font-body text-on-surface">
 
 {{-- NAVBAR ATAS --}}
-<nav class="fixed top-0 w-full z-50 bg-gray-50/85 backdrop-blur-md shadow-sm flex justify-between items-center px-8 h-16 font-headline antialiased">
-    <div class="flex items-center gap-8">
+<nav class="fixed top-0 w-full z-50 bg-gray-50/85 backdrop-blur-md shadow-sm flex justify-between items-center px-4 md:px-8 h-16 font-headline antialiased">
+    <div class="flex items-center gap-4 md:gap-8">
+        <button onclick="toggleSidebar()" class="md:hidden mr-2 text-on-surface hover:text-primary transition-colors flex items-center"><span class="material-symbols-outlined text-[28px]">menu</span></button>
         <img src="https://cdn-1.yourmonet.web.id/images/monet2.png" alt="MONET" class="h-8 w-auto object-contain"/>
     </div>
     <div class="flex items-center gap-3">
@@ -60,7 +61,7 @@
 
 @include('components.sidebar-bendahara')
 
-<main class="ml-64 pt-20 p-8 min-h-screen">
+<main class="md:ml-64 p-4 pt-20 md:p-8 md:pt-20 min-h-screen">
     <header class="flex justify-between items-end mb-8">
         <div>
             <h1 class="text-4xl font-headline font-extrabold tracking-tight text-on-surface">Kategori Transaksi</h1>

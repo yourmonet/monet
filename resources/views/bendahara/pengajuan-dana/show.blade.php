@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html class="light" lang="id">
 <head>
 <meta charset="utf-8"/>
@@ -41,8 +41,9 @@
 </head>
 <body class="bg-surface font-body text-on-surface">
 
-<nav class="fixed top-0 w-full z-50 bg-gray-50/85 backdrop-blur-md shadow-sm flex justify-between items-center px-8 h-16 font-headline antialiased">
-    <div class="flex items-center gap-8">
+<nav class="fixed top-0 w-full z-50 bg-gray-50/85 backdrop-blur-md shadow-sm flex justify-between items-center px-4 md:px-8 h-16 font-headline antialiased">
+    <div class="flex items-center gap-4 md:gap-8">
+        <button onclick="toggleSidebar()" class="md:hidden mr-2 text-on-surface hover:text-primary transition-colors flex items-center"><span class="material-symbols-outlined text-[28px]">menu</span></button>
         <img src="https://cdn-1.yourmonet.web.id/images/monet2.png" alt="MONET" class="h-8 w-auto object-contain"/>
     </div>
     <div class="flex items-center gap-3">
@@ -71,7 +72,7 @@
 @include('components.sidebar-bendahara')
 
 {{-- Main Content --}}
-<main class="ml-64 pt-20 p-8 min-h-screen">
+<main class="md:ml-64 p-4 pt-20 md:p-8 md:pt-20 min-h-screen">
     <header class="mb-10">
         <a href="{{ route('bendahara.pengajuan-dana.index') }}" class="inline-flex items-center gap-1 text-sm font-bold text-outline hover:text-primary transition-colors mb-3 group">
             <span class="material-symbols-outlined text-base group-hover:-translate-x-1 transition-transform">arrow_back</span>
@@ -133,6 +134,7 @@
                         <p class="text-xs text-outline font-semibold uppercase tracking-wider mb-2">Berkas / File Pendukung</p>
                         @if ($pengajuan->file_pendukung)
                             <div class="flex items-center gap-3 bg-surface-container-low rounded-2xl p-4 border border-outline-variant/20">
+        <button onclick="toggleSidebar()" class="md:hidden mr-2 text-on-surface hover:text-primary transition-colors flex items-center"><span class="material-symbols-outlined text-[28px]">menu</span></button>
                                 <span class="material-symbols-outlined text-3xl text-primary">description</span>
                                 <div class="flex-1 min-w-0">
                                     <p class="text-xs font-bold text-on-surface truncate">{{ basename($pengajuan->file_pendukung) }}</p>

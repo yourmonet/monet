@@ -62,7 +62,7 @@
         <div class="w-full max-w-md mx-auto">
             <div class="lg:hidden flex items-center gap-2 mb-8">
                 <img src="https://cdn-1.yourmonet.web.id/images/monet2.png" alt="MONET" class="h-8 w-auto object-contain"/>
-                <span class="font-headline font-bold text-primary">MONET</span>
+                <span class="font-headline font-bold text-primary"></span>
             </div>
 
             <header class="mb-8">

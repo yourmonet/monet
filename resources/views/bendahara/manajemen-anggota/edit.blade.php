@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html class="light" lang="id">
 <head>
 <meta charset="utf-8"/>
@@ -41,8 +41,9 @@
 </head>
 <body class="bg-surface font-body text-on-surface">
 
-<nav class="fixed top-0 w-full z-50 bg-gray-50/85 backdrop-blur-md shadow-sm flex justify-between items-center px-8 h-16 font-headline antialiased">
-    <div class="flex items-center gap-8">
+<nav class="fixed top-0 w-full z-50 bg-gray-50/85 backdrop-blur-md shadow-sm flex justify-between items-center px-4 md:px-8 h-16 font-headline antialiased">
+    <div class="flex items-center gap-4 md:gap-8">
+        <button onclick="toggleSidebar()" class="md:hidden mr-2 text-on-surface hover:text-primary transition-colors flex items-center"><span class="material-symbols-outlined text-[28px]">menu</span></button>
         <img src="https://cdn-1.yourmonet.web.id/images/monet2.png" alt="MONET" class="h-8 w-auto object-contain"/>
     </div>
     <div class="flex items-center gap-3">
@@ -69,8 +70,9 @@
 
 @include('components.sidebar-bendahara')
 
-<main class="ml-64 pt-20 p-8 min-h-screen">
+<main class="md:ml-64 p-4 pt-20 md:p-8 md:pt-20 min-h-screen">
     <div class="flex items-center gap-2 text-sm font-semibold text-on-surface-variant mb-6">
+        <button onclick="toggleSidebar()" class="md:hidden mr-2 text-on-surface hover:text-primary transition-colors flex items-center"><span class="material-symbols-outlined text-[28px]">menu</span></button>
         <a href="{{ route('bendahara.manajemen-data-anggota.index') }}" class="hover:text-primary transition-colors">Manajemen Anggota</a>
         <span class="material-symbols-outlined text-sm">chevron_right</span>
         <span class="text-on-surface">Edit Data Anggota</span>
@@ -86,6 +88,7 @@
     @if ($errors->any())
         <div class="mb-6 p-4 bg-red-100 rounded-xl border border-red-200 flex flex-col gap-1">
             <div class="flex items-center gap-2">
+        <button onclick="toggleSidebar()" class="md:hidden mr-2 text-on-surface hover:text-primary transition-colors flex items-center"><span class="material-symbols-outlined text-[28px]">menu</span></button>
                 <span class="material-symbols-outlined text-red-700">error</span>
                 <p class="text-red-800 text-sm font-bold">Terdapat kesalahan pengisian form:</p>
             </div>
