@@ -7,6 +7,9 @@ use App\Models\PengajuanDanaHistory;
 use App\Mail\PengajuanDanaDisetujuiMail;
 use App\Mail\PengajuanDanaDitolakMail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Models\KasKeluar;
+use App\Models\KategoriTransaksi;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Mail;
@@ -207,32 +210,52 @@ class PengajuanDanaController extends Controller
             'catatan_pengurus' => 'nullable|string|max:1000',
         ]);
 
-        $statusSebelum = $pengajuan->status;
-
-        $pengajuan->update([
-            'status' => 'Disetujui',
-            'approved_by' => $user->id,
-            'approved_at' => now(),
-            'approval_note' => $request->catatan_pengurus,
-        ]);
-
-        // Create history log
-        PengajuanDanaHistory::create([
-            'pengajuan_dana_id' => $pengajuan->id,
-            'status_sebelum' => $statusSebelum,
-            'status_sesudah' => 'Disetujui',
-            'catatan' => $request->catatan_pengurus,
-            'approver_id' => $user->id,
-        ]);
-
-        // Send Email Notification
         try {
-            Mail::to($pengajuan->user->email)->send(new PengajuanDanaDisetujuiMail($pengajuan));
-        } catch (\Exception $e) {
-            \Illuminate\Support\Facades\Log::error('Gagal mengirim email pengajuan disetujui: ' . $e->getMessage());
-        }
+            DB::transaction(function () use ($request, $pengajuan, $user) {
+                $statusSebelum = $pengajuan->status;
 
-        return redirect()->back()->with('success', 'Pengajuan dana berhasil disetujui.');
+                $pengajuan->update([
+                    'status' => 'Disetujui',
+                    'approved_by' => $user->id,
+                    'approved_at' => now(),
+                    'approval_note' => $request->catatan_pengurus,
+                ]);
+
+                // Create history log
+                PengajuanDanaHistory::create([
+                    'pengajuan_dana_id' => $pengajuan->id,
+                    'status_sebelum' => $statusSebelum,
+                    'status_sesudah' => 'Disetujui',
+                    'catatan' => $request->catatan_pengurus,
+                    'approver_id' => $user->id,
+                ]);
+
+                // Auto insert ke Kas Keluar
+                $kategori = KategoriTransaksi::where('nama_kategori', 'like', '%Pengajuan%')
+                    ->orWhere('nama_kategori', 'like', '%Bantuan%')
+                    ->first();
+
+                KasKeluar::create([
+                    'tanggal' => now()->toDateString(),
+                    'keterangan' => "Pencairan Pengajuan: " . $pengajuan->jenis_pengajuan . " - " . ($pengajuan->user ? $pengajuan->user->name : 'Unknown'),
+                    'sumber' => 'Pencairan Pengajuan',
+                    'nominal' => (int) $pengajuan->jumlah_dana,
+                    'kategori_id' => $kategori ? $kategori->id : null,
+                ]);
+            });
+
+            // Send Email Notification
+            try {
+                Mail::to($pengajuan->user->email)->send(new PengajuanDanaDisetujuiMail($pengajuan));
+            } catch (\Exception $e) {
+                \Illuminate\Support\Facades\Log::error('Gagal mengirim email pengajuan disetujui: ' . $e->getMessage());
+            }
+
+            return redirect()->back()->with('success', 'Pengajuan dana berhasil disetujui dan otomatis tercatat di Kas Keluar.');
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error('Gagal memproses persetujuan dana: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 
     /**
