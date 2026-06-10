@@ -167,7 +167,7 @@
 
 <main class="flex-grow">
     <!-- Header -->
-    <header class="relative pt-28 pb-16 md:pt-40 md:pb-32 text-center overflow-hidden">
+    <header class="relative min-h-[90vh] flex items-center justify-center overflow-hidden pt-20 pb-16 md:pt-24 md:pb-32 text-center">
         <!-- Background Image -->
         <div class="absolute inset-0 z-0">
             <img src="https://img.jakpost.net/c/2023/02/05/2023_02_05_135196_1675568175._large.jpg" alt="Background" class="w-full h-full object-cover">

@@ -4,5 +4,11 @@
         "500": "D:\\Code\\money-on-internet\\storage\\fonts\/montserrat_500_2da570d656c67ef7297f2b0b288ce8bc",
         "600": "D:\\Code\\money-on-internet\\storage\\fonts\/montserrat_600_da2f80af0e6d548904b08d3547b44b1c",
         "bold": "montserrat_bold_251805f22f376c685d401bff71e8e1d4"
+    },
+    "inter": {
+        "normal": "D:\\Code\\money-on-internet\\storage\\fonts\/inter_normal_5a66f8ceb794f00a7f54c797a21283b3",
+        "500": "D:\\Code\\money-on-internet\\storage\\fonts\/inter_500_efef4d9d61ac26570557ad601dea222a",
+        "600": "D:\\Code\\money-on-internet\\storage\\fonts\/inter_600_3604d9d49b61fc3b7c29c4259c86ff89",
+        "bold": "inter_bold_02384cdf43e3d24b76c57c66dfd114bf"
     }
 }

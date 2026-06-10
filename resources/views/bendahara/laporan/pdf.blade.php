@@ -3,249 +3,185 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Mutasi Transaksi {{ $namaBulan }}</title>
+    <title>Laporan Keuangan {{ $namaBulan }}</title>
+    <link rel="shortcut icon" href="https://cdn-1.yourmonet.web.id/images/monet.png" type="png">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         @page {
-            margin: 110px 40px 60px 40px;
+            margin: 50px 100px 60px 100px;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Montserrat', sans-serif;
-            font-size: 9pt;
-            color: #191c1e;
-            background: #fff;
+            font-size: 10pt;
+            color: #1f2937;
+            background: #ffffff;
+            line-height: 1.5;
+            padding: 0 10px;
+        }
+
+        /* Header */
+        .report-header {
+            width: 100%;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
         }
         
-        /* Fixed Header */
-        header {
-            position: fixed;
-            top: -90px;
-            left: 0px;
-            right: 0px;
-            height: 70px;
-            border-bottom: 1px solid #e1e2e4;
-            display: table;
+        .header-table {
             width: 100%;
         }
-        
-        .header-left {
-            display: table-cell;
+
+        .header-table td {
             vertical-align: middle;
-            width: 50%;
         }
-        
-        .header-right {
-            display: table-cell;
-            vertical-align: middle;
+
+        .brand-name {
+            font-size: 24pt;
+            font-weight: 700;
+            color: #111827;
+            letter-spacing: -0.5px;
+            margin-left: 10px;
+        }
+
+        .report-title {
             text-align: right;
+            font-size: 18pt;
+            font-weight: 600;
+            color: #111827;
+        }
+
+        .report-period {
+            text-align: right;
+            font-size: 11pt;
+            color: #6b7280;
+            margin-top: 4px;
+        }
+
+        /* Summary Boxes */
+        .summary-table {
+            width: 100%;
+            margin-bottom: 30px;
+        }
+
+        .summary-box {
+            background-color: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 15px;
+        }
+
+        .summary-label {
+            font-size: 9pt;
+            color: #6b7280;
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .summary-value {
+            font-size: 14pt;
+            font-weight: 700;
+        }
+
+        .text-green { color: #059669; }
+        .text-red { color: #dc2626; }
+        .text-blue { color: #2563eb; }
+
+        /* Transaction Table */
+        .tx-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+
+        .tx-table th {
+            text-align: left;
+            padding: 12px 8px;
+            border-bottom: 1px solid #d1d5db;
+            font-size: 9pt;
+            font-weight: 600;
+            color: #6b7280;
+            text-transform: uppercase;
+        }
+
+        .tx-row td {
+            padding: 12px 8px;
+            border-bottom: 1px solid #f3f4f6;
+            vertical-align: middle;
+            font-size: 9.5pt;
+        }
+
+        .date-cell {
+            color: #4b5563;
+            width: 15%;
+            font-weight: 500;
+        }
+
+        .desc-cell {
             width: 50%;
         }
 
-        .logo-text {
-            font-size: 16pt;
-            font-weight: bold;
-            color: #0c56d0;
-            letter-spacing: -0.5px;
+        .desc-title {
+            font-weight: 600;
+            color: #111827;
         }
-        
-        .header-title {
-            font-size: 14pt;
-            font-weight: normal;
-            color: #191c1e;
-        }
-        
-        .header-subtitle {
-            font-size: 10pt;
-            color: #191c1e;
+
+        .desc-sub {
+            font-size: 8pt;
+            color: #9ca3af;
             margin-top: 2px;
         }
 
-        /* Fixed Footer */
+        .type-cell {
+            width: 15%;
+            text-align: center;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 8pt;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-in { background-color: #d1fae5; color: #065f46; }
+        .badge-out { background-color: #fee2e2; color: #991b1b; }
+
+        .amount-cell {
+            width: 20%;
+            text-align: right;
+            font-weight: 600;
+        }
+
+        /* Footer */
         footer {
             position: fixed;
-            bottom: -40px;
+            bottom: 0px;
             left: 0px;
             right: 0px;
-            height: 30px;
-            border-top: 1px solid #e1e2e4;
-            display: table;
+            height: 40px;
+            border-top: 1px solid #e5e7eb;
+            padding: 10px 10px 0 10px;
+        }
+
+        .footer-table {
             width: 100%;
-            font-size: 7.5pt;
-            color: #737685;
-            padding-top: 8px;
-        }
-
-        .footer-left {
-            display: table-cell;
-            vertical-align: top;
-            width: 80%;
-        }
-
-        .footer-right {
-            display: table-cell;
-            vertical-align: top;
-            text-align: right;
-            width: 20%;
+            font-size: 8pt;
+            color: #9ca3af;
         }
 
         .page-number:after {
-            content: counter(page) " / " counter(pages);
-        }
-
-        /* Account Info Section */
-        .account-info {
-            margin-top: 5px;
-            margin-bottom: 25px;
-            display: table;
-            width: 100%;
-        }
-        
-        .account-icon {
-            display: table-cell;
-            width: 60px;
-            vertical-align: middle;
-        }
-        
-        .account-icon-box {
-            width: 45px;
-            height: 45px;
-            background: #dae2ff;
-            border-radius: 50%;
-            text-align: center;
-            line-height: 45px;
-            font-size: 18pt;
-            color: #003d9b;
-        }
-        
-        .account-details {
-            display: table-cell;
-            vertical-align: middle;
-        }
-        
-        .account-name {
-            font-size: 13pt;
-            font-weight: normal;
-            color: #191c1e;
-        }
-        
-        .account-number {
-            font-size: 9pt;
-            color: #434654;
-            margin-top: 3px;
-        }
-
-        /* Table Styles */
-        table.mutasi-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        tr.date-group {
-            background-color: #006aff; /* Biru terang mirip referensi */
-        }
-
-        tr.date-group td {
-            color: #ffffff;
-            font-size: 8.5pt;
-            padding: 6px 12px;
-        }
-
-        tr.tx-row td {
-            padding: 12px;
-            border-bottom: 1px solid #c3c6d6;
-            vertical-align: top;
-        }
-
-        .icon-col {
-            width: 50px;
-            text-align: center;
-        }
-
-        .idr-box {
-            display: inline-block;
-            border: 1px solid #c3c6d6;
-            border-radius: 4px;
-            padding: 3px;
-            text-align: center;
-            background: #f8f9fb;
-            width: 34px;
-        }
-        
-        .idr-text {
-            font-size: 6pt;
-            color: #434654;
-            border-bottom: 1px solid #e1e2e4;
-            padding-bottom: 2px;
-            margin-bottom: 2px;
-            font-weight: 600;
-        }
-        
-        .idr-arrow {
-            display: block;
-            font-size: 7.5pt;
-            line-height: 1;
-            font-weight: 700;
-        }
-
-        .desc-col {
-            width: auto;
-        }
-
-        .tx-desc {
-            font-size: 9.5pt;
-            font-weight: 700;
-            text-transform: uppercase;
-            color: #191c1e;
-        }
-
-        .tx-sub {
-            font-size: 8pt;
-            color: #434654;
-            margin-top: 3px;
-        }
-
-        .amount-col {
-            width: 120px;
-            text-align: right;
-            font-size: 9.5pt;
-            font-weight: normal;
-        }
-
-        .text-in { color: #1a6b3a; }
-        .text-out { color: #ba1a1a; }
-        
-        .saldo-summary {
-            margin-top: 30px;
-            border-top: 2px solid #e1e2e4;
-            padding-top: 15px;
-            display: table;
-            width: 100%;
-        }
-        
-        .saldo-col {
-            display: table-cell;
-            width: 33.33%;
-            text-align: center;
-        }
-        
-        .saldo-label {
-            font-size: 8pt;
-            color: #737685;
-            text-transform: uppercase;
-        }
-        
-        .saldo-val {
-            font-size: 11pt;
-            font-weight: bold;
-            margin-top: 4px;
+            content: counter(page);
         }
     </style>
 </head>
 <body>
 
 @php
-    // Logika penggabungan data dalam blade
     $allTransactions = collect();
     
     foreach($kasMasuk as $km) {
@@ -270,110 +206,99 @@
         ]);
     }
     
-    // Sort descending by date and time
-    $allTransactions = $allTransactions->sortByDesc(function ($item) {
+    // Sort chronological (ascending) for reports
+    $allTransactions = $allTransactions->sortBy(function ($item) {
         return \Carbon\Carbon::parse($item->tanggal)->format('Y-m-d') . ' ' . \Carbon\Carbon::parse($item->created_at)->format('H:i:s');
     })->values();
-
-    // Group by localized date
-    $groupedTransactions = $allTransactions->groupBy(function ($item) {
-        return \Carbon\Carbon::parse($item->tanggal)->translatedFormat('d F Y');
-    });
 @endphp
 
-<header>
-    <div class="header-left">
-        <img src="https://cdn-1.yourmonet.web.id/images/monet.png" alt="Logo" style="height: 35px; vertical-align: middle; margin-right: 8px;">
-        <span class="logo-text" style="vertical-align: middle;">monet</span>
-    </div>
-    <div class="header-right">
-        <div class="header-title">Mutasi Transaksi</div>
-        <div class="header-subtitle">{{ $namaBulan }}</div>
-    </div>
-</header>
-
 <footer>
-    <div class="footer-left">
-        monet.id | Sistem Manajemen Keuangan HIMA PSTI<br>
-        Dokumen dicetak pada {{ \Carbon\Carbon::now()->translatedFormat('d F Y, H:i') }} WIB
-    </div>
-    <div class="footer-right">
-        Halaman/Page <span class="page-number"></span>
-    </div>
+    <table class="footer-table">
+        <tr>
+            <td style="width: 50%;">MONET - Sistem Manajemen Keuangan</td>
+            <td style="width: 50%; text-align: right;">Dicetak pada {{ \Carbon\Carbon::now()->translatedFormat('d M Y, H:i') }} | Hal. <span class="page-number"></span></td>
+        </tr>
+    </table>
 </footer>
 
-<div class="account-info">
-    <div class="account-icon">
-        <img src="https://cdn-1.yourmonet.web.id/images/monet.png" alt="Logo" style="width: 50px; height: 50px;">
-    </div>
-    <div class="account-details">
-        <div class="account-name" style="font-weight: 600;">MONET</div>
-        <div class="account-number">Sistem Manajemen Keuangan - Periode Laporan: {{ $namaBulan }}</div>
-    </div>
+<div class="report-header">
+    <table class="header-table">
+        <tr>
+            <td style="width: 50%;">
+                <img src="https://cdn-1.yourmonet.web.id/images/monet2.png" alt="Logo" style="height: 35px; vertical-align: middle;">
+            </td>
+            <td style="width: 50%;">
+                <div class="report-title">Laporan Keuangan</div>
+                <div class="report-period">Periode: {{ $namaBulan }}</div>
+            </td>
+        </tr>
+    </table>
 </div>
 
-<table class="mutasi-table">
+<table class="summary-table">
+    <tr>
+        <td style="width: 33.33%; padding-right: 8px;">
+            <div class="summary-box" style="border-left: 4px solid #059669;">
+                <div class="summary-label">Total Pemasukan</div>
+                <div class="summary-value text-green">Rp {{ number_format($totalMasuk, 0, ',', '.') }}</div>
+            </div>
+        </td>
+        <td style="width: 33.33%; padding-right: 4px; padding-left: 4px;">
+            <div class="summary-box" style="border-left: 4px solid #dc2626;">
+                <div class="summary-label">Total Pengeluaran</div>
+                <div class="summary-value text-red">Rp {{ number_format($totalKeluar, 0, ',', '.') }}</div>
+            </div>
+        </td>
+        <td style="width: 33.33%; padding-left: 8px;">
+            <div class="summary-box" style="border-left: 4px solid #2563eb;">
+                <div class="summary-label">Saldo Bersih</div>
+                <div class="summary-value {{ $saldoBersih >= 0 ? 'text-blue' : 'text-red' }}">
+                    {{ $saldoBersih >= 0 ? '' : '-' }}Rp {{ number_format(abs($saldoBersih), 0, ',', '.') }}
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>
+
+<table class="tx-table">
+    <thead>
+        <tr>
+            <th>Tanggal</th>
+            <th>Keterangan Transaksi</th>
+            <th style="text-align: center;">Tipe</th>
+            <th style="text-align: right;">Nominal</th>
+        </tr>
+    </thead>
     <tbody>
-        @forelse($groupedTransactions as $date => $transactions)
-            <!-- Date Banner -->
-            <tr class="date-group">
-                <td colspan="3">{{ $date }}</td>
-            </tr>
-            
-            <!-- Transactions -->
-            @foreach($transactions as $tx)
-                <tr class="tx-row">
-                    <td class="icon-col">
-                        <div class="idr-box">
-                            <div class="idr-text">IDR</div>
-                            @if($tx->tipe === 'masuk')
-                                <span class="idr-arrow text-in">IN</span>
-                            @else
-                                <span class="idr-arrow text-out">OUT</span>
-                            @endif
-                        </div>
-                    </td>
-                    <td class="desc-col">
-                        <div class="tx-desc">
-                            {{ $tx->tipe === 'masuk' ? 'PEMASUKAN' : 'PENGELUARAN' }}
-                        </div>
-                        <div class="tx-sub">
-                            {{ $tx->keterangan }} 
-                            | {{ \Carbon\Carbon::parse($tx->created_at)->format('H:i:s') }} 
-                            | {{ strtoupper(substr(md5($tx->keterangan . $tx->tanggal), 0, 16)) }}
-                        </div>
-                    </td>
-                    <td class="amount-col {{ $tx->tipe === 'masuk' ? 'text-in' : 'text-out' }}">
-                        Rp {{ number_format($tx->nominal, 2, ',', '.') }}
-                    </td>
-                </tr>
-            @endforeach
-        @empty
+        @forelse($allTransactions as $tx)
             <tr class="tx-row">
-                <td colspan="3" style="text-align:center; color:#737685; padding: 20px;">
-                    Tidak ada mutasi transaksi pada bulan ini.
+                <td class="date-cell">
+                    {{ \Carbon\Carbon::parse($tx->tanggal)->format('d/m/Y') }}
+                </td>
+                <td class="desc-cell">
+                    <div class="desc-title">{{ $tx->keterangan }}</div>
+                    <div class="desc-sub">Ref: {{ strtoupper(substr(md5($tx->keterangan . $tx->tanggal), 0, 8)) }}</div>
+                </td>
+                <td class="type-cell">
+                    @if($tx->tipe === 'masuk')
+                        <span class="badge badge-in">MASUK</span>
+                    @else
+                        <span class="badge badge-out">KELUAR</span>
+                    @endif
+                </td>
+                <td class="amount-cell {{ $tx->tipe === 'masuk' ? 'text-green' : 'text-red' }}">
+                    {{ $tx->tipe === 'masuk' ? '+' : '-' }} Rp{{ number_format($tx->nominal, 0, ',', '.') }}
+                </td>
+            </tr>
+        @empty
+            <tr>
+                <td colspan="4" style="text-align:center; color:#9ca3af; padding: 40px;">
+                    Tidak ada transaksi pada periode ini.
                 </td>
             </tr>
         @endforelse
     </tbody>
 </table>
-
-<div class="saldo-summary">
-    <div class="saldo-col">
-        <div class="saldo-label">Total Pemasukan</div>
-        <div class="saldo-val text-in">Rp {{ number_format($totalMasuk, 2, ',', '.') }}</div>
-    </div>
-    <div class="saldo-col">
-        <div class="saldo-label">Total Pengeluaran</div>
-        <div class="saldo-val text-out">Rp {{ number_format($totalKeluar, 2, ',', '.') }}</div>
-    </div>
-    <div class="saldo-col">
-        <div class="saldo-label">Saldo Bersih</div>
-        <div class="saldo-val {{ $saldoBersih >= 0 ? 'text-in' : 'text-out' }}">
-            {{ $saldoBersih >= 0 ? '+' : '-' }} Rp {{ number_format(abs($saldoBersih), 2, ',', '.') }}
-        </div>
-    </div>
-</div>
 
 </body>
 </html>

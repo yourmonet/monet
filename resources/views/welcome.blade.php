@@ -177,11 +177,11 @@
     <div class="absolute inset-0 bg-black/60 z-0 pointer-events-none"></div>
 
     <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop relative z-10 flex flex-col items-center text-center">
-        <h1 data-aos="fade-up" class="font-display-lg text-4xl md:text-display-lg text-white font-light leading-tight mb-8">
-            Kelola keuangan lebih cerdas dengan <br/><span class="text-primary-container font-semibold">MONET.</span>
+        <h1 data-aos="fade-up" class="font-display-lg text-4xl md:text-display-lg text-white font-bold leading-tight mb-8">
+            Kelola keuangan lebih cerdas dengan <br/><span class="text-blue-400 font-extrabold drop-shadow-md">MONET.</span>
         </h1>
         <p data-aos="fade-up" data-aos-delay="100" class="font-body-lg text-body-lg text-gray-200 max-w-2xl leading-relaxed mb-10">
-            MONET diciptakan untuk membantu organisasi mengelola keuangan dengan lebih cerdas dan transparan.
+            MONET adalah sistem informasi manajemen keuangan terbaik untuk organisasi Anda yang mengutamakan transparansi dan kemudahan.
         </p>
         <div data-aos="fade-up" data-aos-delay="200" class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-6">
             <a class="inline-flex justify-center items-center bg-primary text-white font-label-md text-label-md px-10 py-4 rounded-full hover:bg-blue-800 transition-all duration-300 shadow-lg shadow-primary/30" href="{{ route('register') }}">
@@ -361,8 +361,8 @@
 <!-- CTA Section -->
 <section class="py-16 md:py-32 bg-surface text-center border-t border-outline-variant/30">
     <div class="max-w-4xl mx-auto px-margin-mobile md:px-margin-desktop" data-aos="fade-up">
-        <h2 class="font-display-lg text-4xl md:text-display-lg text-on-surface mb-stack-lg font-light">Siap Mengatur Keuangan Organisasi Anda?</h2>
-        <p class="font-body-lg text-body-lg text-on-surface-variant mb-16 leading-relaxed">Tingkatkan presisi akuntansi dan kurangi risiko finansial dengan Monet hari ini.</p>
+        <h2 class="font-display-lg text-4xl md:text-display-lg text-on-surface mb-stack-lg font-light">Siap Menggunakan Sistem Informasi Manajemen Keuangan untuk Organisasi Anda?</h2>
+        <p class="font-body-lg text-body-lg text-on-surface-variant mb-16 leading-relaxed">Tinggalkan cara lama dan gunakan MONET untuk organisasi Anda.</p>
         <a class="inline-flex justify-center items-center bg-primary text-on-primary font-label-md text-label-md px-12 py-5 rounded-full hover:bg-on-primary-fixed-variant transition-all duration-200" href="{{ route('register') }}">
             Mulai Sekarang
         </a>

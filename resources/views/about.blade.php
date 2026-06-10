@@ -167,7 +167,7 @@
 
 <main class="flex-grow">
     <!-- Header -->
-    <header class="relative pt-28 pb-16 md:pt-40 md:pb-32 text-center overflow-hidden">
+    <header class="relative min-h-[90vh] flex items-center justify-center overflow-hidden pt-20 pb-16 md:pt-24 md:pb-32 text-center">
         <!-- Video Background -->
         <video autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover z-0">
             <source src="https://cdn-1.yourmonet.web.id/videos/money-coin.mp4" type="video/mp4">
@@ -244,8 +244,8 @@
     <!-- CTA Section -->
     <section class="py-16 md:py-32 bg-surface text-center border-t border-outline-variant/30">
         <div class="max-w-4xl mx-auto px-margin-mobile md:px-margin-desktop" data-aos="fade-up">
-            <h2 class="font-display-lg text-4xl md:text-display-lg text-on-surface mb-stack-lg font-light">Siap Mengatur Keuangan Organisasi Anda?</h2>
-            <p class="font-body-lg text-body-lg text-on-surface-variant mb-16 leading-relaxed">Tingkatkan presisi akuntansi dan kurangi risiko finansial dengan Monet hari ini.</p>
+            <h2 class="font-display-lg text-4xl md:text-display-lg text-on-surface mb-stack-lg font-light">Siap Menggunakan Sistem Informasi Manajemen Keuangan untuk Organisasi Anda?</h2>
+            <p class="font-body-lg text-body-lg text-on-surface-variant mb-16 leading-relaxed">Tinggalkan cara lama dan gunakan MONET untuk organisasi Anda.</p>
             <a class="inline-flex justify-center items-center bg-primary text-on-primary font-label-md text-label-md px-12 py-5 rounded-full hover:bg-on-primary-fixed-variant transition-all duration-200" href="{{ route('register') }}">
                 Mulai Sekarang
             </a>
