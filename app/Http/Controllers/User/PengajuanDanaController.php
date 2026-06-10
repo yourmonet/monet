@@ -63,7 +63,12 @@ class PengajuanDanaController extends Controller
         if ($request->hasFile('file_pendukung')) {
             $file = $request->file('file_pendukung');
             $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-            $filePath = $file->storeAs('file_pendukung', $filename, 'public');
+            $disk = env('FILESYSTEM_DISK') === 's3' ? 's3_bukti' : 'public';
+            $filePath = $file->storeAs('file_pendukung', $filename, $disk);
+            
+            if ($disk === 's3_bukti') {
+                $filePath = \Illuminate\Support\Facades\Storage::disk('s3_bukti')->url($filePath);
+            }
         }
 
         PengajuanDana::create([

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html class="light" lang="id">
 <head>
 <meta charset="utf-8"/>
@@ -139,7 +139,7 @@
                                     <p class="text-xs font-bold text-on-surface truncate">{{ basename($pengajuan->file_pendukung) }}</p>
                                     <p class="text-[10px] text-outline">Format Berkas Pendukung</p>
                                 </div>
-                                <a href="{{ asset('storage/' . $pengajuan->file_pendukung) }}" target="_blank"
+                                <a href="{{ $pengajuan->file_url }}" target="_blank"
                                     class="inline-flex items-center gap-1 bg-primary text-on-primary px-4 py-2 rounded-xl text-xs font-bold hover:bg-primary/95 transition-all shadow-sm">
                                     <span class="material-symbols-outlined text-xs">download</span> Unduh / Lihat
                                 </a>

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -204,7 +204,7 @@
                             <td class="px-6 py-4 text-center">
                                 @if($pembayaran->status === 'Menunggu Verifikasi' && $pembayaran->bukti_pembayaran)
                                     <div class="flex items-center justify-center gap-1.5">
-                                        <button onclick="openBuktiModal('{{ asset('storage/' . $pembayaran->bukti_pembayaran) }}', '{{ $pembayaran->user->name }}', '{{ Carbon\Carbon::createFromFormat('Y-m', $pembayaran->periode)->translatedFormat('F Y') }}')" class="p-1.5 bg-surface-container hover:bg-surface-container-high rounded-lg text-primary transition-all" title="Lihat Bukti">
+                                        <button onclick="openBuktiModal('{{ $pembayaran->bukti_url }}', '{{ $pembayaran->user->name }}', '{{ Carbon\Carbon::createFromFormat('Y-m', $pembayaran->periode)->translatedFormat('F Y') }}')" class="p-1.5 bg-surface-container hover:bg-surface-container-high rounded-lg text-primary transition-all" title="Lihat Bukti">
                                             <span class="material-symbols-outlined text-[18px]">visibility</span>
                                         </button>
                                         <form action="{{ route('bendahara.status-pembayaran.verify', $pembayaran->id) }}" method="POST" class="inline" onsubmit="return confirm('Verifikasi pembayaran ini sebagai LUNAS?')">
@@ -218,7 +218,7 @@
                                         </button>
                                     </div>
                                 @elseif($pembayaran->bukti_pembayaran)
-                                    <button onclick="openBuktiModal('{{ asset('storage/' . $pembayaran->bukti_pembayaran) }}', '{{ $pembayaran->user->name }}', '{{ Carbon\Carbon::createFromFormat('Y-m', $pembayaran->periode)->translatedFormat('F Y') }}')" class="p-1.5 bg-surface-container hover:bg-surface-container-high rounded-lg text-primary transition-all" title="Lihat Bukti">
+                                    <button onclick="openBuktiModal('{{ $pembayaran->bukti_url }}', '{{ $pembayaran->user->name }}', '{{ Carbon\Carbon::createFromFormat('Y-m', $pembayaran->periode)->translatedFormat('F Y') }}')" class="p-1.5 bg-surface-container hover:bg-surface-container-high rounded-lg text-primary transition-all" title="Lihat Bukti">
                                         <span class="material-symbols-outlined text-[18px]">visibility</span>
                                     </button>
                                 @else

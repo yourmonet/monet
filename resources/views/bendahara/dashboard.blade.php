@@ -75,7 +75,7 @@
     <header class="flex justify-between items-end mb-10">
         <div>
             <h1 class="text-4xl font-headline font-extrabold tracking-tight text-on-surface">Dashboard Bendahara</h1>
-            <p class="text-on-surface-variant font-body mt-1">Pantau arus kas dan kesehatan keuangan organisasi.</p>
+            <p class="text-on-surface-variant font-body mt-1">Selamat datang, <span class="font-semibold text-primary">{{ Auth::user()->name }}</span> 👋</p>
         </div>
     </header>
 
@@ -255,7 +255,7 @@
                         </div>
                         <span class="font-bold text-sm text-center">Catat<br>Pengeluaran</span>
                     </a>
-                    <a href="{{ route('bendahara.kas-masuk.index') }}" class="flex items-center justify-center gap-3 p-4 bg-surface-container border border-outline-variant/40 text-on-surface rounded-2xl hover:bg-surface-container-high transition-colors col-span-2 group">
+                    <a href="{{ route('bendahara.laporan.index') }}" class="flex items-center justify-center gap-3 p-4 bg-surface-container border border-outline-variant/40 text-on-surface rounded-2xl hover:bg-surface-container-high transition-colors col-span-2 group">
                         <span class="material-symbols-outlined text-2xl text-primary group-hover:rotate-12 transition-transform">summarize</span>
                         <span class="font-bold text-sm">Lihat Semua Laporan</span>
                     </a>

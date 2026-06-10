@@ -126,10 +126,15 @@ class PembayaranKasController extends Controller
             return redirect()->back()->with('error', "Anda sudah melakukan pembayaran untuk periode ini dengan status: {$statusText}.");
         }
 
-        // Simpan bukti pembayaran ke public disk
+        // Simpan bukti pembayaran ke S3 atau lokal
         $file = $request->file('bukti_pembayaran');
         $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-        $path = $file->storeAs('bukti_pembayaran', $filename, 'public');
+        $disk = env('FILESYSTEM_DISK') === 's3' ? 's3_bukti' : 'public';
+        $path = $file->storeAs('bukti_pembayaran', $filename, $disk);
+
+        if ($disk === 's3_bukti') {
+            $path = \Illuminate\Support\Facades\Storage::disk('s3_bukti')->url($path);
+        }
 
         // Update record pembayaran
         $pembayaran->update([

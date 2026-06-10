@@ -19,11 +19,7 @@ class GoogleAuthController extends Controller
      */
     private function loginRouteByRole(string $role): string
     {
-        return match ($role) {
-            'pengurus'  => '/pengurus/login',
-            'bendahara' => '/bendahara/login',
-            default     => '/user/login',
-        };
+        return '/login';
     }
 
     /**

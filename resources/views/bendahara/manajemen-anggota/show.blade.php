@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html class="light" lang="id">
 <head>
 <meta charset="utf-8"/>
@@ -83,11 +83,7 @@
             <h1 class="text-4xl font-headline font-extrabold tracking-tight text-on-surface">Detail Anggota</h1>
             <p class="text-on-surface-variant font-body mt-1">Informasi identitas dan riwayat pembayaran kas.</p>
         </div>
-        <div>
-            <a href="{{ route('bendahara.manajemen-data-anggota.edit', $user->id) }}" class="flex items-center gap-2 px-6 py-2.5 bg-primary text-white rounded-xl font-bold text-sm hover:bg-primary/90 transition-all shadow-sm">
-                <span class="material-symbols-outlined text-[20px]">edit</span> Edit Data
-            </a>
-        </div>
+
     </header>
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -122,17 +118,10 @@
 
                 <div class="w-full flex flex-col gap-4 text-left text-sm">
                     <div class="flex items-center gap-3 text-on-surface-variant">
-        <button onclick="toggleSidebar()" class="md:hidden mr-2 text-on-surface hover:text-primary transition-colors flex items-center"><span class="material-symbols-outlined text-[28px]">menu</span></button>
                         <span class="material-symbols-outlined text-[20px] text-outline">mail</span>
                         <span class="font-medium break-all">{{ $user->email }}</span>
                     </div>
                     <div class="flex items-center gap-3 text-on-surface-variant">
-        <button onclick="toggleSidebar()" class="md:hidden mr-2 text-on-surface hover:text-primary transition-colors flex items-center"><span class="material-symbols-outlined text-[28px]">menu</span></button>
-                        <span class="material-symbols-outlined text-[20px] text-outline">call</span>
-                        <span class="font-medium">{{ $user->phone_number ?? '-' }}</span>
-                    </div>
-                    <div class="flex items-center gap-3 text-on-surface-variant">
-        <button onclick="toggleSidebar()" class="md:hidden mr-2 text-on-surface hover:text-primary transition-colors flex items-center"><span class="material-symbols-outlined text-[28px]">menu</span></button>
                         <span class="material-symbols-outlined text-[20px] text-outline">calendar_today</span>
                         <span class="font-medium">Bergabung {{ $user->created_at->translatedFormat('d M Y') }}</span>
                     </div>

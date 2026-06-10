@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html class="light" lang="id">
 <head>
 <meta charset="utf-8"/>
@@ -407,7 +407,7 @@
                                 </td>
                                 <td class="px-6 py-4 text-center" onclick="event.stopPropagation()">
                                     @if ($item->file_pendukung)
-                                        <a href="{{ asset('storage/' . $item->file_pendukung) }}" target="_blank" class="inline-flex items-center gap-1 text-xs text-primary font-bold hover:underline">
+                                        <a href="{{ $item->file_url }}" target="_blank" class="inline-flex items-center gap-1 text-xs text-primary font-bold hover:underline">
                                             <span class="material-symbols-outlined text-sm">download</span> Unduh
                                         </a>
                                     @else
@@ -717,7 +717,7 @@
                 const lampiranContainer = document.getElementById('det-lampiran');
                 if (data.file_pendukung) {
                     lampiranContainer.innerHTML = `
-                        <a href="/storage/${data.file_pendukung}" target="_blank" class="inline-flex items-center gap-1 text-xs text-primary font-bold hover:underline">
+                        <a href="${data.file_url}" target="_blank" class="inline-flex items-center gap-1 text-xs text-primary font-bold hover:underline">
                             <span class="material-symbols-outlined text-sm">download</span> Unduh Dokumen Pendukung
                         </a>
                     `;

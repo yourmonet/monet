@@ -10,8 +10,8 @@ use App\Http\Controllers\LaporanKeuanganController;
 use App\Http\Controllers\MidtransCallbackController;
 use App\Http\Controllers\StatusPembayaranController;
 use App\Http\Controllers\KategoriTransaksiController;
+use App\Http\Controllers\Auth\UniversalAuthController;
 use Illuminate\Support\Facades\Route;
-
 // ─────────────────────────────────────────────────────────
 // Landing Page
 // ─────────────────────────────────────────────────────────
@@ -137,9 +137,8 @@ Route::get('/auth/google/{role}',   [GoogleAuthController::class, 'redirectToGoo
 
 require __DIR__.'/auth.php';
 
-Route::get('/login', function () {
-    return view('auth.select-role', ['action' => 'login']);
-})->name('login');
+Route::get('/login', [UniversalAuthController::class, 'showLogin'])->name('login');
+Route::post('/login', [UniversalAuthController::class, 'login']);
 
 Route::get('/register', function () {
     return view('auth.select-role', ['action' => 'register']);

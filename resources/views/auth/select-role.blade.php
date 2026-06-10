@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>{{ $action == 'login' ? 'Login' : 'Register' }} | MONET</title>
+<title>Register | MONET</title>
 <link rel="icon" type="image/png" href="https://cdn-1.yourmonet.web.id/images/monet.png">
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
@@ -67,14 +67,14 @@
 
             <header class="mb-10 text-center lg:text-left">
                 <h2 class="font-headline text-2xl font-bold text-on-surface mb-2">
-                    {{ $action == 'login' ? 'Masuk ke Akun' : 'Buat Akun Baru' }}
+                    Buat Akun Baru
                 </h2>
                 <p class="text-on-surface-variant text-sm">Pilih peran Anda untuk melanjutkan.</p>
             </header>
 
             <div class="space-y-4">
                 <!-- Role: Mahasiswa/Anggota -->
-                <a href="{{ url('/user/' . $action) }}" class="flex items-center gap-4 p-4 border border-outline-variant/50 rounded-xl hover:border-primary hover:bg-primary-fixed/20 hover:shadow-md active:scale-[0.98] transition-all group">
+                <a href="{{ url('/user/register') }}" class="flex items-center gap-4 p-4 border border-outline-variant/50 rounded-xl hover:border-primary hover:bg-primary-fixed/20 hover:shadow-md active:scale-[0.98] transition-all group">
                     <div class="w-12 h-12 rounded-full bg-primary-fixed/30 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
                         <span class="material-symbols-outlined">school</span>
                     </div>
@@ -86,7 +86,7 @@
                 </a>
 
                 <!-- Role: Pengurus -->
-                <a href="{{ url('/pengurus/' . $action) }}" class="flex items-center gap-4 p-4 border border-outline-variant/50 rounded-xl hover:border-primary hover:bg-primary-fixed/20 hover:shadow-md active:scale-[0.98] transition-all group">
+                <a href="{{ url('/pengurus/register') }}" class="flex items-center gap-4 p-4 border border-outline-variant/50 rounded-xl hover:border-primary hover:bg-primary-fixed/20 hover:shadow-md active:scale-[0.98] transition-all group">
                     <div class="w-12 h-12 rounded-full bg-primary-fixed/30 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
                         <span class="material-symbols-outlined">manage_accounts</span>
                     </div>
@@ -98,7 +98,7 @@
                 </a>
 
                 <!-- Role: Bendahara -->
-                <a href="{{ url('/bendahara/' . $action) }}" class="flex items-center gap-4 p-4 border border-outline-variant/50 rounded-xl hover:border-primary hover:bg-primary-fixed/20 hover:shadow-md active:scale-[0.98] transition-all group">
+                <a href="{{ url('/bendahara/register') }}" class="flex items-center gap-4 p-4 border border-outline-variant/50 rounded-xl hover:border-primary hover:bg-primary-fixed/20 hover:shadow-md active:scale-[0.98] transition-all group">
                     <div class="w-12 h-12 rounded-full bg-primary-fixed/30 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
                         <span class="material-symbols-outlined">account_balance_wallet</span>
                     </div>

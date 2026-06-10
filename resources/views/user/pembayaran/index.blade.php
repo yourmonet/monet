@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html class="light" lang="id">
 <head>
 <meta charset="utf-8"/>
@@ -348,9 +348,11 @@
                                     {{ $item->catatan ?? '-' }}
                                 </td>
                                 <td class="py-4 text-center pr-4">
-                                    <button onclick="openImageModal('{{ asset('storage/' . $item->bukti_pembayaran) }}', 'Bukti Transfer Periode {{ $pMonthName }} {{ $pYear }}')" class="p-2 bg-surface-container hover:bg-surface-container-high rounded-xl text-primary transition-all inline-flex items-center justify-center shadow-inner">
-                                        <span class="material-symbols-outlined text-[18px]">visibility</span>
-                                    </button>
+                                    @if ($item->bukti_pembayaran)
+                                        <button onclick="openImageModal('{{ $item->bukti_url }}', 'Bukti Transfer Periode {{ $pMonthName }} {{ $pYear }}')" class="p-2 bg-surface-container hover:bg-surface-container-high rounded-xl text-primary transition-all inline-flex items-center justify-center shadow-inner">
+                                            <span class="material-symbols-outlined text-[18px]">receipt_long</span>
+                                        </button>
+                                    @endif
                                 </td>
                             </tr>
                         @empty

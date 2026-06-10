@@ -8,6 +8,8 @@ class PembayaranKas extends Model
 {
     protected $table = 'pembayaran_kas';
 
+    protected $appends = ['bukti_url'];
+
     protected $fillable = [
         'user_id',
         'tagihan_kas_id',
@@ -32,5 +34,16 @@ class PembayaranKas extends Model
     public function kasMasuk()
     {
         return $this->hasOne(KasMasuk::class, 'pembayaran_kas_id');
+    }
+
+    public function getBuktiUrlAttribute()
+    {
+        if (!$this->bukti_pembayaran) {
+            return null;
+        }
+        if (\Illuminate\Support\Str::startsWith($this->bukti_pembayaran, ['http://', 'https://'])) {
+            return $this->bukti_pembayaran;
+        }
+        return asset('storage/' . $this->bukti_pembayaran);
     }
 }

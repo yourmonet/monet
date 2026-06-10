@@ -12,6 +12,8 @@ class PengajuanDana extends Model
 
     protected $table = 'pengajuan_danas';
 
+    protected $appends = ['file_url'];
+
     protected $fillable = [
         'user_id',
         'jenis_pengajuan',
@@ -50,5 +52,16 @@ class PengajuanDana extends Model
     public function histories()
     {
         return $this->hasMany(PengajuanDanaHistory::class, 'pengajuan_dana_id');
+    }
+
+    public function getFileUrlAttribute()
+    {
+        if (!$this->file_pendukung) {
+            return null;
+        }
+        if (\Illuminate\Support\Str::startsWith($this->file_pendukung, ['http://', 'https://'])) {
+            return $this->file_pendukung;
+        }
+        return asset('storage/' . $this->file_pendukung);
     }
 }

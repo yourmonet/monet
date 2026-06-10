@@ -78,7 +78,7 @@
     <header class="flex justify-between items-end mb-10">
         <div>
             <h1 class="text-4xl font-headline font-extrabold tracking-tight text-on-surface">Dashboard Anggota</h1>
-            <p class="text-on-surface-variant font-body mt-1">Selamat datang kembali, <span class="font-semibold text-primary">{{ Auth::user()->name }}</span> 👋</p>
+            <p class="text-on-surface-variant font-body mt-1">Selamat datang, <span class="font-semibold text-primary">{{ Auth::user()->name }}</span> 👋</p>
         </div>
     </header>
 
