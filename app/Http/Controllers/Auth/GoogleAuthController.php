@@ -67,6 +67,7 @@ class GoogleAuthController extends Controller
             $driver = Socialite::driver('google');
             $googleUser = $driver->stateless()->user();
         } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error('Google Auth Error: ' . $e->getMessage());
             return redirect($loginRoute)->withErrors(['email' => 'Autentikasi Google gagal. Silakan coba lagi.']);
         }
 
